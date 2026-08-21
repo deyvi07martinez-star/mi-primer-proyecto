@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sabor Dominicano | Restaurante</title>
+<meta name="description" content="Sabor Dominicano - Auténtica cocina dominicana en un ambiente elegante. Reserva tu mesa hoy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header" id="siteHeader">
+  <div class="container nav-wrap">
+    <a href="#inicio" class="logo">Sabor <span>Dominicano</span></a>
+    <nav class="nav" id="mainNav">
+      <a href="#inicio">Inicio</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#menu">Menú</a>
+      <a href="#galeria">Galería</a>
+      <a href="#reservas">Reservas</a>
+      <a href="#ubicacion">Ubicación</a>
+    </nav>
+    <a href="#reservas" class="btn btn-outline nav-cta">Reservar Mesa</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="hero" id="inicio">
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <p class="eyebrow">Auténtica cocina criolla desde 1998</p>
+    <h1>Sabor Dominicano</h1>
+    <p class="hero-sub">Tradición, sazón y hospitalidad dominicana en cada plato.</p>
+    <div class="hero-actions">
+      <a href="#reservas" class="btn btn-primary">Reservar Mesa</a>
+      <a href="#menu" class="btn btn-ghost">Ver Menú</a>
+    </div>
+  </div>
+  <a href="#nosotros" class="scroll-down" aria-label="Bajar">↓</a>
+</section>
+
+<section class="section about" id="nosotros">
+  <div class="container about-grid">
+    <div class="about-image" role="img" aria-label="Ambiente del restaurante"></div>
+    <div class="about-text">
+      <p class="eyebrow">Nuestra historia</p>
+      <h2>Un pedazo de República Dominicana en tu mesa</h2>
+      <p>En Sabor Dominicano combinamos recetas familiares con técnicas modernas para ofrecerte una experiencia gastronómica auténtica. Cada plato se prepara con ingredientes frescos y locales, honrando el sabor de nuestra tierra.</p>
+      <div class="about-stats">
+        <div><strong>25+</strong><span>Años de tradición</span></div>
+        <div><strong>40+</strong><span>Platos en el menú</span></div>
+        <div><strong>4.9★</strong><span>Calificación de clientes</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section menu-section" id="menu">
+  <div class="container">
+    <p class="eyebrow center">Nuestra propuesta</p>
+    <h2 class="center">Menú</h2>
+
+    <div class="menu-tabs" id="menuTabs">
+      <button class="menu-tab active" data-target="entradas">Entradas</button>
+      <button class="menu-tab" data-target="principales">Platos Principales</button>
+      <button class="menu-tab" data-target="postres">Postres</button>
+      <button class="menu-tab" data-target="bebidas">Bebidas</button>
+    </div>
+
+    <div class="menu-panel active" id="entradas">
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Yaniqueques</h3><span class="price">RD$ 180</span></div>
+        <p>Tostones crujientes de harina, servidos con salsa de ajo.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Tostones con Salami</h3><span class="price">RD$ 250</span></div>
+        <p>Plátano verde frito acompañado de salami dominicano salteado.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Empanadas de Yuca</h3><span class="price">RD$ 220</span></div>
+        <p>Rellenas de pollo guisado, fritas hasta dorar.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Sopa de Habichuelas Negras</h3><span class="price">RD$ 200</span></div>
+        <p>Cremosa sopa criolla con un toque de comino y cilantro.</p>
+      </div>
+    </div>
+
+    <div class="menu-panel" id="principales">
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>La Bandera Dominicana</h3><span class="price">RD$ 550</span></div>
+        <p>Arroz blanco, habichuelas guisadas, carne de res y ensalada.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Pescao con Coco</h3><span class="price">RD$ 680</span></div>
+        <p>Filete de pescado en salsa de coco, servido con arroz de coco.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Chivo Guisado</h3><span class="price">RD$ 720</span></div>
+        <p>Carne de chivo estofada al estilo del Cibao, con moro de guandules.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Mofongo con Camarones</h3><span class="price">RD$ 750</span></div>
+        <p>Puré de plátano verde frito, coronado con camarones al ajillo.</p>
+      </div>
+    </div>
+
+    <div class="menu-panel" id="postres">
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Habichuelas con Dulce</h3><span class="price">RD$ 180</span></div>
+        <p>Postre tradicional de habichuelas rojas, leche de coco y especias.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Flan de Coco</h3><span class="price">RD$ 160</span></div>
+        <p>Flan casero con un intenso sabor a coco fresco.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Dulce de Leche Cortada</h3><span class="price">RD$ 150</span></div>
+        <p>Receta artesanal con canela y ralladura de limón.</p>
+      </div>
+    </div>
+
+    <div class="menu-panel" id="bebidas">
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Morir Soñando</h3><span class="price">RD$ 150</span></div>
+        <p>Refrescante mezcla de jugo de naranja y leche evaporada.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Jugo de Chinola</h3><span class="price">RD$ 130</span></div>
+        <p>Jugo natural de parcha, endulzado al gusto.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-head"><h3>Mama Juana</h3><span class="price">RD$ 300</span></div>
+        <p>Bebida tradicional dominicana a base de ron, vino y hierbas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section gallery-section" id="galeria">
+  <div class="container">
+    <p class="eyebrow center">Un vistazo</p>
+    <h2 class="center">Galería</h2>
+    <div class="gallery-grid" id="galleryGrid">
+      <button class="gallery-item" data-caption="Ambiente del salón principal" style="background-image:url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=60')"></button>
+      <button class="gallery-item" data-caption="La Bandera Dominicana" style="background-image:url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=60')"></button>
+      <button class="gallery-item" data-caption="Mofongo con camarones" style="background-image:url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=60')"></button>
+      <button class="gallery-item" data-caption="Barra de bebidas" style="background-image:url('https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=800&q=60')"></button>
+      <button class="gallery-item" data-caption="Terraza al aire libre" style="background-image:url('https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=800&q=60')"></button>
+      <button class="gallery-item" data-caption="Postres de la casa" style="background-image:url('https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=800&q=60')"></button>
+    </div>
+  </div>
+</section>
+
+<section class="section reservas-section" id="reservas">
+  <div class="container reservas-grid">
+    <div class="reservas-text">
+      <p class="eyebrow">Reserva tu mesa</p>
+      <h2>Vive la experiencia Sabor Dominicano</h2>
+      <p>Completa el formulario y te confirmaremos tu reservación por WhatsApp en minutos.</p>
+      <ul class="reservas-info">
+        <li>📅 Abierto todos los días</li>
+        <li>👥 Grupos y eventos privados bienvenidos</li>
+        <li>📞 (809) 555-0123</li>
+      </ul>
+    </div>
+    <form class="reservas-form" id="reservaForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre">
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required placeholder="809-000-0000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fecha">Fecha</label>
+          <input type="date" id="fecha" name="fecha" required>
+        </div>
+        <div class="form-group">
+          <label for="hora">Hora</label>
+          <input type="time" id="hora" name="hora" required>
+        </div>
+        <div class="form-group">
+          <label for="personas">Personas</label>
+          <select id="personas" name="personas" required>
+            <option value="">Selecciona</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7+</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="mensaje">Notas adicionales (opcional)</label>
+        <textarea id="mensaje" name="mensaje" rows="3" placeholder="Alergias, ocasión especial, etc."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary form-submit">Enviar Reserva por WhatsApp</button>
+      <p class="form-note" id="formNote"></p>
+    </form>
+  </div>
+</section>
+
+<section class="section ubicacion-section" id="ubicacion">
+  <div class="container ubicacion-grid">
+    <div class="ubicacion-info">
+      <p class="eyebrow">Visítanos</p>
+      <h2>Ubicación y Horario</h2>
+      <div class="info-block">
+        <h4>Dirección</h4>
+        <p>Av. Winston Churchill 45, Santo Domingo, República Dominicana</p>
+      </div>
+      <div class="info-block">
+        <h4>Horario</h4>
+        <p>Lunes a Jueves: 11:00 am – 10:00 pm<br>
+        Viernes y Sábado: 11:00 am – 12:00 am<br>
+        Domingo: 12:00 pm – 9:00 pm</p>
+      </div>
+      <div class="info-block">
+        <h4>Contacto</h4>
+        <p>Tel: (809) 555-0123<br>Email: info@sabordominicano.do</p>
+      </div>
+      <div class="social-links">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="WhatsApp">WA</a>
+      </div>
+    </div>
+    <div class="map-embed">
+      <iframe
+        title="Ubicación del restaurante"
+        src="https://www.google.com/maps?q=Santo%20Domingo%2C%20Republica%20Dominicana&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <p>© <span id="year"></span> Sabor Dominicano. Todos los derechos reservados.</p>
+    <p>Hecho con ❤️ en República Dominicana</p>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">×</button>
+  <img src="" alt="" id="lightboxImg">
+  <p id="lightboxCaption"></p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
