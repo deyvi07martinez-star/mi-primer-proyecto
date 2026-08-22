@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>JARVIS OS</title>
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --panel: #12151a;
+    --border: #23282f;
+    --text: #d8dee6;
+    --muted: #6b7684;
+    --accent: #e0673a;
+    --ok: #4caf7d;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--bg); color: var(--text);
+    font-family: "SF Mono", "JetBrains Mono", Consolas, monospace;
+    overflow: hidden;
+  }
+  .hud {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
+    gap: 10px;
+    height: 100vh;
+    padding: 14px;
+  }
+  header {
+    grid-column: 1 / -1;
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  header h1 {
+    margin: 0; font-size: 20px; letter-spacing: 3px; color: var(--accent);
+    font-weight: 600;
+  }
+  header .meta { color: var(--muted); font-size: 12px; }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 14px;
+    overflow: auto;
+    min-height: 0;
+  }
+  .panel h2 {
+    margin: 0 0 10px 0;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  td { padding: 3px 4px; border-bottom: 1px solid var(--border); }
+  td.delta { color: var(--ok); text-align: right; }
+  .plan-item { display: flex; gap: 8px; padding: 4px 0; font-size: 13px; }
+  .plan-item .box { color: var(--accent); }
+  .plan-item.done { color: var(--muted); text-decoration: line-through; }
+  .empty { color: var(--muted); font-size: 12px; font-style: italic; }
+  pre { white-space: pre-wrap; font-size: 12px; color: var(--text); margin: 0; }
+  .cmd { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="hud">
+  <header>
+    <h1>JARVIS OS</h1>
+    <span class="meta" id="fecha">--</span>
+  </header>
+
+  <section class="panel" id="panel-vitales">
+    <h2>Vitales</h2>
+    <div id="vitales-body" class="empty">sin datos de hoy todavía</div>
+  </section>
+
+  <section class="panel" id="panel-plan">
+    <h2>Plan de hoy</h2>
+    <div id="plan-body" class="empty">sin plan todavía — decí "plan de hoy"</div>
+  </section>
+
+  <section class="panel" id="panel-inbox">
+    <h2>Inbox</h2>
+    <div id="inbox-body" class="empty">sin resumen todavía — decí "inbox"</div>
+  </section>
+
+  <section class="panel" id="panel-comandos">
+    <h2>Comandos por voz</h2>
+    <div>
+      <div class="plan-item"><span class="cmd">"métricas"</span> — registra tus números de hoy</div>
+      <div class="plan-item"><span class="cmd">"inbox"</span> — resumen de correo, agenda y novedades</div>
+      <div class="plan-item"><span class="cmd">"plan de hoy"</span> — anota tu top 3</div>
+      <div class="plan-item"><span class="cmd">"cerrá el día"</span> — reflexión + pendientes para mañana</div>
+      <div class="plan-item"><span class="cmd">"recordá esto: ..."</span> — nota suelta al vault</div>
+    </div>
+  </section>
+</div>
+
+<script>
+async function refrescar() {
+  try {
+    const r = await fetch('/api/estado');
+    const d = await r.json();
+    document.getElementById('fecha').textContent = d.fecha;
+
+    const vBody = document.getElementById('vitales-body');
+    if (d.metricas.length) {
+      vBody.innerHTML = '<table>' + d.metricas.map(m =>
+        `<tr><td>${m.fuente}</td><td>${m.valor}</td><td class="delta">${m.delta}</td></tr>`
+      ).join('') + '</table>';
+    } else {
+      vBody.innerHTML = '<span class="empty">sin datos de hoy todavía</span>';
+    }
+
+    const pBody = document.getElementById('plan-body');
+    if (d.plan.length) {
+      pBody.innerHTML = d.plan.map(p =>
+        `<div class="plan-item ${p.hecho ? 'done' : ''}"><span class="box">${p.hecho ? '[x]' : '[ ]'}</span> ${p.texto}</div>`
+      ).join('');
+    } else {
+      pBody.innerHTML = '<span class="empty">sin plan todavía — decí "plan de hoy"</span>';
+    }
+
+    const iBody = document.getElementById('inbox-body');
+    iBody.innerHTML = d.inbox_presente
+      ? `<pre>${d.inbox_raw}</pre>`
+      : '<span class="empty">sin resumen todavía — decí "inbox"</span>';
+  } catch (e) {
+    // servidor no disponible todavía, reintenta en el próximo tick
+  }
+}
+refrescar();
+setInterval(refrescar, 5000);
+</script>
+</body>
+</html>
