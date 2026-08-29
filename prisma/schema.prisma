@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model RoomType {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  name          String
+  category      String // "habitacion" | "suite" | "villa"
+  description   String
+  longDescription String
+  basePrice     Int // price per night in USD
+  maxGuests     Int
+  sizeM2        Int
+  bedType       String
+  view          String
+  amenities     String // JSON-encoded string array
+  images        String // JSON-encoded string array of image urls
+  createdAt     DateTime  @default(now())
+  bookings      Booking[]
+}
+
+model Extra {
+  id          String @id @default(cuid())
+  slug        String @unique
+  name        String
+  description String
+  price       Int // flat price in USD
+  category    String // "spa" | "dining" | "experience"
+}
+
+model Booking {
+  id            String   @id @default(cuid())
+  roomTypeId    String
+  roomType      RoomType @relation(fields: [roomTypeId], references: [id])
+  guestName     String
+  guestEmail    String
+  checkIn       DateTime
+  checkOut      DateTime
+  guests        Int
+  extras        String // JSON-encoded string array of extra slugs
+  totalPrice    Int
+  status        String   @default("confirmed") // confirmed | pending | cancelled
+  paymentStatus String   @default("simulated") // simulated | paid_test
+  createdAt     DateTime @default(now())
+}
+
+model Member {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  password    String // plain text for demo purposes only
+  tier        String   @default("silver") // silver | gold | platinum
+  points      Int      @default(0)
+  memberSince DateTime @default(now())
+}
+
+model RestaurantReservation {
+  id        String   @id @default(cuid())
+  guestName String
+  guestEmail String
+  date      DateTime
+  time      String
+  partySize Int
+  notes     String?
+  status    String   @default("confirmed")
+  createdAt DateTime @default(now())
+}
