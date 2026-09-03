@@ -71,3 +71,17 @@ model RestaurantReservation {
   status    String   @default("confirmed")
   createdAt DateTime @default(now())
 }
+
+/// Solicitudes de cotización del sitio de Content by Mela (/mela).
+model Lead {
+  id          String    @id @default(cuid())
+  name        String
+  weddingDate DateTime?
+  place       String
+  packageKey  String
+  addOns      String // array de ids codificado en JSON
+  estimate    Int // precio de partida en USD, recalculado en el servidor
+  message     String
+  locale      String    @default("es")
+  createdAt   DateTime  @default(now())
+}
