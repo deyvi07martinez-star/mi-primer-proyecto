@@ -10,6 +10,7 @@ export const dictionary = {
       club: "Club Noir",
       book: "Reservar",
       admin: "Panel",
+      voice: "Estudio de voz",
     },
     hero: {
       eyebrow: "Costa exclusiva",
@@ -224,6 +225,7 @@ export const dictionary = {
       club: "Noir Club",
       book: "Book Now",
       admin: "Admin",
+      voice: "Voice studio",
     },
     hero: {
       eyebrow: "Exclusive coastline",

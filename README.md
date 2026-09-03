@@ -13,6 +13,17 @@ Demo de un sitio web de resort boutique de lujo, construida con **Next.js 16 (Ap
 - **Concierge IA**: chat flotante disponible en todo el sitio con respuestas simuladas.
 - **Panel de administración** (`/admin`): edición de precios de habitaciones, listado de reservas, miembros del Club Noir y reservas del restaurante.
 - **Bilingüe**: español / inglés, con selector de idioma persistente.
+- **Estudio de voz** (`/voz`): modulador de voz que funciona entero en el navegador (ver abajo).
+
+## Estudio de voz (`/voz`)
+
+Tres modos, sin servidor ni servicios externos: el audio y el texto no salen del navegador.
+
+1. **Di algo y lo repito**: graba una frase con el micrófono y la devuelve con el efecto elegido (ardilla, monstruo, robot, cueva, radio, alien, gigante). El tono se cambia con un *pitch shifter* propio en un `AudioWorklet` (`public/worklets/pitch-shifter.js`), así que la frase suena más aguda o más grave **sin acelerarse**. Incluye monitor en vivo y exportación a WAV.
+2. **Escribe y lo digo**: cualquier texto se lee en voz alta con la voz sintética del navegador (Web Speech API), con selector de voz, tono y velocidad.
+3. **Habla con mis palabras**: graba palabras sueltas (se guardan en IndexedDB, sobreviven a recargas) y al escribir una frase se reproduce encadenando esas grabaciones tuyas; lo que falte lo pone la voz sintética.
+
+Limitación conocida: el navegador no puede clonar una voz para leer texto arbitrario, por eso el modo 2 usa voz sintética y el modo 3 encadena grabaciones reales. El micrófono exige HTTPS (o `localhost`) y permiso del usuario.
 
 ## Cómo correrlo
 

@@ -36,6 +36,7 @@ export function Footer() {
             <li><Link href="/club">{t.nav.club}</Link></li>
             <li><Link href="/reservar">{t.nav.book}</Link></li>
             <li><Link href="/admin">{t.nav.admin}</Link></li>
+            <li><Link href="/voz">{t.nav.voice}</Link></li>
           </ul>
         </div>
       </div>
