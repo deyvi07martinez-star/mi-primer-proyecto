@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
