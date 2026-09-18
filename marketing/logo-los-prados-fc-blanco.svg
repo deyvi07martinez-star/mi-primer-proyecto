@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 345 152" width="690" height="304" role="img" aria-label="Los Prados F.C.">
+  <title>Los Prados F.C.</title>
+  <g transform="rotate(-13 150 112)">
+    <path d="M24,95 L268,89 L268,100 L24,98.5 Z" fill="#F6C224"/>
+    <path d="M44,106 L268,100 L268,111 L44,109.5 Z" fill="#FFFFFF"/>
+    <path d="M64,117 L268,111 L268,122 L64,120.5 Z" fill="#F6C224"/>
+    <path d="M84,128 L268,122 L268,133 L84,131.5 Z" fill="#FFFFFF"/>
+    <path d="M104,139 L268,133 L268,144 L104,142.5 Z" fill="#F6C224"/>
+  </g>
+  <text x="12" y="96" transform="rotate(-13 110 88)" font-family="Barlow Condensed, Arial Narrow, Haettenschweiler, sans-serif" font-size="40" font-weight="700" font-style="italic" textLength="238" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF" stroke="#14295A" stroke-width="7" stroke-linejoin="round" paint-order="stroke">Los Prados F.C.</text>
+  <circle cx="292" cy="48" r="40" fill="#FFFFFF" stroke="#111214" stroke-width="4.0"/>
+  <clipPath id="bcb"><circle cx="292" cy="48" r="38.2"/></clipPath>
+  <g clip-path="url(#bcb)">
+    <polygon points="292.0,33.6 305.7,43.6 300.5,59.6 283.5,59.6 278.3,43.6" fill="#111214"/>
+    <line x1="292.0" y1="34.4" x2="292.0" y2="13.6" stroke="#111214" stroke-width="3.4"/>
+    <polygon points="292.0,26.4 279.8,17.6 284.5,3.2 299.5,3.2 304.2,17.6" fill="#111214"/>
+    <line x1="304.9" y1="43.8" x2="324.7" y2="37.4" stroke="#111214" stroke-width="3.4"/>
+    <polygon points="312.5,41.3 317.2,27.0 332.2,27.0 336.9,41.3 324.7,50.2" fill="#111214"/>
+    <line x1="300.0" y1="59.0" x2="312.2" y2="75.8" stroke="#111214" stroke-width="3.4"/>
+    <polygon points="304.7,65.5 319.7,65.5 324.4,79.8 312.2,88.6 300.0,79.8" fill="#111214"/>
+    <line x1="284.0" y1="59.0" x2="271.8" y2="75.8" stroke="#111214" stroke-width="3.4"/>
+    <polygon points="279.3,65.5 284.0,79.8 271.8,88.6 259.6,79.8 264.3,65.5" fill="#111214"/>
+    <line x1="279.1" y1="43.8" x2="259.3" y2="37.4" stroke="#111214" stroke-width="3.4"/>
+    <polygon points="271.5,41.3 259.3,50.2 247.1,41.3 251.8,27.0 266.8,27.0" fill="#111214"/>
+  </g>
+</svg>

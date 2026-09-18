@@ -1,0 +1,493 @@
+<title>Los Prados Kit Lab</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;1,600;1,700&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F0F2F5; --surface:#FFFFFF; --surface-2:#E4E8EE;
+  --ink:#131A24; --ink-2:#414C5B; --muted:#6F7A88; --rule:#D2D8E0;
+  --accent:#12559E; --accent-soft:#E2ECF8; --signal:#C77C06;
+  --shadow:0 1px 2px rgba(16,28,44,.06),0 10px 26px -16px rgba(16,28,44,.4);
+  --kit-1:#1C6FD3; --kit-2:#F6C224; --kit-3:#111214; --kit-w:#F7F8FA;
+  --display:"Barlow Condensed",Oswald,"Arial Narrow",sans-serif;
+  --body:"Public Sans",-apple-system,Segoe UI,Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0D1117; --surface:#161C25; --surface-2:#1E2631;
+    --ink:#E7ECF3; --ink-2:#AEB9C7; --muted:#828E9E; --rule:#29323E;
+    --accent:#63A7F0; --accent-soft:#162637; --signal:#F2B33C;
+    --shadow:0 1px 2px rgba(0,0,0,.6),0 12px 30px -18px rgba(0,0,0,.95);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0D1117; --surface:#161C25; --surface-2:#1E2631;
+  --ink:#E7ECF3; --ink-2:#AEB9C7; --muted:#828E9E; --rule:#29323E;
+  --accent:#63A7F0; --accent-soft:#162637; --signal:#F2B33C;
+  --shadow:0 1px 2px rgba(0,0,0,.6),0 12px 30px -18px rgba(0,0,0,.95);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:0}
+h1,h2,h3,.dsp{font-family:var(--display);text-transform:uppercase;letter-spacing:.02em;line-height:1.05;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+header.top{border-bottom:1px solid var(--rule);background:var(--surface)}
+.masthead{display:grid;gap:26px;align-items:center;padding-block:30px 26px;grid-template-columns:1fr}
+@media(min-width:760px){.masthead{grid-template-columns:1.15fr .85fr;gap:40px}}
+h1{font-size:clamp(36px,6.4vw,60px);font-weight:700}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{max-width:56ch;color:var(--ink-2);font-size:15px;margin-top:12px}
+.logo-plate{background:var(--kit-1);border-radius:6px;padding:22px 18px;display:flex;flex-direction:column;gap:10px;align-items:center}
+.logo-plate svg{width:100%;max-width:340px;height:auto;display:block}
+.logo-plate span{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.82);text-align:center}
+
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)}
+.controls-in{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:flex-end;padding-block:13px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field>label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.swatches{display:flex;gap:12px}
+.sw{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.sw input[type=color]{inline-size:56px;block-size:38px;padding:0;border:1px solid var(--rule);border-radius:3px;background:var(--ground);cursor:pointer}
+.sw code{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.sw b{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);font-weight:500}
+button.ghost{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+  background:transparent;border:1px solid var(--rule);border-radius:3px;padding:9px 13px;cursor:pointer}
+button.ghost:hover{border-color:var(--accent);color:var(--accent)}
+.lock{font-family:var(--mono);font-size:10.5px;color:var(--muted);max-width:30ch;line-height:1.5}
+:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+
+section{padding-block:50px}
+.sec-head{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;border-top:2px solid var(--ink);padding-top:12px;margin-bottom:26px}
+.sec-head h2{font-size:clamp(26px,4vw,38px);font-weight:700}
+.sec-head .note{color:var(--muted);font-size:13px;max-width:54ch}
+
+.kits{display:grid;grid-template-columns:repeat(auto-fill,minmax(218px,1fr));gap:18px}
+.kit{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:14px 14px 16px;display:flex;flex-direction:column;gap:9px;box-shadow:var(--shadow);transition:transform .18s ease}
+.kit:hover{transform:translateY(-3px)}
+.kit .fig{background:var(--surface-2);border-radius:3px;padding:8px}
+.kit svg{display:block;width:100%;height:auto;max-width:100%}
+.kit .code{font-family:var(--mono);font-size:11px;color:var(--signal);letter-spacing:.08em}
+.kit h3{font-size:23px;font-weight:700}
+.kit .use{font-size:13px;color:var(--ink-2);line-height:1.45}
+.kit .spec{font-family:var(--mono);font-size:10.5px;color:var(--muted);border-top:1px dashed var(--rule);padding-top:8px;line-height:1.55;margin-top:auto}
+
+.merch{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:18px}
+.item{background:var(--surface);border:1px solid var(--rule);border-radius:4px;overflow:hidden;box-shadow:var(--shadow)}
+.item .fig{background:var(--surface-2);padding:10px;aspect-ratio:11/8;display:grid;place-items:center}
+.item svg{display:block;width:100%;height:100%;max-width:100%}
+.item .meta{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px}
+.item h3{font-size:21px;font-weight:700}
+.item p{font-size:13px;color:var(--ink-2)}
+.item .spec{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.more{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.04em;background:var(--accent-soft);color:var(--accent);border-radius:2px;padding:6px 10px}
+
+.ident{display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:720px){.ident{grid-template-columns:repeat(3,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.panel .art{border-radius:3px;padding:14px;display:flex;align-items:center;justify-content:center;min-height:132px}
+.panel .art svg{width:100%;height:auto;max-width:100%}
+.panel h3{font-size:19px;font-weight:600}
+.panel p{font-size:13px;color:var(--ink-2)}
+.panel .spec{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+
+.tactics{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));border-top:1px solid var(--rule)}
+@media(min-width:840px){.tactics{column-gap:34px}}
+.tactic{border-bottom:1px solid var(--rule);padding:20px 0;display:flex;gap:16px}
+.tactic .n{font-family:var(--display);font-size:30px;font-weight:700;color:var(--accent);line-height:1;min-width:34px}
+.tactic h3{font-size:19px;font-weight:600;margin-bottom:4px}
+.tactic p{font-size:14px;color:var(--ink-2)}
+
+.scroller{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:var(--surface-2)}
+tbody tr:last-child td{border-bottom:0}
+td.day{font-family:var(--display);text-transform:uppercase;font-weight:600;font-size:17px;white-space:nowrap}
+td.fmt{font-family:var(--mono);font-size:11.5px;color:var(--muted);white-space:nowrap}
+
+.two{display:grid;grid-template-columns:1fr;gap:34px}
+@media(min-width:800px){.two{grid-template-columns:1.1fr .9fr;gap:44px}}
+.list{list-style:none;padding:0;margin:0}
+.list li{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule);font-size:14px;color:var(--ink-2)}
+.list li b{color:var(--ink);font-weight:600}
+.list li .sz{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap;padding-left:12px}
+.callout{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0 4px 4px 0;padding:18px 20px}
+.callout h3{font-size:20px;font-weight:700;margin-bottom:8px}
+.callout ol{margin:0;padding-left:18px;font-size:14px;color:var(--ink-2)}
+.callout li{padding:3px 0}
+.hooks{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.hooks li{font-family:var(--display);font-size:20px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--ink);border-left:2px solid var(--signal);padding-left:12px;line-height:1.25}
+footer{border-top:1px solid var(--rule);padding-block:26px 40px;color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap masthead">
+    <div>
+      <span class="eyebrow">Los Prados F.C. · Colección de indumentaria 2026</span>
+      <h1 style="margin-top:10px">Diez uniformes,<br><em>un solo escudo</em></h1>
+      <p class="lede">Todo construido sobre los colores que ya usa el club: azul royal, amarillo, negro y blanco. El logotipo <strong>«Los Prados F.C.» no se toca</strong> en ninguna versión — mismo nombre, mismo balón, mismas estelas. Lo único que cambia es la tela debajo.</p>
+    </div>
+    <div class="logo-plate">
+      <div id="hero-logo"></div>
+      <span>Logotipo reconstruido en vectores a partir de las fotos</span>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap controls-in">
+    <div class="field">
+      <label>Paleta del club</label>
+      <div class="swatches">
+        <span class="sw"><b>Azul</b><input type="color" id="c1" value="#1C6FD3" aria-label="Azul royal"><code id="c1v">#1C6FD3</code></span>
+        <span class="sw"><b>Amarillo</b><input type="color" id="c2" value="#F6C224" aria-label="Amarillo"><code id="c2v">#F6C224</code></span>
+        <span class="sw"><b>Negro</b><input type="color" id="c3" value="#111214" aria-label="Negro"><code id="c3v">#111214</code></span>
+      </div>
+    </div>
+    <button class="ghost" id="reset" type="button">Colores oficiales</button>
+    <p class="lock">Podés probar variantes de tela. El logotipo mantiene siempre sus propios colores.</p>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section id="kits">
+    <div class="sec-head">
+      <h2>La colección</h2>
+      <p class="note">PR-01 es el uniforme actual, oficializado. Las otras nueve son variantes de la misma familia.</p>
+    </div>
+    <div class="kits" id="kitgrid"></div>
+  </section>
+
+  <section id="identidad">
+    <div class="sec-head">
+      <h2>Reglas del logotipo</h2>
+      <p class="note">Tres piezas fijas. Si alguien las cambia, deja de ser la marca del club.</p>
+    </div>
+    <div class="ident">
+      <div class="panel">
+        <div class="art" style="background:var(--kit-w)" id="lg-full"></div>
+        <h3>Versión principal</h3>
+        <p>Sobre blanco, amarillo y azul royal. Es la que va en la camiseta titular, tal como está hoy.</p>
+        <span class="spec">Ancho mínimo impreso: 4 cm</span>
+      </div>
+      <div class="panel">
+        <div class="art" style="background:var(--kit-3)" id="lg-light"></div>
+        <h3>Versión sobre fondo oscuro</h3>
+        <p>Texto en blanco con perfil azul marino. Misma forma, mismas letras: solo cambia el color del contorno para que se lea.</p>
+        <span class="spec">Usar sobre negro y azul marino</span>
+      </div>
+      <div class="panel">
+        <div class="art" style="background:var(--kit-1)" id="lg-num"></div>
+        <h3>Dorsal y numeración</h3>
+        <p>Número blanco de bloque, 25 cm de alto, centrado a 12 cm del cuello. Apellido opcional en arco de 6 cm encima.</p>
+        <span class="spec">Números del 01 al 99 · dos dígitos siempre</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="merch">
+    <div class="sec-head">
+      <h2>Merchandising</h2>
+      <p class="note">Cada pieza que sale de la cancha es publicidad caminando. Arrancá por estas seis.</p>
+    </div>
+    <div class="merch" id="merchgrid"></div>
+    <div class="more">
+      <span class="chip">Llaveros de balón</span><span class="chip">Stickers para cuaderno</span><span class="chip">Bolso portabalones</span>
+      <span class="chip">Toalla de banco</span><span class="chip">Taza del profe</span><span class="chip">Pines por categoría</span>
+      <span class="chip">Camiseta de hincha en algodón</span><span class="chip">Medias de entrenamiento</span>
+    </div>
+  </section>
+
+  <section id="seguidores">
+    <div class="sec-head">
+      <h2>Que la gente siga a Los Prados</h2>
+      <p class="note">Seis tácticas pensadas para una academia de barrio, no para un club de primera.</p>
+    </div>
+    <div class="tactics">
+      <div class="tactic"><span class="n">01</span><div><h3>Una cara, no un escudo</h3><p>Serie <em>Cantera Prados</em>: un jugador por semana con su número, su posición, su pie hábil y una frase suya, más veinte segundos de su mejor jugada. La gente sigue personas; el escudo llega después.</p></div></div>
+      <div class="tactic"><span class="n">02</span><div><h3>La placa de resultado en 30 minutos</h3><p>Mismo diseño, mismo lugar del marcador, todas las semanas. Si el posteo llega mientras las familias siguen en la cancha, se comparte solo. Si llega el lunes, no lo ve nadie.</p></div></div>
+      <div class="tactic"><span class="n">03</span><div><h3>Sonido real en los reels</h3><p>El golpe al balón, el silbato, el grito del entrenador. El audio de cancha retiene más que la canción de moda y suena a algo que está pasando de verdad.</p></div></div>
+      <div class="tactic"><span class="n">04</span><div><h3>Los padres son tu canal</h3><p>Etiquetá a cada familia en la foto donde sale su hijo. Ellos la reenvían al grupo del colegio y al del trabajo: ese alcance no se compra.</p></div></div>
+      <div class="tactic"><span class="n">05</span><div><h3>Rituales de marca</h3><p>Un solo hashtag (#LosPradosFC), un solo saludo, un solo encuadre para la foto de equipo. La repetición es lo que hace que se reconozca el club antes de leer el nombre.</p></div></div>
+      <div class="tactic"><span class="n">06</span><div><h3>Regalá las primeras 20 gorras</h3><p>A las familias más activas y a los capitanes de cada categoría. Veinte gorras azules en la calle valen más que veinte posteos pagados.</p></div></div>
+    </div>
+  </section>
+
+  <section id="calendario">
+    <div class="sec-head">
+      <h2>Semana tipo de contenido</h2>
+      <p class="note">Repetila igual durante ocho semanas antes de cambiar nada.</p>
+    </div>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Día</th><th>Pieza</th><th>Formato</th><th>Para qué sirve</th></tr></thead>
+        <tbody>
+          <tr><td class="day">Lunes</td><td>Placa de resultado de la fecha</td><td class="fmt">Feed 1080×1080</td><td>Orgullo y reenvío familiar</td></tr>
+          <tr><td class="day">Martes</td><td>Ficha de jugador <em>Cantera Prados</em></td><td class="fmt">Carrusel 1080×1350</td><td>Comunidad y pertenencia</td></tr>
+          <tr><td class="day">Miércoles</td><td>Reel de entrenamiento, 15 s</td><td class="fmt">Reel 1080×1920</td><td>Alcance a gente nueva</td></tr>
+          <tr><td class="day">Jueves</td><td>Tip técnico del profe</td><td class="fmt">Reel / Story</td><td>Autoridad deportiva</td></tr>
+          <tr><td class="day">Viernes</td><td>Convocatoria del fin de semana</td><td class="fmt">Story 1080×1920</td><td>Asistencia y puntualidad</td></tr>
+          <tr><td class="day">Sábado</td><td>Cobertura en vivo del partido</td><td class="fmt">Stories en serie</td><td>Los que no fueron, miran</td></tr>
+          <tr><td class="day">Domingo</td><td>Detrás de cámara y valores del club</td><td class="fmt">Feed 1080×1350</td><td>Vínculo con las familias</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="piezas">
+    <div class="sec-head">
+      <h2>Piezas de publicidad</h2>
+      <p class="note">Con medidas listas para mandar a imprenta o subir directo.</p>
+    </div>
+    <div class="two">
+      <div>
+        <ul class="list">
+          <li><span><b>Flyer de pruebas y captación.</b> Fecha, hora, categorías por año de nacimiento, dirección y un solo botón: WhatsApp.</span><span class="sz">1080×1350</span></li>
+          <li><span><b>Placa de resultado.</b> Escudo Los Prados, escudo rival, marcador y goleadores.</span><span class="sz">1080×1080</span></li>
+          <li><span><b>Story de convocatoria.</b> Categoría, hora de citación y qué llevar.</span><span class="sz">1080×1920</span></li>
+          <li><span><b>Carrusel «Por qué entrenar acá».</b> Cinco láminas: método, profesores, horarios, cancha, cómo inscribirse.</span><span class="sz">5 × 1080×1350</span></li>
+          <li><span><b>Reel de presentación.</b> Veinte segundos: cancha, chicos, entrenador hablando, cierre con el logo.</span><span class="sz">1080×1920</span></li>
+          <li><span><b>Roll-up para eventos.</b> Logo grande arriba, QR abajo a la altura del teléfono.</span><span class="sz">85×200 cm</span></li>
+          <li><span><b>Volante impreso.</b> Para repartir en colegios y canchas del barrio.</span><span class="sz">A5 · 148×210 mm</span></li>
+          <li><span><b>Lona de cancha.</b> Legible desde la tribuna: nombre y ciudad, nada más.</span><span class="sz">300×100 cm</span></li>
+        </ul>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:26px">
+        <div>
+          <span class="eyebrow">Ganchos que sí funcionan</span>
+          <ul class="hooks" style="margin-top:12px">
+            <li>«Así entrenamos los martes a las 6 de la tarde.»</li>
+            <li>«Tiene 11 años y este es su primer gol con Los Prados.»</li>
+            <li>«Tres cosas que corregimos en el primer mes.»</li>
+            <li>«Quedan 6 cupos en la categoría 2014.»</li>
+            <li>«Mirá de dónde salió este pase.»</li>
+          </ul>
+        </div>
+        <div class="callout">
+          <h3>Para cerrar la producción</h3>
+          <ol>
+            <li>El logo original en vector (.ai, .cdr, .svg o .pdf) si el que lo hizo lo tiene guardado.</li>
+            <li>Ciudad y categorías por año de nacimiento.</li>
+            <li>El número de WhatsApp y el usuario de Instagram del club.</li>
+            <li>Cuántos juegos por categoría, para cotizar con el proveedor.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>Mockups vectoriales para Los Prados F.C. El logotipo fue reconstruido a partir de las fotos del uniforme: nombre, balón y estelas se mantienen tal cual. Los colores de tela son editables; los del logo, no.</p>
+</footer>
+
+<script>
+(function(){
+  var NAVY="#14295A", YEL="#F6C224", BLK="#111214", WHT="#FFFFFF";
+  var uid=0;
+
+  function pent(cx,cy,r,rot){
+    var p=[];
+    for(var k=0;k<5;k++){
+      var a=(rot+k*72-90)*Math.PI/180;
+      p.push((cx+r*Math.cos(a)).toFixed(1)+','+(cy+r*Math.sin(a)).toFixed(1));
+    }
+    return p.join(' ');
+  }
+
+  function ball(cx,cy,r,id){
+    var s='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+WHT+'" stroke="'+BLK+'" stroke-width="'+(r*0.10).toFixed(1)+'"/>';
+    s+='<clipPath id="bc'+id+'"><circle cx="'+cx+'" cy="'+cy+'" r="'+(r*0.955).toFixed(1)+'"/></clipPath>';
+    s+='<g clip-path="url(#bc'+id+')">';
+    s+='<polygon points="'+pent(cx,cy,r*0.36,0)+'" fill="'+BLK+'"/>';
+    for(var k=0;k<5;k++){
+      var a=(-90+k*72)*Math.PI/180;
+      var px=cx+r*0.86*Math.cos(a), py=cy+r*0.86*Math.sin(a);
+      var qx=cx+r*0.34*Math.cos(a), qy=cy+r*0.34*Math.sin(a);
+      s+='<line x1="'+qx.toFixed(1)+'" y1="'+qy.toFixed(1)+'" x2="'+px.toFixed(1)+'" y2="'+py.toFixed(1)+'" stroke="'+BLK+'" stroke-width="'+(r*0.085).toFixed(1)+'"/>';
+      s+='<polygon points="'+pent(px,py,r*0.32,180+k*72)+'" fill="'+BLK+'"/>';
+    }
+    s+='</g>';
+    return s;
+  }
+
+  // Logotipo Los Prados F.C. — variante "full" (fondo claro/azul) o "light" (fondo oscuro)
+  function logo(variant){
+    var id=(++uid);
+    var txtFill = variant==='light' ? WHT : NAVY;
+    var txtLine = variant==='light' ? NAVY : WHT;
+    var cols = variant==='light'
+      ? [YEL,WHT,YEL,WHT,YEL]
+      : [YEL,WHT,YEL,WHT,YEL];
+    var s='<svg viewBox="0 0 345 152" role="img" aria-label="Los Prados F.C."><g>';
+    // estelas
+    s+='<g transform="rotate(-13 150 112)">';
+    for(var i=0;i<5;i++){
+      var y=90+i*11, x0=24+i*20, x1=268;
+      s+='<path d="M'+x0+','+(y+5)+' L'+x1+','+(y-1)+' L'+x1+','+(y+10)+' L'+x0+','+(y+8.5)+' Z" fill="'+cols[i]+'"/>';
+    }
+    s+='</g>';
+    // nombre
+    s+='<text x="12" y="96" transform="rotate(-13 110 88)" font-family="Barlow Condensed, Arial Narrow, sans-serif" '+
+       'font-size="40" font-weight="700" font-style="italic" textLength="238" lengthAdjust="spacingAndGlyphs" '+
+       'fill="'+txtFill+'" stroke="'+txtLine+'" stroke-width="7" stroke-linejoin="round" paint-order="stroke">Los Prados F.C.</text>';
+    // balón
+    s+=ball(292,48,40,id);
+    s+='</g></svg>';
+    return s;
+  }
+
+  function logoG(variant,x,y,scale){
+    var inner=logo(variant);
+    inner=inner.replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
+    return '<g transform="translate('+x+','+y+') scale('+scale+')">'+inner+'</g>';
+  }
+
+  // ---------------- camiseta ----------------
+  var OUTLINE="M70,18 L42,28 L8,72 L30,108 L52,88 L48,206 L152,206 L148,88 L170,108 L192,72 L158,28 L130,18 C124,46 76,46 70,18 Z";
+  var SLEEVE_L="M42,28 L8,72 L30,108 L52,88 L51,31 Z";
+  var SLEEVE_R="M158,28 L192,72 L170,108 L148,88 L149,31 Z";
+  var COLLAR="M70,18 C76,46 124,46 130,18 L123,15 C118,39 82,39 77,15 Z";
+  var SHORT="M56,230 L144,230 L150,314 L110,314 L100,280 L90,314 L50,314 Z";
+
+  var KITS=[
+    {code:"PR-01",name:"Titular",use:"El de hoy, oficializado · local",build:"Azul royal liso, cuello y puños amarillos",
+     body:"var(--kit-1)",sleeve:"var(--kit-1)",trim:"var(--kit-2)",short:"var(--kit-3)",sock:"var(--kit-3)",sockTop:"var(--kit-2)",lv:"full"},
+
+    {code:"PR-02",name:"Visitante",use:"Fuera de casa · máximo contraste",build:"Cuerpo blanco, manga raglán azul, vivo amarillo",
+     body:"var(--kit-w)",sleeve:"var(--kit-1)",trim:"var(--kit-1)",short:"var(--kit-w)",sock:"var(--kit-w)",sockTop:"var(--kit-1)",lv:"full"},
+
+    {code:"PR-03",name:"Tercera",use:"Alternativa cuando el rival juega de azul",build:"Negro con banda diagonal amarilla de 3,5 cm",
+     body:"var(--kit-3)",sleeve:null,trim:"var(--kit-2)",short:"var(--kit-3)",sock:"var(--kit-3)",sockTop:"var(--kit-2)",lv:"light",
+     extra:'<polygon points="0,186 200,22 200,62 0,226" fill="var(--kit-2)"/><polygon points="0,226 200,62 200,70 0,234" fill="var(--kit-1)"/>'},
+
+    {code:"PR-04",name:"Copa",use:"Torneos cortos y finales",build:"Franjas verticales azul y blanco de 4 cm",
+     defs:'<pattern id="p__I__" width="34" height="10" patternUnits="userSpaceOnUse"><rect width="34" height="10" fill="var(--kit-1)"/><rect width="17" height="10" fill="var(--kit-w)"/></pattern>',
+     body:"url(#p__I__)",sleeve:"var(--kit-1)",trim:"var(--kit-2)",short:"var(--kit-3)",sock:"var(--kit-3)",sockTop:"var(--kit-2)",lv:"full"},
+
+    {code:"PR-05",name:"Portero",use:"Arquero · todas las categorías",build:"Amarillo con micro-patrón negro, manga larga opcional",
+     defs:'<pattern id="p__I__" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(18)"><rect width="18" height="18" fill="var(--kit-2)"/><rect width="9" height="9" fill="var(--kit-3)" opacity=".22"/><circle cx="13.5" cy="13.5" r="2.2" fill="var(--kit-3)" opacity=".38"/></pattern>',
+     body:"url(#p__I__)",sleeve:null,trim:"var(--kit-3)",short:"var(--kit-3)",sock:"var(--kit-3)",sockTop:"var(--kit-2)",lv:"full"},
+
+    {code:"PR-06",name:"Entrenamiento",use:"Semana · uso diario y calentamiento",build:"Degradado azul a negro sublimado, tela liviana",
+     defs:'<linearGradient id="p__I__" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--kit-1)"/><stop offset="1" stop-color="var(--kit-3)"/></linearGradient>',
+     body:"url(#p__I__)",sleeve:null,trim:"var(--kit-2)",short:"var(--kit-3)",sock:"var(--kit-3)",sockTop:"var(--kit-1)",lv:"full"},
+
+    {code:"PR-07",name:"Aniversario",use:"Edición limitada · fecha del club",build:"Mitad azul, mitad negro, costura amarilla al centro",
+     body:"var(--kit-1)",sleeve:null,trim:"var(--kit-2)",short:"var(--kit-3)",sock:"var(--kit-3)",sockTop:"var(--kit-2)",lv:"full",
+     extra:'<rect x="100" y="0" width="100" height="320" fill="var(--kit-3)"/><rect x="98" y="0" width="4" height="320" fill="var(--kit-2)"/>'},
+
+    {code:"PR-08",name:"Femenino",use:"Categorías femeninas · corte entallado",build:"Chevrón amarillo y blanco en el pecho",
+     body:"var(--kit-1)",sleeve:"var(--kit-1)",trim:"var(--kit-w)",short:"var(--kit-3)",sock:"var(--kit-3)",sockTop:"var(--kit-2)",lv:"full",
+     extra:'<polygon points="0,130 100,172 200,130 200,156 100,198 0,156" fill="var(--kit-2)"/><polygon points="0,156 100,198 200,156 200,163 100,205 0,163" fill="var(--kit-w)"/>'},
+
+    {code:"PR-09",name:"Infantil",use:"Sub-8 a sub-12 · tela suave",build:"Blanco con franja central azul y vivos amarillos",
+     body:"var(--kit-w)",sleeve:"var(--kit-1)",trim:"var(--kit-1)",short:"var(--kit-1)",sock:"var(--kit-1)",sockTop:"var(--kit-2)",lv:"full",
+     extra:'<rect x="82" y="0" width="36" height="320" fill="var(--kit-1)"/><rect x="74" y="0" width="7" height="320" fill="var(--kit-2)"/><rect x="119" y="0" width="7" height="320" fill="var(--kit-2)"/>'},
+
+    {code:"PR-10",name:"Staff",use:"Entrenadores y cuerpo técnico",build:"Negro con ondas azules tono sobre tono, cuello amarillo",
+     defs:'<pattern id="p__I__" width="40" height="18" patternUnits="userSpaceOnUse"><rect width="40" height="18" fill="var(--kit-3)"/><path d="M0,12 Q10,2 20,12 T40,12" fill="none" stroke="var(--kit-1)" stroke-width="2.6" opacity=".8"/></pattern>',
+     body:"url(#p__I__)",sleeve:null,trim:"var(--kit-2)",short:"var(--kit-3)",sock:"var(--kit-3)",sockTop:"var(--kit-2)",lv:"light"}
+  ];
+
+  function kitSVG(k,i){
+    var s='<svg viewBox="0 0 200 320" role="img" aria-label="Uniforme '+k.code+' '+k.name+'">';
+    s+='<defs>'+(k.defs||'')+'<clipPath id="clip__I__"><path d="'+OUTLINE+'"/></clipPath></defs>';
+    s+='<path d="M14,244 L40,244 L35,314 L19,314 Z" fill="'+k.sock+'"/>';
+    s+='<path d="M160,244 L186,244 L181,314 L165,314 Z" fill="'+k.sock+'"/>';
+    s+='<path d="M14,244 L40,244 L39,257 L15,257 Z" fill="'+(k.sockTop||k.trim)+'"/>';
+    s+='<path d="M160,244 L186,244 L185,257 L161,257 Z" fill="'+(k.sockTop||k.trim)+'"/>';
+    s+='<path d="M14,244 L40,244 L35,314 L19,314 Z" fill="none" stroke="rgba(0,0,0,.24)" stroke-width="1.2"/>';
+    s+='<path d="M160,244 L186,244 L181,314 L165,314 Z" fill="none" stroke="rgba(0,0,0,.24)" stroke-width="1.2"/>';
+    s+='<path d="'+SHORT+'" fill="'+k.short+'"/>';
+    s+='<rect x="56" y="230" width="88" height="9" fill="'+k.trim+'"/>';
+    s+='<path d="'+SHORT+'" fill="none" stroke="rgba(0,0,0,.24)" stroke-width="1.4"/>';
+    s+='<g clip-path="url(#clip__I__)"><rect x="0" y="0" width="200" height="320" fill="'+k.body+'"/>'+(k.extra||'')+'</g>';
+    if(k.sleeve){ s+='<path d="'+SLEEVE_L+'" fill="'+k.sleeve+'"/><path d="'+SLEEVE_R+'" fill="'+k.sleeve+'"/>'; }
+    s+='<path d="'+OUTLINE+'" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="1.6" stroke-linejoin="round"/>';
+    s+='<path d="'+COLLAR+'" fill="'+k.trim+'" stroke="rgba(0,0,0,.22)" stroke-width="1"/>';
+    s+=logoG(k.lv,48,60,0.30);
+    s+='</svg>';
+    return s.replace(/__I__/g,i);
+  }
+
+  document.getElementById('kitgrid').innerHTML=KITS.map(function(k,i){
+    return '<article class="kit">'+
+      '<div class="fig">'+kitSVG(k,i)+'</div>'+
+      '<span class="code">'+k.code+'</span>'+
+      '<h3>'+k.name+'</h3>'+
+      '<p class="use">'+k.use+'</p>'+
+      '<p class="spec">'+k.build+'<br>Poliéster interlock 145 g/m² · sublimado total<br>Logo 14 cm al pecho · dorsal 25 cm</p>'+
+    '</article>';
+  }).join('');
+
+  // ---------------- identidad ----------------
+  document.getElementById('hero-logo').innerHTML=logo('full');
+  document.getElementById('lg-full').innerHTML=logo('full');
+  document.getElementById('lg-light').innerHTML=logo('light');
+  document.getElementById('lg-num').innerHTML=
+    '<svg viewBox="0 0 200 110" role="img" aria-label="Numeración dorsal"><text x="100" y="86" text-anchor="middle" '+
+    'font-family="Barlow Condensed, Arial Narrow, sans-serif" font-size="96" font-weight="700" letter-spacing="2" '+
+    'fill="#FFFFFF" stroke="'+NAVY+'" stroke-width="4" paint-order="stroke">33</text></svg>';
+
+  // ---------------- merchandising ----------------
+  function mlogo(v,x,y,s){ return logoG(v,x,y,s); }
+
+  var MERCH=[
+    {name:"Gorra azul",desc:"La pieza que más sale del club. Empezá por acá.",spec:"6 paneles · bordado 3D · visera negra",
+     svg:'<svg viewBox="0 0 220 150" role="img" aria-label="Gorra"><path d="M44,104 C44,50 74,30 106,30 C146,30 168,58 168,104 Z" fill="var(--kit-1)"/><path d="M106,30 C106,60 106,80 106,104" stroke="rgba(0,0,0,.18)" stroke-width="1.6" fill="none"/><path d="M76,34 C68,58 66,82 66,104" stroke="rgba(0,0,0,.14)" stroke-width="1.4" fill="none"/><path d="M138,36 C148,58 150,82 150,104" stroke="rgba(0,0,0,.14)" stroke-width="1.4" fill="none"/><rect x="44" y="96" width="124" height="9" fill="var(--kit-2)"/><path d="M46,105 C26,104 12,112 10,122 C26,130 58,127 76,116 C68,109 58,105 46,105 Z" fill="var(--kit-3)"/><circle cx="106" cy="31" r="4.5" fill="var(--kit-2)"/>'+mlogo('full',68,50,0.225)+'<path d="M44,104 C44,50 74,30 106,30 C146,30 168,58 168,104" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="1.6"/></svg>'},
+
+    {name:"Mochila",desc:"Va al colegio cinco días por semana. Publicidad diaria y gratis.",spec:"600D impermeable · 24 L · bolsillo para botines",
+     svg:'<svg viewBox="0 0 220 180" role="img" aria-label="Mochila"><path d="M72,52 C44,66 42,124 64,158" stroke="var(--kit-3)" stroke-width="13" fill="none" stroke-linecap="round"/><path d="M148,52 C176,66 178,124 156,158" stroke="var(--kit-3)" stroke-width="13" fill="none" stroke-linecap="round"/><path d="M92,42 C92,26 128,26 128,42" stroke="var(--kit-2)" stroke-width="7" fill="none" stroke-linecap="round"/><rect x="60" y="38" width="100" height="120" rx="20" fill="var(--kit-3)"/><rect x="60" y="38" width="100" height="120" rx="20" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="1.6"/><path d="M61,96 H159" stroke="var(--kit-2)" stroke-width="4"/><rect x="72" y="108" width="76" height="42" rx="12" fill="var(--kit-1)"/><rect x="72" y="108" width="76" height="42" rx="12" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="1.4"/>'+mlogo('light',66,48,0.235)+'</svg>'},
+
+    {name:"Buzo con capucha",desc:"Para el banco, el viaje y el invierno. Lo terminan usando los padres.",spec:"Frisa 320 g · bordado al pecho · dorsal serigrafiado",
+     svg:'<svg viewBox="0 0 220 200" role="img" aria-label="Buzo con capucha"><g transform="translate(10,-8)"><path d="M62,44 C64,12 136,12 138,44 C126,62 74,62 62,44 Z" fill="var(--kit-2)"/><path d="M70,34 L42,44 L8,88 L30,124 L52,104 L48,206 L152,206 L148,104 L170,124 L192,88 L158,44 L130,34 C124,58 76,58 70,34 Z" fill="var(--kit-1)"/><path d="M70,34 L42,44 L8,88 L30,124 L52,104 L48,206 L152,206 L148,104 L170,124 L192,88 L158,44 L130,34 C124,58 76,58 70,34 Z" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="1.6" stroke-linejoin="round"/><rect x="66" y="150" width="68" height="34" rx="6" fill="var(--kit-3)" opacity=".9"/><path d="M95,56 L94,82 M105,56 L106,82" stroke="var(--kit-2)" stroke-width="3" stroke-linecap="round"/><rect x="48" y="196" width="104" height="11" fill="var(--kit-3)"/>'+mlogo('full',45,80,0.30)+'</g></svg>'},
+
+    {name:"Bufanda de hinchada",desc:"El objeto que convierte a un padre en hincha. Barato y muy visible.",spec:"Acrílico tejido · 140×18 cm · flecos amarillos",
+     svg:'<svg viewBox="0 0 220 150" role="img" aria-label="Bufanda"><rect x="26" y="44" width="168" height="62" fill="var(--kit-1)"/><rect x="26" y="44" width="168" height="8" fill="var(--kit-2)"/><rect x="26" y="98" width="168" height="8" fill="var(--kit-2)"/><g stroke="var(--kit-2)" stroke-width="2.6"><path d="M26,52 L12,48 M26,62 L12,60 M26,74 L12,74 M26,86 L12,88 M26,98 L12,100"/><path d="M194,52 L208,48 M194,62 L208,60 M194,74 L208,74 M194,86 L208,88 M194,98 L208,100"/></g>'+mlogo('full',44,50,0.325)+'<rect x="26" y="44" width="168" height="62" fill="none" stroke="rgba(0,0,0,.24)" stroke-width="1.4"/></svg>'},
+
+    {name:"Botella térmica",desc:"Aparece en la foto de cada entrenamiento sin que la pongas ahí.",spec:"Acero 750 ml · grabado láser · tapa a rosca",
+     svg:'<svg viewBox="0 0 220 180" role="img" aria-label="Botella"><rect x="86" y="28" width="48" height="20" rx="6" fill="var(--kit-3)"/><rect x="92" y="22" width="36" height="10" rx="4" fill="var(--kit-2)"/><rect x="80" y="46" width="60" height="114" rx="12" fill="var(--kit-1)"/><rect x="80" y="84" width="60" height="34" fill="var(--kit-w)"/><rect x="80" y="80" width="60" height="4" fill="var(--kit-2)"/><rect x="80" y="118" width="60" height="4" fill="var(--kit-2)"/>'+mlogo('full',84,88,0.155)+'<rect x="80" y="46" width="60" height="114" rx="12" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="1.6"/></svg>'},
+
+    {name:"Banderín",desc:"Regalo de intercambio con otros clubes y recuerdo de torneo.",spec:"Fieltro 30×20 cm · cordón trenzado amarillo",
+     svg:'<svg viewBox="0 0 220 180" role="img" aria-label="Banderín"><path d="M46,34 L198,90 L46,146 Z" fill="var(--kit-1)"/><rect x="34" y="34" width="14" height="112" fill="var(--kit-2)"/><path d="M41,34 C20,24 20,16 34,12" stroke="var(--kit-2)" stroke-width="3" fill="none"/>'+mlogo('full',57,66,0.295)+'<path d="M46,34 L198,90 L46,146 Z" fill="none" stroke="rgba(0,0,0,.26)" stroke-width="1.6" stroke-linejoin="round"/></svg>'}
+  ];
+
+  document.getElementById('merchgrid').innerHTML=MERCH.map(function(m){
+    return '<article class="item"><div class="fig">'+m.svg+'</div><div class="meta"><h3>'+m.name+'</h3><p>'+m.desc+'</p><span class="spec">'+m.spec+'</span></div></article>';
+  }).join('');
+
+  // ---------------- controles ----------------
+  var DEF={c1:"#1C6FD3",c2:"#F6C224",c3:"#111214"};
+  var st=Object.assign({},DEF);
+  try{ var saved=JSON.parse(localStorage.getItem('prados-kit')||'null'); if(saved) st=Object.assign(st,saved); }catch(e){}
+
+  function apply(){
+    var r=document.documentElement;
+    r.style.setProperty('--kit-1',st.c1);
+    r.style.setProperty('--kit-2',st.c2);
+    r.style.setProperty('--kit-3',st.c3);
+    document.getElementById('c1v').textContent=st.c1.toUpperCase();
+    document.getElementById('c2v').textContent=st.c2.toUpperCase();
+    document.getElementById('c3v').textContent=st.c3.toUpperCase();
+    try{ localStorage.setItem('prados-kit',JSON.stringify(st)); }catch(e){}
+  }
+  ['c1','c2','c3'].forEach(function(k){
+    var el=document.getElementById(k);
+    el.value=st[k];
+    el.addEventListener('input',function(){ st[k]=el.value; apply(); });
+  });
+  document.getElementById('reset').addEventListener('click',function(){
+    st=Object.assign({},DEF);
+    ['c1','c2','c3'].forEach(function(k){ document.getElementById(k).value=st[k]; });
+    apply();
+  });
+  apply();
+})();
+</script>
