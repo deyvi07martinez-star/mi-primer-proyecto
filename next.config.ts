@@ -17,15 +17,15 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/api/**/*": ["./prisma/dev.db"],
   },
-  // La pagina de la liga se sirve desde public/liga.html. Estas direcciones
-  // con nombre apuntan al mismo archivo, para que el enlace que se comparte
-  // diga como se llama la liga y no termine en ".html".
-  async rewrites() {
-    return [
-      { source: "/liga-club-los-prados", destination: "/liga.html" },
-      { source: "/ligaclub", destination: "/liga.html" },
-      { source: "/liga", destination: "/liga.html" },
-    ];
+  // La pagina de la liga vive ahora en su propio sitio (carpeta liga/,
+  // publicada como liga-club-los-prados.vercel.app). Estas direcciones son
+  // las que estuvieron en circulacion y en los primeros codigos QR: se
+  // redirigen para que sigan llevando a la pagina en vez de quedar muertas.
+  async redirects() {
+    const liga = "https://liga-club-los-prados.vercel.app";
+    return ["/liga", "/ligaclub", "/liga-club-los-prados", "/liga.html"].map(
+      (source) => ({ source, destination: liga, permanent: true })
+    );
   },
 };
 
