@@ -340,7 +340,7 @@
     border:1px solid var(--blue-light); display:flex; align-items:center; justify-content:center;
     font-size:0.75rem; color:var(--blue-sky);
   }
-  .about-stats{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:40px;}
+  .about-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:40px;}
   .about-stat{
     background:var(--card); border:1px solid var(--line); border-radius:10px; padding:22px; text-align:center;
   }
@@ -387,8 +387,8 @@
   }
   .tc-name{font-size:1.5rem; color:var(--white); line-height:1.1; text-transform:uppercase;}
   .tc-min{
-    display:inline-flex; align-items:center; gap:7px; margin:6px 0 14px;
-    font-size:0.78rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;
+    display:inline-flex; align-items:center; gap:7px;
+    font-size:0.74rem; font-weight:700; letter-spacing:0.04em; text-transform:uppercase;
     color:var(--blue-sky); background:rgba(59,130,246,0.1);
     border:1px solid rgba(96,165,250,0.3); border-radius:20px; padding:5px 12px;
   }
@@ -397,10 +397,24 @@
     display:flex; align-items:center; gap:10px; font-size:0.9rem; color:rgba(244,247,251,0.78);
   }
   .tc-players li .num{
-    width:20px; height:20px; border-radius:50%; flex-shrink:0;
+    width:22px; height:22px; border-radius:50%; flex-shrink:0;
     background:rgba(244,247,251,0.08); color:rgba(244,247,251,0.6);
-    font-size:0.68rem; font-weight:700; display:flex; align-items:center; justify-content:center;
+    font-size:0.64rem; font-weight:800; display:flex; align-items:center; justify-content:center;
   }
+  .tc-players li .num.pt{background:var(--blue); color:#fff; box-shadow:0 0 0 1px rgba(96,165,250,0.5);}
+  .tc-players li .num.sup{background:transparent; border:1px dashed rgba(244,247,251,0.25); color:rgba(244,247,251,0.4);}
+  .tc-players li .pos{
+    margin-left:auto; font-size:0.62rem; font-weight:800; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--blue-sky); white-space:nowrap;
+  }
+  .tc-players li .pos.sup{color:rgba(244,247,251,0.35);}
+  .tc-chips{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 14px;}
+  .tc-form{color:rgba(244,247,251,0.7); background:rgba(244,247,251,0.05); border-color:rgba(244,247,251,0.18);}
+  .tc-count.full{color:var(--blue-sky); font-weight:700;}
+  .tc-join[disabled]{
+    opacity:0.45; cursor:not-allowed; border-color:rgba(244,247,251,0.2); color:rgba(244,247,251,0.5);
+  }
+  .tc-join[disabled]:hover{background:transparent; color:rgba(244,247,251,0.5); transform:none;}
   .tc-empty{color:rgba(244,247,251,0.4); font-style:italic; font-size:0.88rem;}
   .tc-foot{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:16px;}
   .tc-count{font-size:0.76rem; color:rgba(244,247,251,0.45); letter-spacing:0.05em; text-transform:uppercase;}
@@ -838,7 +852,7 @@
     .foot-grid{grid-template-columns:1fr 1fr;}
     .scoreboard{grid-template-columns:1fr; gap:30px;}
     .scoreboard::after{display:none;}
-    .about-stats{grid-template-columns:1fr;}
+    .about-stats{grid-template-columns:repeat(2,1fr);}
   }
   @media(max-width:620px){
     section{padding:80px 0;}
@@ -889,7 +903,7 @@
       <span class="word load-in" style="--d:0.05s">Liga</span><span class="dot3 word load-in" style="--d:0.25s">•</span><span class="word load-in" style="--d:0.4s">Club</span>
       <span class="hero-sub-title load-in" style="--d:0.55s">Los Prados <span class="fc">F.C.</span></span>
     </h1>
-    <p class="lead load-in" style="--d:0.6s">Fútbol de barrio con reglas claras: 26 equipos de la A a la Z, el que gana se queda en la cancha y el que pierde se va al final de la fila. Apúntate, arma tu equipo y juega.</p>
+    <p class="lead load-in" style="--d:0.6s">Fútbol de barrio con reglas claras: 26 equipos de la A a la Z, de 5 jugadores cada uno —un portero y 4 en la cancha— y partidos de 15 minutos. El que gana se queda; el que pierde se va al final de la fila.</p>
     <div class="hero-pills">
       <span class="pill pill-open load-in" id="openStatusPill" style="--d:0.8s">● Cargando horario…</span>
       <button class="pill pill-appt load-in" style="--d:0.9s" type="button" id="heroApuntarse">⚽ Apuntarme a un equipo</button>
@@ -966,17 +980,19 @@
       <div class="eyebrow">Quiénes somos</div>
       <h2 class="section-title">Fútbol de verdad, sin complicaciones</h2>
       <p>Somos la liga del sector Los Prados, abierta a todo el que quiera jugar. Aquí no hace falta contrato ni fichaje: llegas, te apuntas en un equipo de la A a la Z, y esperas tu turno en la fila.</p>
-      <p>Cada equipo tiene su tiempo de partido definido en minutos. El equipo que gana se queda en la cancha y enfrenta al siguiente de la fila; el que pierde se va al final. Si el partido termina empatado y se acabó el tiempo, salen los dos y entran los dos siguientes.</p>
+      <p>Se juega 5 contra 5: un portero y 4 jugadores en la cancha, y cada partido dura 15 minutos. El equipo que gana se queda en la cancha y enfrenta al siguiente de la fila; el que pierde se va al final. Si el partido termina empatado y se acabó el tiempo, salen los dos y entran los dos siguientes.</p>
       <ul class="about-points">
         <li><span class="ico">✓</span> 26 equipos, de la A a la Z, con sus integrantes a la vista</li>
-        <li><span class="ico">✓</span> Cronómetro en pantalla con los minutos que dura cada equipo</li>
+        <li><span class="ico">✓</span> Equipos de 5: un portero y 4 jugadores</li>
+        <li><span class="ico">✓</span> Partidos de 15 minutos con cronómetro en pantalla</li>
         <li><span class="ico">✓</span> Cualquiera puede apuntarse desde la página, gratis</li>
         <li><span class="ico">✓</span> Tabla de posiciones que se actualiza sola con cada partido</li>
       </ul>
       <div class="about-stats stagger">
         <div class="about-stat reveal" style="--i:0"><b>26</b><span>Equipos</span></div>
-        <div class="about-stat reveal" style="--i:1"><b id="statJugadores">0</b><span>Jugadores apuntados</span></div>
-        <div class="about-stat reveal" style="--i:2"><b id="statPartidos">0</b><span>Partidos hoy</span></div>
+        <div class="about-stat reveal" style="--i:1"><b>5</b><span>Jugadores por equipo</span></div>
+        <div class="about-stat reveal" style="--i:2"><b>15</b><span>Minutos por partido</span></div>
+        <div class="about-stat reveal" style="--i:3"><b id="statJugadores">0</b><span>Jugadores apuntados</span></div>
       </div>
     </div>
   </div>
@@ -987,7 +1003,7 @@
   <div class="container">
     <div class="eyebrow reveal in">Los equipos</div>
     <h2 class="section-title reveal in">De la A a la Z</h2>
-    <p class="section-sub reveal in">Cada letra es un equipo con sus integrantes y los minutos que dura su partido. Toca una letra para saltar a su equipo, o apúntate en el que quieras jugar.</p>
+    <p class="section-sub reveal in">Cada letra es un equipo de 5: un portero (el primero de la lista) y 4 jugadores, con 15 minutos por partido. Toca una letra para saltar a su equipo, o apúntate en el que tenga cupo.</p>
     <div class="az-bar" id="azBar"></div>
     <div class="team-grid stagger" id="teamGrid"></div>
   </div>
@@ -998,7 +1014,7 @@
   <div class="container">
     <div class="eyebrow reveal in">En la cancha</div>
     <h2 class="section-title reveal in">Partido en vivo</h2>
-    <p class="section-sub reveal in">El que gana se queda. El que pierde se va al final de la fila. Si se acaba el tiempo empatados, salen los dos y entran los dos siguientes.</p>
+    <p class="section-sub reveal in">Partidos de 15 minutos, 5 contra 5. El que gana se queda. El que pierde se va al final de la fila. Si se acaba el tiempo empatados, salen los dos y entran los dos siguientes.</p>
 
     <div class="scoreboard reveal in">
       <div class="side side-home">
@@ -1089,7 +1105,7 @@
   <div class="container">
     <div class="eyebrow reveal in">Panel del dueño · en vivo</div>
     <h2 class="section-title reveal in">Panel del Dueño</h2>
-    <p class="section-sub reveal in">Aquí se edita todo: el nombre de cada equipo, sus integrantes y los minutos que dura cada uno. También ves el resumen del día, el ranking y el historial de días pasados.</p>
+    <p class="section-sub reveal in">Aquí se edita todo: el nombre de cada equipo, sus integrantes y los minutos que dura cada uno. La liga está puesta en 15 minutos por partido y equipos de 5 (un portero y 4 jugadores), pero si algún día quieres cambiarle el tiempo a un equipo, lo haces aquí. También ves el resumen del día, el ranking y el historial de días pasados.</p>
 
     <div class="owner-grand-total-row">
       <div class="owner-grand-total" id="ownerGrandTotal">Hoy: 0 partidos · 0 goles · 0 min jugados</div>
@@ -1130,7 +1146,7 @@
       <button type="button" id="restoreTeamsBtn" class="btn btn-outline btn-sm">Restablecer equipos por defecto</button>
     </div>
     <div class="editor-legend">
-      <span>Letra</span><span>Nombre del equipo</span><span>Integrantes (uno por línea o separados por coma)</span><span>Minutos</span><span>Jugar</span>
+      <span>Letra</span><span>Nombre del equipo</span><span>Integrantes · el primero es el portero (5 en total)</span><span>Minutos</span><span>Jugar</span>
     </div>
     <div class="editor-grid" id="editorGrid"></div>
   </div>
@@ -1354,11 +1370,17 @@
   const APELLIDOS = ['Martínez','Pérez','Rodríguez','Gómez','Santana','Reyes','De la Cruz','Peña','Núñez',
     'Ramírez','Jiménez','Castillo','Mejía','Guzmán','Féliz','Encarnación','Batista'];
 
+  /* REGLAS DE LA LIGA
+     Cada partido dura 15 minutos y cada equipo es de 5: un portero y 4 jugadores.
+     El primero de la lista de integrantes siempre es el portero. */
+  const MINUTOS_POR_PARTIDO = 15;
+  const JUGADORES_POR_EQUIPO = 5;
+
   function equiposPorDefecto(){
     return LETTERS.map((letra, i) => ({
       letter: letra,
       name: DEFAULT_NAMES[i],
-      minutes: 7,
+      minutes: MINUTOS_POR_PARTIDO,
       players: [0,1,2,3,4].map(j => {
         const n = NOMBRES[(i * 5 + j) % NOMBRES.length];
         const a = APELLIDOS[(i * 3 + j * 7) % APELLIDOS.length];
@@ -1374,6 +1396,8 @@
   const MATCH_KEY   = 'ligaClubMatch';
   const DAY_KEY     = 'ligaClubDay';
   const HISTORY_KEY = 'ligaClubHistory';
+  const REGLAS_KEY  = 'ligaClubReglas';
+  const REGLAS_VERSION = 2; // v2: partidos de 15 minutos
 
   function hoyKey(){
     const d = new Date();
@@ -1395,10 +1419,20 @@
   teams = teams.map((t, i) => ({
     letter: LETTERS[i],
     name: (t && t.name) ? String(t.name) : DEFAULT_NAMES[i],
-    minutes: Math.max(1, Math.min(120, Number(t && t.minutes) || 7)),
+    minutes: Math.max(1, Math.min(120, Number(t && t.minutes) || MINUTOS_POR_PARTIDO)),
     players: Array.isArray(t && t.players) ? t.players.filter(Boolean).map(String) : []
   }));
   function guardarEquipos(){ escribir(TEAMS_KEY, teams); }
+
+  // si el navegador tenía guardado el tiempo viejo, se pone el nuevo una sola vez
+  // (los nombres y los integrantes que haya puesto el dueño no se tocan)
+  let reglasActualizadas = false;
+  if(Number(leer(REGLAS_KEY, 0)) < REGLAS_VERSION){
+    teams.forEach(t => { t.minutes = MINUTOS_POR_PARTIDO; });
+    guardarEquipos();
+    escribir(REGLAS_KEY, REGLAS_VERSION);
+    reglasActualizadas = true;
+  }
   function equipo(letra){ return teams[LETTERS.indexOf(letra)]; }
 
   // partidos de hoy (si cambió el día, lo de ayer se archiva solo)
@@ -1457,18 +1491,39 @@
     return String(txt).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+  // el primero de la lista es el portero, del 2 al 5 son los jugadores de cancha
+  // y si el dueño apunta a más de 5, los demás quedan de suplentes
+  function puesto(n){
+    if(n === 0) return { sigla:'PT', clase:'pt', etiqueta:'Portero' };
+    if(n < JUGADORES_POR_EQUIPO) return { sigla:String(n), clase:'', etiqueta:'' };
+    return { sigla:'S', clase:'sup', etiqueta:'Suplente' };
+  }
+  function faltan(t){ return Math.max(0, JUGADORES_POR_EQUIPO - t.players.length); }
+
   function pintarEquipos(){
     teamGrid.innerHTML = teams.map((t, i) => {
       const jugadores = t.players.length
-        ? t.players.map((p, n) => '<li><span class="num">' + (n + 1) + '</span>' + escapar(p) + '</li>').join('')
+        ? t.players.map((p, n) => {
+            const pu = puesto(n);
+            return '<li><span class="num ' + pu.clase + '">' + pu.sigla + '</span>' + escapar(p) +
+                   (pu.etiqueta ? '<span class="pos ' + pu.clase + '">' + pu.etiqueta + '</span>' : '') + '</li>';
+          }).join('')
         : '<li class="tc-empty">Todavía no hay nadie apuntado en este equipo.</li>';
+      const libres = faltan(t);
+      const completo = libres === 0;
       return '<article class="team-card reveal' + (enCancha(t.letter) ? ' is-playing' : '') + '" id="equipo-' + t.letter + '" style="--i:' + (i % 6) + '">' +
         '<div class="tc-head"><span class="tc-letter">' + t.letter + '</span><h3 class="tc-name">' + escapar(t.name) + '</h3></div>' +
-        '<span class="tc-min">⏱ ' + t.minutes + ' min por partido</span>' +
+        '<div class="tc-chips">' +
+          '<span class="tc-min">⏱ ' + t.minutes + ' min por partido</span>' +
+          '<span class="tc-min tc-form">👥 1 portero + 4 jugadores</span>' +
+        '</div>' +
         '<ul class="tc-players">' + jugadores + '</ul>' +
         '<div class="tc-foot">' +
-          '<span class="tc-count">' + t.players.length + ' integrante' + (t.players.length === 1 ? '' : 's') + '</span>' +
-          '<button type="button" class="tc-join" data-join="' + t.letter + '">+ Apuntarme</button>' +
+          '<span class="tc-count' + (completo ? ' full' : '') + '">' + Math.min(t.players.length, JUGADORES_POR_EQUIPO) + ' de ' + JUGADORES_POR_EQUIPO +
+            (completo ? ' · completo' : ' · falta' + (libres === 1 ? '' : 'n') + ' ' + libres) + '</span>' +
+          (completo
+            ? '<button type="button" class="tc-join" disabled>Completo</button>'
+            : '<button type="button" class="tc-join" data-join="' + t.letter + '">+ Apuntarme</button>') +
         '</div>' +
       '</article>';
     }).join('');
@@ -1508,15 +1563,20 @@
   const queueListEl  = document.getElementById('queueList');
   const CIRC = 2 * Math.PI * 76;
 
-  if(!match.duration || !match.secondsLeft && match.secondsLeft !== 0){
+  if(reglasActualizadas || !match.duration || (!match.secondsLeft && match.secondsLeft !== 0)){
     match.duration = duracionPartido();
     match.secondsLeft = match.duration;
+    guardarPartido();
   }
 
   function alineacion(letra){
     const e = equipo(letra);
     if(!e || !e.players.length) return '<li style="opacity:0.5;">Sin integrantes apuntados</li>';
-    return e.players.map(p => '<li>· ' + escapar(p) + '</li>').join('');
+    return e.players.map((p, n) => {
+      const pu = puesto(n);
+      return '<li>' + (n === 0 ? '🧤 ' : '· ') + escapar(p) +
+             (pu.etiqueta ? ' <span style="opacity:0.55;font-size:0.72rem;">(' + pu.etiqueta + ')</span>' : '') + '</li>';
+    }).join('');
   }
 
   function pintarReloj(){
@@ -1541,9 +1601,11 @@
     awayScoreEl.textContent = match.sa;
     homeLineupEl.innerHTML = alineacion(match.home);
     awayLineupEl.innerHTML = alineacion(match.away);
-    matchNoteEl.innerHTML = 'Duración de este partido: <b>' + Math.round(match.duration / 60) + ' min</b> · ' +
-      escapar(local ? local.name : '') + ' juega ' + minutosDe(match.home) + ' min y ' +
-      escapar(visita ? visita.name : '') + ' juega ' + minutosDe(match.away) + ' min — se toma el tiempo más largo de los dos.';
+    const mismoTiempo = minutosDe(match.home) === minutosDe(match.away);
+    matchNoteEl.innerHTML = 'Duración de este partido: <b>' + Math.round(match.duration / 60) + ' min</b> · 5 contra 5, un portero y 4 jugadores' +
+      (mismoTiempo ? '.' :
+        ' · ' + escapar(local ? local.name : '') + ' juega ' + minutosDe(match.home) + ' min y ' +
+        escapar(visita ? visita.name : '') + ' juega ' + minutosDe(match.away) + ' min, así que se toma el tiempo más largo de los dos.');
     pintarReloj();
     pintarFila();
     pintarBarraAZ();
@@ -1556,7 +1618,7 @@
       return '<div class="queue-item' + (i === 0 ? ' next' : '') + '" style="animation-delay:' + Math.min(i * 40, 600) + 'ms">' +
         '<div class="qi-letter">' + letra + '</div>' +
         '<div class="qi-name">' + escapar(t.name) + '</div>' +
-        '<div class="qi-min">⏱ ' + t.minutes + ' min · ' + t.players.length + ' jugador' + (t.players.length === 1 ? '' : 'es') + '</div>' +
+        '<div class="qi-min">⏱ ' + t.minutes + ' min · ' + Math.min(t.players.length, JUGADORES_POR_EQUIPO) + '/' + JUGADORES_POR_EQUIPO + ' jugadores</div>' +
       '</div>';
     }).join('');
   }
@@ -1777,14 +1839,18 @@
   const joinError  = document.getElementById('joinError');
 
   function llenarSelectEquipos(){
-    joinTeam.innerHTML = teams.map(t =>
-      '<option value="' + t.letter + '">' + t.letter + ' · ' + escapar(t.name) + ' (' + t.players.length + ')</option>'
-    ).join('');
+    joinTeam.innerHTML = teams.map(t => {
+      const libres = faltan(t);
+      const estado = libres === 0 ? 'completo' : (t.players.length === 0 ? 'entras de portero' : 'falta' + (libres === 1 ? '' : 'n') + ' ' + libres);
+      return '<option value="' + t.letter + '">' + t.letter + ' · ' + escapar(t.name) +
+             ' (' + Math.min(t.players.length, JUGADORES_POR_EQUIPO) + '/' + JUGADORES_POR_EQUIPO + ' · ' + estado + ')</option>';
+    }).join('');
   }
   function abrirApuntarse(letra){
     llenarSelectEquipos();
     if(letra) joinTeam.value = letra;
     joinName.value = '';
+    joinError.textContent = 'Escribe tu nombre para apuntarte.';
     joinError.classList.remove('show');
     joinModal.classList.add('open');
     setTimeout(() => joinName.focus(), 60);
@@ -1803,16 +1869,28 @@
 
   function apuntar(){
     const nombre = joinName.value.trim();
-    if(!nombre){ joinError.classList.add('show'); joinName.focus(); return; }
+    if(!nombre){
+      joinError.textContent = 'Escribe tu nombre para apuntarte.';
+      joinError.classList.add('show');
+      joinName.focus();
+      return;
+    }
     const t = equipo(joinTeam.value);
     if(!t) return;
+    if(faltan(t) === 0){
+      joinError.textContent = 'El equipo ' + t.letter + ' ya está completo con sus ' + JUGADORES_POR_EQUIPO + ' jugadores. Elige otro equipo.';
+      joinError.classList.add('show');
+      return;
+    }
+    const esPortero = t.players.length === 0;
     t.players.push(nombre);
     guardarEquipos();
     cerrarApuntarse();
     pintarEquipos();
     pintarPartido();
     pintarEditor();
-    avisar('¡Listo! ' + nombre + ' quedó apuntado en ' + t.name + ' (equipo ' + t.letter + ')');
+    avisar('¡Listo! ' + nombre + ' quedó apuntado en ' + t.name + ' (equipo ' + t.letter + ')' +
+           (esPortero ? ' como portero' : ''));
     confeti(16);
     const card = document.getElementById('equipo-' + t.letter);
     if(card) card.scrollIntoView({ behavior:'smooth', block:'center' });
@@ -2016,7 +2094,7 @@
       '<div class="editor-row" data-row="' + i + '">' +
         '<span class="er-letter">' + t.letter + '</span>' +
         '<input type="text" data-edit="name" data-i="' + i + '" value="' + escapar(t.name) + '" placeholder="Nombre del equipo">' +
-        '<textarea data-edit="players" data-i="' + i + '" rows="2" placeholder="Nombres de los integrantes">' + escapar(t.players.join(', ')) + '</textarea>' +
+        '<textarea data-edit="players" data-i="' + i + '" rows="2" placeholder="Portero primero, después los 4 jugadores">' + escapar(t.players.join(', ')) + '</textarea>' +
         '<span class="er-min-wrap"><input type="number" min="1" max="120" data-edit="minutes" data-i="' + i + '" value="' + t.minutes + '"></span>' +
         '<button type="button" class="er-play" data-play="' + t.letter + '" title="Poner este equipo a jugar ahora">▶</button>' +
       '</div>'
