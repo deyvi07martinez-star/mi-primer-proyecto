@@ -107,20 +107,54 @@ export default function TeamsView({ modality }: TeamsViewProps) {
     );
   }
 
+  // Group teams by letter
+  const groupedTeams = teams.reduce((acc, team) => {
+    if (!acc[team.letter]) {
+      acc[team.letter] = [];
+    }
+    acc[team.letter].push(team);
+    return acc;
+  }, {} as Record<string, Team[]>);
+
+  const sortedLetters = Object.keys(groupedTeams).sort();
+
   return (
     <div>
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-white mb-2">Equipos Registrados</h2>
-        <p className="text-blue-200">Total de equipos: {teams.length}</p>
+      <div className="mb-12">
+        <h2 className="text-3xl font-black text-white mb-2">Equipos Registrados</h2>
+        <p className="text-blue-200 text-lg">Total de equipos: {teams.length}</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {teams.map((team) => (
-          <TeamCard
-            key={team.id}
-            team={team}
-            onViewDetails={() => setSelectedTeam(team)}
-          />
+      <div className="space-y-10">
+        {sortedLetters.map((letter) => (
+          <div key={letter} className="space-y-4">
+            {/* Letter Header */}
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
+                <span className="text-4xl font-black text-white">{letter}</span>
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-white">Grupo {letter}</h3>
+                <p className="text-blue-200 text-sm">{groupedTeams[letter].length} equipo(s)</p>
+              </div>
+            </div>
+
+            {/* Teams Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pl-0">
+              {groupedTeams[letter].map((team) => (
+                <TeamCard
+                  key={team.id}
+                  team={team}
+                  onViewDetails={() => setSelectedTeam(team)}
+                />
+              ))}
+            </div>
+
+            {/* Divider */}
+            {letter !== sortedLetters[sortedLetters.length - 1] && (
+              <div className="border-t border-blue-900/30 mt-8"></div>
+            )}
+          </div>
         ))}
       </div>
 
