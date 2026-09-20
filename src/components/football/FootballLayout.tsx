@@ -25,7 +25,7 @@ export default function FootballLayout({
   const [activeTab, setActiveTab] = useState<'teams' | 'stats'>('teams');
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+    <div className="flex h-screen bg-black">
       {/* Sidebar */}
       <SidePanel
         selectedModality={selectedModality}
