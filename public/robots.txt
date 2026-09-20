@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mi-primer-proyecto-peach.vercel.app/sitemap.xml
