@@ -8,7 +8,7 @@ export default function QRGenerator() {
 
   useEffect(() => {
     // Generate QR code using qr-server API
-    const pageUrl = window.location.origin + '/football';
+    const pageUrl = window.location.origin + '/football-public';
     const qrEndpoint = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(pageUrl)}`;
     setQrUrl(qrEndpoint);
   }, []);
@@ -105,10 +105,11 @@ export default function QRGenerator() {
       <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6">
         <h3 className="text-lg font-bold text-blue-200 mb-3">ℹ️ Información</h3>
         <ul className="text-blue-100 space-y-2 text-sm">
-          <li>✓ El código QR dirige a: <span className="font-mono text-xs text-blue-300">{window.location.origin}/football</span></li>
-          <li>✓ Acceso gratuito sin contraseña requerida</li>
-          <li>✓ Compatible con cualquier dispositivo móvil</li>
-          <li>✓ Puedes imprimir en grande para el club</li>
+          <li>✓ El código QR dirige a: <span className="font-mono text-xs text-blue-300">{window.location.origin}/football-public</span></li>
+          <li>✓ Acceso COMPLETAMENTE GRATUITO sin contraseña</li>
+          <li>✓ Compatible con cualquier smartphone o tablet</li>
+          <li>✓ Imprime en grande (A3) para máxima visibilidad</li>
+          <li>✓ Sin requiere instalación ni app especial</li>
         </ul>
       </div>
 

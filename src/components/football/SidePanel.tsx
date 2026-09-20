@@ -59,9 +59,14 @@ export default function SidePanel({
         <button className="w-full px-4 py-3 rounded-lg bg-slate-800 text-blue-100 hover:bg-slate-700 transition font-semibold mb-2">
           📊 Match Center
         </button>
-        <button className="w-full px-4 py-3 rounded-lg bg-slate-800 text-blue-100 hover:bg-slate-700 transition font-semibold">
-          🎯 Descargar QR
-        </button>
+        <a
+          href="/football-public"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full px-4 py-3 rounded-lg bg-green-600 text-white hover:bg-green-700 transition font-semibold text-center"
+        >
+          👁️ Ver Pública
+        </a>
       </div>
 
       {/* Admin Section */}

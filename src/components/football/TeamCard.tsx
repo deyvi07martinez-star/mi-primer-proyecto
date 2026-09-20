@@ -22,9 +22,10 @@ interface Team {
 
 interface TeamCardProps {
   team: Team;
+  onViewDetails?: () => void;
 }
 
-export default function TeamCard({ team }: TeamCardProps) {
+export default function TeamCard({ team, onViewDetails }: TeamCardProps) {
   const goalDifference = team.goalsFor - team.goalsAgainst;
   const points = team.wins * 3 + team.draws;
 
@@ -106,7 +107,10 @@ export default function TeamCard({ team }: TeamCardProps) {
 
       {/* Action */}
       <div className="px-6 py-3 bg-white/5 border-t border-blue-500/20">
-        <button className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition text-sm">
+        <button
+          onClick={onViewDetails}
+          className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition text-sm"
+        >
           Ver Detalles
         </button>
       </div>

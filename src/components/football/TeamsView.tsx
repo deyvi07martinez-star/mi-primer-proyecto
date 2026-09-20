@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import TeamCard from './TeamCard';
+import TeamDetailsModal from './TeamDetailsModal';
 
 interface Team {
   id: string;
@@ -30,6 +31,7 @@ interface TeamsViewProps {
 export default function TeamsView({ modality }: TeamsViewProps) {
   const [teams, setTeams] = useState<Team[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
 
   useEffect(() => {
     // Load teams from localStorage
@@ -114,9 +116,20 @@ export default function TeamsView({ modality }: TeamsViewProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {teams.map((team) => (
-          <TeamCard key={team.id} team={team} />
+          <TeamCard
+            key={team.id}
+            team={team}
+            onViewDetails={() => setSelectedTeam(team)}
+          />
         ))}
       </div>
+
+      {selectedTeam && (
+        <TeamDetailsModal
+          team={selectedTeam}
+          onClose={() => setSelectedTeam(null)}
+        />
+      )}
     </div>
   );
 }
