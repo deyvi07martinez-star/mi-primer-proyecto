@@ -5,7 +5,7 @@ import FootballLayout from '@/components/football/FootballLayout';
 import AdminPanel from '@/components/football/AdminPanel';
 import MatchCenter from '@/components/football/MatchCenter';
 
-type ModalType = null | 'admin' | 'match' | 'settings';
+type ModalType = string | null;
 
 export default function FootballPage() {
   const [activeModal, setActiveModal] = useState<ModalType>(null);

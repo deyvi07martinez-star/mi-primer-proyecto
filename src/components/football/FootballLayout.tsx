@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 import Header from './Header';
 import SidePanel from './SidePanel';
 import TeamsView from './TeamsView';
@@ -8,7 +8,7 @@ import StatsPanel from './StatsPanel';
 
 interface FootballLayoutProps {
   activeModal: string | null;
-  setActiveModal: (modal: string | null) => void;
+  setActiveModal: Dispatch<SetStateAction<string | null>>;
   isAuthenticated: boolean;
   onAdminAccess: (password: string) => void;
   onLogout: () => void;
