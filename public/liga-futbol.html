@@ -202,11 +202,9 @@
   }
   .pill-open{color:var(--blue-sky); border-color:rgba(96,165,250,0.45); background:rgba(59,130,246,0.1);}
   .pill-closed{color:rgba(244,247,251,0.6); border-color:rgba(244,247,251,0.25); background:rgba(244,247,251,0.04); border-style:dashed;}
-  .pill-appt{
+  .pill-info{
     color:var(--white); border-color:rgba(59,130,246,0.45); background:rgba(29,78,216,0.16);
-    cursor:pointer; transition:background 0.3s ease, transform 0.3s ease;
   }
-  .pill-appt:hover{background:rgba(29,78,216,0.34); transform:translateY(-2px);}
   .hero-small{
     margin-top:22px; font-size:0.86rem; color:rgba(244,247,251,0.5); max-width:520px;
   }
@@ -411,19 +409,17 @@
   .tc-chips{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 14px;}
   .tc-form{color:rgba(244,247,251,0.7); background:rgba(244,247,251,0.05); border-color:rgba(244,247,251,0.18);}
   .tc-count.full{color:var(--blue-sky); font-weight:700;}
-  .tc-join[disabled]{
-    opacity:0.45; cursor:not-allowed; border-color:rgba(244,247,251,0.2); color:rgba(244,247,251,0.5);
-  }
-  .tc-join[disabled]:hover{background:transparent; color:rgba(244,247,251,0.5); transform:none;}
   .tc-empty{color:rgba(244,247,251,0.4); font-style:italic; font-size:0.88rem;}
   .tc-foot{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:16px;}
   .tc-count{font-size:0.76rem; color:rgba(244,247,251,0.45); letter-spacing:0.05em; text-transform:uppercase;}
-  .tc-join{
-    background:transparent; border:1px solid rgba(96,165,250,0.4); color:var(--blue-sky);
-    border-radius:20px; padding:6px 14px; font-size:0.76rem; font-weight:700; cursor:pointer;
-    transition:background 0.25s ease, transform 0.25s ease, color 0.25s ease;
+  .tc-state{
+    border:1px solid rgba(96,165,250,0.35); color:var(--blue-sky);
+    border-radius:20px; padding:5px 13px; font-size:0.7rem; font-weight:800;
+    letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap;
   }
-  .tc-join:hover{background:var(--blue); color:#fff; transform:translateY(-2px);}
+  .tc-count.full + .tc-state{
+    border-color:rgba(244,247,251,0.2); color:rgba(244,247,251,0.45);
+  }
 
   /* ===== CANCHA EN VIVO ===== */
   .live{background:var(--black); overflow:hidden;}
@@ -888,7 +884,7 @@
       <li><a href="#horario">Horario</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
-    <button class="nav-cta" type="button" id="navApuntarse">Apuntarme</button>
+    <a class="nav-cta" href="#cancha">Ver la cancha</a>
     <button class="burger" id="burger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
   </nav>
 </header>
@@ -906,7 +902,7 @@
     <p class="lead load-in" style="--d:0.6s">Fútbol de barrio con reglas claras: 26 equipos de la A a la Z, de 5 jugadores cada uno —un portero y 4 en la cancha— y partidos de 15 minutos. El que gana se queda; el que pierde se va al final de la fila.</p>
     <div class="hero-pills">
       <span class="pill pill-open load-in" id="openStatusPill" style="--d:0.8s">● Cargando horario…</span>
-      <button class="pill pill-appt load-in" style="--d:0.9s" type="button" id="heroApuntarse">⚽ Apuntarme a un equipo</button>
+      <span class="pill pill-info load-in" style="--d:0.9s">⚽ 5 contra 5 · partidos de 15 minutos</span>
     </div>
     <div class="hero-actions">
       <a class="btn btn-primary load-in" style="--d:1.05s" href="#cancha">Ver el partido en vivo</a>
@@ -985,7 +981,7 @@
         <li><span class="ico">✓</span> 26 equipos, de la A a la Z, con sus integrantes a la vista</li>
         <li><span class="ico">✓</span> Equipos de 5: un portero y 4 jugadores</li>
         <li><span class="ico">✓</span> Partidos de 15 minutos con cronómetro en pantalla</li>
-        <li><span class="ico">✓</span> Cualquiera puede apuntarse desde la página, gratis</li>
+        <li><span class="ico">✓</span> El encargado de la liga es quien arma los equipos</li>
         <li><span class="ico">✓</span> Tabla de posiciones que se actualiza sola con cada partido</li>
       </ul>
       <div class="about-stats stagger">
@@ -1003,7 +999,7 @@
   <div class="container">
     <div class="eyebrow reveal in">Los equipos</div>
     <h2 class="section-title reveal in">De la A a la Z</h2>
-    <p class="section-sub reveal in">Cada letra es un equipo de 5: un portero (el primero de la lista) y 4 jugadores, con 15 minutos por partido. Toca una letra para saltar a su equipo, o apúntate en el que tenga cupo.</p>
+    <p class="section-sub reveal in">Cada letra es un equipo de 5: un portero (el primero de la lista) y 4 jugadores, con 15 minutos por partido. Toca una letra para saltar a su equipo y mira quién está en cada uno. Para entrar en un equipo, habla con el encargado de la liga.</p>
     <div class="az-bar" id="azBar"></div>
     <div class="team-grid stagger" id="teamGrid"></div>
   </div>
@@ -1143,6 +1139,7 @@
     <div class="editor-head">
       <h3>✏️ Editar equipos, integrantes y minutos</h3>
       <span class="saved-flag" id="savedFlag">Guardado ✓</span>
+      <button type="button" id="addPlayerBtn" class="btn btn-primary btn-sm">+ Añadir jugador a un equipo</button>
       <button type="button" id="restoreTeamsBtn" class="btn btn-outline btn-sm">Restablecer equipos por defecto</button>
     </div>
     <div class="editor-legend">
@@ -1249,9 +1246,9 @@
 <!-- CTA BAND -->
 <section class="cta-band">
   <div class="container">
-    <h2 class="reveal in">¿Listo para jugar?</h2>
-    <p class="reveal in">Apúntate en el equipo que quieras y espera tu turno en la fila. Martes y viernes, 2:00 pm.</p>
-    <button class="btn btn-white reveal in" type="button" id="ctaApuntarse">Apuntarme ahora</button>
+    <h2 class="reveal in">¿Quieres jugar?</h2>
+    <p class="reveal in">Escríbenos por WhatsApp y el encargado de la liga te mete en un equipo. Martes y viernes, 2:00 pm.</p>
+    <a class="btn btn-white reveal in" href="https://wa.me/18097920306?text=Hola%2C%20quiero%20jugar%20en%20Liga%20Club%20Los%20Prados%20F.C." target="_blank" rel="noopener">Escribir por WhatsApp</a>
   </div>
 </section>
 
@@ -1308,23 +1305,23 @@
   </div>
 </div>
 
-<!-- MODAL APUNTARSE -->
+<!-- MODAL AÑADIR JUGADOR (solo se abre desde el panel del dueño) -->
 <div class="modal" id="joinModal">
   <div class="modal-box">
     <div class="modal-header">
       <div>
-        <div class="eyebrow" style="margin-bottom:2px;">Apuntarse</div>
-        <h3>Entrar a un equipo</h3>
+        <div class="eyebrow" style="margin-bottom:2px;">Panel del dueño</div>
+        <h3>Añadir jugador</h3>
       </div>
       <button type="button" id="joinClose" class="modal-close" aria-label="Cerrar">✕</button>
     </div>
-    <p class="modal-sub">Escribe tu nombre y elige el equipo en el que quieres jugar.</p>
-    <input type="text" id="joinName" placeholder="Tu nombre" autocomplete="off" maxlength="40">
+    <p class="modal-sub">Escribe el nombre de la persona y elige el equipo donde va a jugar. El primero de cada equipo es el portero.</p>
+    <input type="text" id="joinName" placeholder="Nombre del jugador" autocomplete="off" maxlength="40">
     <select id="joinTeam"></select>
-    <div class="modal-error" id="joinError">Escribe tu nombre para apuntarte.</div>
+    <div class="modal-error" id="joinError">Escribe el nombre del jugador.</div>
     <div class="modal-actions">
       <button type="button" id="joinCancel" class="btn btn-outline btn-sm">Cancelar</button>
-      <button type="button" id="joinSubmit" class="btn btn-primary btn-sm">Apuntarme</button>
+      <button type="button" id="joinSubmit" class="btn btn-primary btn-sm">Añadir</button>
     </div>
   </div>
 </div>
@@ -1521,9 +1518,7 @@
         '<div class="tc-foot">' +
           '<span class="tc-count' + (completo ? ' full' : '') + '">' + Math.min(t.players.length, JUGADORES_POR_EQUIPO) + ' de ' + JUGADORES_POR_EQUIPO +
             (completo ? ' · completo' : ' · falta' + (libres === 1 ? '' : 'n') + ' ' + libres) + '</span>' +
-          (completo
-            ? '<button type="button" class="tc-join" disabled>Completo</button>'
-            : '<button type="button" class="tc-join" data-join="' + t.letter + '">+ Apuntarme</button>') +
+          '<span class="tc-state">' + (completo ? 'Equipo cerrado' : 'Con cupo') + '</span>' +
         '</div>' +
       '</article>';
     }).join('');
@@ -1537,10 +1532,6 @@
     if(!btn) return;
     const card = document.getElementById('equipo-' + btn.getAttribute('data-goto'));
     if(card) card.scrollIntoView({ behavior:'smooth', block:'center' });
-  });
-  teamGrid.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-join]');
-    if(btn) abrirApuntarse(btn.getAttribute('data-join'));
   });
 
   /* ============================================================
@@ -1841,26 +1832,25 @@
   function llenarSelectEquipos(){
     joinTeam.innerHTML = teams.map(t => {
       const libres = faltan(t);
-      const estado = libres === 0 ? 'completo' : (t.players.length === 0 ? 'entras de portero' : 'falta' + (libres === 1 ? '' : 'n') + ' ' + libres);
+      const estado = libres === 0 ? 'completo' : (t.players.length === 0 ? 'entra de portero' : 'falta' + (libres === 1 ? '' : 'n') + ' ' + libres);
       return '<option value="' + t.letter + '">' + t.letter + ' · ' + escapar(t.name) +
              ' (' + Math.min(t.players.length, JUGADORES_POR_EQUIPO) + '/' + JUGADORES_POR_EQUIPO + ' · ' + estado + ')</option>';
     }).join('');
   }
+  // solo se abre desde el panel del dueño: la gente no puede añadirse sola
   function abrirApuntarse(letra){
+    if(!panelDueno.classList.contains('unlocked')) return;
     llenarSelectEquipos();
     if(letra) joinTeam.value = letra;
     joinName.value = '';
-    joinError.textContent = 'Escribe tu nombre para apuntarte.';
+    joinError.textContent = 'Escribe el nombre del jugador.';
     joinError.classList.remove('show');
     joinModal.classList.add('open');
     setTimeout(() => joinName.focus(), 60);
   }
   function cerrarApuntarse(){ joinModal.classList.remove('open'); }
 
-  ['navApuntarse','heroApuntarse','ctaApuntarse'].forEach(id => {
-    const btn = document.getElementById(id);
-    if(btn) btn.addEventListener('click', () => abrirApuntarse(null));
-  });
+  document.getElementById('addPlayerBtn').addEventListener('click', () => abrirApuntarse(null));
   document.getElementById('joinClose').addEventListener('click', cerrarApuntarse);
   document.getElementById('joinCancel').addEventListener('click', cerrarApuntarse);
   joinModal.addEventListener('click', (e) => { if(e.target === joinModal) cerrarApuntarse(); });
@@ -1868,9 +1858,10 @@
   document.getElementById('joinSubmit').addEventListener('click', apuntar);
 
   function apuntar(){
+    if(!panelDueno.classList.contains('unlocked')) return;
     const nombre = joinName.value.trim();
     if(!nombre){
-      joinError.textContent = 'Escribe tu nombre para apuntarte.';
+      joinError.textContent = 'Escribe el nombre del jugador.';
       joinError.classList.add('show');
       joinName.focus();
       return;
@@ -1889,11 +1880,9 @@
     pintarEquipos();
     pintarPartido();
     pintarEditor();
-    avisar('¡Listo! ' + nombre + ' quedó apuntado en ' + t.name + ' (equipo ' + t.letter + ')' +
+    avisar('Listo: ' + nombre + ' quedó en ' + t.name + ' (equipo ' + t.letter + ')' +
            (esPortero ? ' como portero' : ''));
     confeti(16);
-    const card = document.getElementById('equipo-' + t.letter);
-    if(card) card.scrollIntoView({ behavior:'smooth', block:'center' });
   }
 
   /* ============================================================
