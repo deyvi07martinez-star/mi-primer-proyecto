@@ -647,6 +647,21 @@
   }
 
   /* ===== PANTALLA GRANDE, CAMPEÓN, GOLEADORES Y TARJETAS ===== */
+  /* quien solo mira no ve los botones del partido: el marcador lo lleva el dueño */
+  body:not(.dueno) .control{display:none !important;}
+  .solo-mirar{
+    display:none; margin-top:18px; font-size:0.88rem; color:rgba(244,247,251,0.6);
+    background:rgba(29,78,216,0.1); border:1px solid rgba(59,130,246,0.28);
+    border-radius:10px; padding:13px 18px;
+  }
+  body:not(.dueno) .solo-mirar{display:block;}
+  .sync-badge{
+    display:inline-flex; align-items:center; gap:7px; font-size:0.76rem; font-weight:700;
+    padding:7px 14px; border-radius:20px; border:1px solid var(--line);
+    color:rgba(244,247,251,0.6); white-space:nowrap;
+  }
+  .sync-badge.on{color:var(--blue-sky); border-color:rgba(96,165,250,0.45); background:rgba(29,78,216,0.14);}
+
   .tv-launch{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:22px;}
   .tv-hint{font-size:0.82rem; color:rgba(244,247,251,0.5);}
 
@@ -1230,11 +1245,11 @@
         <span class="side-tag" id="homeTag">Local</span>
         <h3 id="homeName">—</h3>
         <div class="score" id="homeScore">0</div>
-        <div class="goal-row">
+        <div class="goal-row control">
           <button type="button" class="goal-minus" data-ungoal="home" aria-label="Quitar gol al local">−</button>
           <button type="button" class="goal-btn" data-goal="home">+ Gol</button>
         </div>
-        <button type="button" class="win-btn" data-win="home">Ganó este equipo</button>
+        <button type="button" class="win-btn control" data-win="home">Ganó este equipo</button>
         <ul class="lineup" id="homeLineup"></ul>
       </div>
 
@@ -1248,11 +1263,11 @@
           </svg>
           <div class="clock-text"><span id="clockText">00:00</span><small id="clockState">Listo</small></div>
         </div>
-        <div class="clock-actions">
+        <div class="clock-actions control">
           <button type="button" class="btn btn-primary btn-sm" id="startBtn">Iniciar</button>
           <button type="button" class="btn btn-outline btn-sm" id="endBtn">Terminar</button>
         </div>
-        <div class="clock-actions">
+        <div class="clock-actions control">
           <button type="button" class="btn btn-outline btn-sm" id="drawBtn">Empate · pasan los dos</button>
         </div>
       </div>
@@ -1262,18 +1277,21 @@
         <span class="side-tag" id="awayTag">Visitante</span>
         <h3 id="awayName">—</h3>
         <div class="score" id="awayScore">0</div>
-        <div class="goal-row">
+        <div class="goal-row control">
           <button type="button" class="goal-btn" data-goal="away">+ Gol</button>
           <button type="button" class="goal-minus" data-ungoal="away" aria-label="Quitar gol al visitante">−</button>
         </div>
-        <button type="button" class="win-btn" data-win="away">Ganó este equipo</button>
+        <button type="button" class="win-btn control" data-win="away">Ganó este equipo</button>
         <ul class="lineup" id="awayLineup"></ul>
       </div>
     </div>
 
     <p class="match-note" id="matchNote">Duración del partido: <b>—</b></p>
 
+    <p class="solo-mirar" id="soloMirar">👀 Estás viendo el partido en vivo. Para llevar el marcador hay que entrar al panel del dueño.</p>
+
     <div class="tv-launch">
+      <span class="sync-badge off" id="syncBadge">🟡 Solo en este teléfono</span>
       <button type="button" class="btn btn-outline btn-sm" id="tvBtn">📺 Pantalla grande</button>
       <span class="tv-hint">Deja un celular o tablet a la vista de la cancha con el marcador gigante.</span>
     </div>
@@ -1712,7 +1730,7 @@
     minutes: Math.max(1, Math.min(120, Number(t && t.minutes) || MINUTOS_POR_PARTIDO)),
     players: Array.isArray(t && t.players) ? t.players.filter(Boolean).map(String) : []
   }));
-  function guardarEquipos(){ escribir(TEAMS_KEY, teams); }
+  function guardarEquipos(){ escribir(TEAMS_KEY, teams); empujar(); }
 
   /* MODALIDAD DE JUEGO — solo se cambia desde el panel del dueño
      balance    : si un equipo gana (en los 15 min o antes), se queda y entra el siguiente.
@@ -1721,7 +1739,191 @@
                   y entran los dos siguientes de la fila. */
   let modo = leer(MODO_KEY, 'balance');
   if(modo !== 'balance' && modo !== 'desbalance') modo = 'balance';
-  function guardarModo(){ escribir(MODO_KEY, modo); }
+  function guardarModo(){ escribir(MODO_KEY, modo); empujar(); }
+
+  /* ============================================================
+     ESTADO COMPARTIDO
+     Todo lo que pasa en la cancha (el reloj, los goles, los equipos)
+     se guarda en el servidor para que TODOS vean lo mismo en vivo.
+     Solo escribe quien entró al panel del dueño; los demás miran.
+     Si el servidor no está configurado, la página sigue funcionando
+     en este teléfono como antes.
+     ============================================================ */
+  const API = '/api/estado';
+  let enVivo = false;          // hay servidor y responde
+  let ultimoRemoto = 0;        // updatedAt del último estado aplicado
+  let empujando = null;        // temporizador para no escribir en cada toque
+  let ultimoEmpujePropio = 0;
+
+  function esDueno(){ return panelDueno && panelDueno.classList.contains('unlocked'); }
+
+  function estadoActual(){
+    return {
+      teams: teams,
+      modo: modo,
+      dayLog: dayLog,
+      diaKey: hoyKey(),
+      match: {
+        home: match.home, away: match.away, queue: match.queue,
+        sh: match.sh, sa: match.sa,
+        secondsLeft: match.secondsLeft, duration: match.duration,
+        running: match.running, endsAt: match.endsAt,
+        goles: match.goles, tarjetas: match.tarjetas
+      }
+    };
+  }
+
+  function aplicarEstado(remoto){
+    if(!remoto || typeof remoto !== 'object') return;
+    if(Array.isArray(remoto.teams) && remoto.teams.length === 26){
+      teams = remoto.teams.map((t, i) => ({
+        letter: LETTERS[i],
+        name: (t && t.name) ? String(t.name) : DEFAULT_NAMES[i],
+        minutes: Math.max(1, Math.min(120, Number(t && t.minutes) || MINUTOS_POR_PARTIDO)),
+        players: Array.isArray(t && t.players) ? t.players.filter(Boolean).map(String) : []
+      }));
+      escribir(TEAMS_KEY, teams);
+    }
+    if(remoto.modo === 'balance' || remoto.modo === 'desbalance'){
+      modo = remoto.modo;
+      escribir(MODO_KEY, modo);
+    }
+    // los partidos del día solo se toman si son del mismo día
+    if(Array.isArray(remoto.dayLog) && remoto.diaKey === hoyKey()){
+      dayLog = remoto.dayLog;
+      escribir(DAY_KEY, { date: hoyKey(), matches: dayLog });
+    }
+    const m = remoto.match;
+    if(m && m.home && m.away && Array.isArray(m.queue)){
+      match.home = m.home; match.away = m.away; match.queue = m.queue;
+      match.sh = Number(m.sh) || 0; match.sa = Number(m.sa) || 0;
+      match.duration = Number(m.duration) || duracionPartido();
+      match.goles = Array.isArray(m.goles) ? m.goles : [];
+      match.tarjetas = Array.isArray(m.tarjetas) ? m.tarjetas : [];
+      match.running = !!m.running;
+      match.endsAt = m.endsAt || null;
+      if(match.running && match.endsAt){
+        match.secondsLeft = Math.max(0, Math.round((match.endsAt - Date.now()) / 1000));
+        // el que mira también ve correr el reloj, pero no termina el partido:
+        // eso solo lo hace el teléfono del dueño
+        clearInterval(intervalo);
+        intervalo = setInterval(tic, 250);
+      } else {
+        match.secondsLeft = Number(m.secondsLeft);
+        if(!isFinite(match.secondsLeft)) match.secondsLeft = match.duration;
+        clearInterval(intervalo);
+        intervalo = null;
+      }
+      escribir(MATCH_KEY, m);
+    }
+    repintarTodo();
+  }
+
+  function repintarTodo(){
+    pintarModo();
+    pintarEquipos();
+    pintarPartido();
+    pintarTabla();
+    pintarPartidosDeHoy();
+    pintarEditor();
+    pintarPanelDueno();
+    pintarGoleadores();
+    pintarGoleadoresPanel();
+    pintarTarjetas();
+    pintarCampeon();
+    pintarTV();
+  }
+
+  function marcarConexion(){
+    const el = document.getElementById('syncBadge');
+    if(!el) return;
+    el.className = 'sync-badge ' + (enVivo ? 'on' : 'off');
+    el.textContent = enVivo
+      ? '🟢 En vivo · todos ven lo mismo'
+      : '🟡 Solo en este teléfono';
+    el.title = enVivo
+      ? 'La liga está conectada: lo que pasa en la cancha lo ve todo el mundo.'
+      : 'Todavía no hay base de datos conectada, así que los cambios solo se ven aquí.';
+  }
+
+  async function traer(){
+    try{
+      const r = await fetch(API, { cache: 'no-store' });
+      if(!r.ok) throw new Error('http ' + r.status);
+      const data = await r.json();
+      const antes = enVivo;
+      enVivo = !!data.configurado;
+      if(antes !== enVivo) marcarConexion();
+      if(!enVivo) return;
+      if(data.estado && data.estado.updatedAt && data.estado.updatedAt > ultimoRemoto){
+        // no pisar lo que este mismo teléfono acaba de mandar
+        if(Date.now() - ultimoEmpujePropio < 1500) return;
+        ultimoRemoto = data.estado.updatedAt;
+        aplicarEstado(data.estado);
+      }
+    }catch(e){
+      if(enVivo){ enVivo = false; marcarConexion(); }
+    }
+  }
+
+  // manda el estado al servidor (solo el dueño), agrupando toques seguidos
+  let esperandoDesde = 0;
+  function empujar(){
+    if(!enVivo || !esDueno()) return;
+    // si el envío lleva mucho rato aplazándose, sale ya: así un cambio
+    // nunca se queda sin mandar por culpa de otros cambios seguidos
+    if(esperandoDesde && Date.now() - esperandoDesde > 1200) return enviarAhora();
+    if(!esperandoDesde) esperandoDesde = Date.now();
+    clearTimeout(empujando);
+    empujando = setTimeout(enviarAhora, 350);
+  }
+
+  function enviarAhora(){
+    clearTimeout(empujando);
+    esperandoDesde = 0;
+    (async () => {
+      try{
+        const r = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clave: PASS, estado: estadoActual() })
+        });
+        const data = await r.json();
+        if(data && data.updatedAt){
+          ultimoRemoto = data.updatedAt;
+          ultimoEmpujePropio = Date.now();
+        }
+      }catch(e){ /* si falla, se reintenta en el siguiente cambio */ }
+    })();
+  }
+
+  // Consulta seguido mientras hay partido corriendo y despacio cuando no,
+  // y no consulta nada si la página no está a la vista. Así la base de datos
+  // gratis aguanta de sobra una tarde entera de liga.
+  function ritmo(){
+    if(document.hidden) return 0;
+    return match.running ? 2000 : 4000;
+  }
+
+  async function arrancarSincronizacion(){
+    await traer();
+    marcarConexion();
+    let ultimaConsulta = Date.now();
+    setInterval(() => {
+      const espera = ritmo();
+      if(!espera) return;               // página en segundo plano: no molesta al servidor
+      // se compara contra la última consulta, no contra una hora calculada de
+      // antemano: así, en cuanto empieza un partido, el ritmo sube al momento
+      if(Date.now() - ultimaConsulta < espera) return;
+      ultimaConsulta = Date.now();
+      traer();
+    }, 400);
+    document.addEventListener('visibilitychange', () => {
+      if(!document.hidden){ ultimaConsulta = 0; traer(); } // al volver, se pone al día enseguida
+    });
+    // si el dueño abre el panel y el servidor está vacío, se sube lo que tiene
+    setTimeout(() => { if(enVivo && esDueno()) empujar(); }, 1200);
+  }
 
   // si el navegador tenía guardado el tiempo viejo, se pone el nuevo una sola vez
   // (los nombres y los integrantes que haya puesto el dueño no se tocan)
@@ -1746,7 +1948,7 @@
       escribir(HISTORY_KEY, hist);
     }
   })();
-  function guardarDia(){ escribir(DAY_KEY, { date: hoyKey(), matches: dayLog }); }
+  function guardarDia(){ escribir(DAY_KEY, { date: hoyKey(), matches: dayLog }); empujar(); }
 
   // partido en curso
   let match = leer(MATCH_KEY, null);
@@ -1759,6 +1961,12 @@
   if(!Array.isArray(match.goles)) match.goles = [];
   if(!Array.isArray(match.tarjetas)) match.tarjetas = [];
   function guardarPartido(){
+    guardarPartidoLocal();
+    empujar();
+  }
+  // guarda en este teléfono sin avisar al servidor: lo usa el tic del reloj,
+  // que corre varias veces por segundo y no debe disparar envíos
+  function guardarPartidoLocal(){
     escribir(MATCH_KEY, { home:match.home, away:match.away, queue:match.queue, sh:match.sh, sa:match.sa,
                           secondsLeft:match.secondsLeft, duration:match.duration,
                           goles:match.goles, tarjetas:match.tarjetas });
@@ -1980,6 +2188,15 @@
       pitido(1);
     }
     if(restante <= 0){
+      // el partido lo cierra solo el teléfono del dueño; los que miran se
+      // quedan en 00:00 hasta que llegue el resultado desde el servidor
+      if(enVivo && !esDueno()){
+        clearInterval(intervalo);
+        intervalo = null;
+        match.running = false;
+        pintarReloj();
+        return;
+      }
       pausar();
       pintarReloj();
       pitido(3);
@@ -1987,7 +2204,7 @@
       return;
     }
     pintarReloj();
-    guardarPartido();
+    guardarPartidoLocal();
   }
 
   function arrancar(){
@@ -2000,6 +2217,7 @@
     clearInterval(intervalo);
     intervalo = setInterval(tic, 250);
     pintarReloj();
+    guardarPartido();
   }
 
   function pausar(){
@@ -2627,12 +2845,31 @@
     setTimeout(() => ownerPass.focus(), 60);
   }
   function cerrarOwnerModal(){ ownerModal.classList.remove('open'); }
+  const DUENO_KEY = 'ligaClubDueno';
+
+  // marca este teléfono como el del dueño: le deja los botones del partido
+  // y es el único que escribe en el estado compartido
+  function activarDueno(guardar){
+    panelDueno.classList.add('unlocked');
+    document.body.classList.add('dueno');
+    if(guardar){ try{ localStorage.setItem(DUENO_KEY, '1'); }catch(e){} }
+    pintarPanelDueno();
+    pintarEditor();
+    pintarGoleadoresPanel();
+    pintarTarjetas();
+  }
+
+  function salirDeDueno(){
+    panelDueno.classList.remove('unlocked');
+    document.body.classList.remove('dueno');
+    try{ localStorage.removeItem(DUENO_KEY); }catch(e){}
+  }
+
   function intentarEntrar(){
     if(ownerPass.value === PASS){
-      panelDueno.classList.add('unlocked');
+      activarDueno(true);
       cerrarOwnerModal();
-      pintarPanelDueno();
-      pintarEditor();
+      empujar(); // sube lo que tenga este teléfono al estado compartido
       panelDueno.scrollIntoView({ behavior:'smooth' });
     } else {
       ownerError.classList.add('show');
@@ -2656,9 +2893,12 @@
   })();
 
   document.getElementById('volverCuentaUno').addEventListener('click', () => {
-    panelDueno.classList.remove('unlocked');
+    salirDeDueno();
     document.getElementById('tabla').scrollIntoView({ behavior:'smooth' });
   });
+
+  // si este teléfono ya entró antes, no hay que escribir la clave otra vez
+  try{ if(localStorage.getItem(DUENO_KEY) === '1') activarDueno(false); }catch(e){}
 
   /* ============================================================
      PANEL DEL DUEÑO — resumen, ranking, historial
@@ -2939,6 +3179,7 @@
   pintarGoleadoresPanel();
   pintarTarjetas();
   pintarCampeon();
+  arrancarSincronizacion();
 })();
 </script>
 
