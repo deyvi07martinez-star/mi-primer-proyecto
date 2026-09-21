@@ -646,6 +646,116 @@
     .gol-flash.show, .gol-flash span, .confetti, .queue-item{animation:none !important;}
   }
 
+  /* ===== PANTALLA GRANDE, CAMPEÓN, GOLEADORES Y TARJETAS ===== */
+  .tv-launch{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:22px;}
+  .tv-hint{font-size:0.82rem; color:rgba(244,247,251,0.5);}
+
+  .tv-mode{
+    display:none; position:fixed; inset:0; z-index:1200; background:var(--black);
+    flex-direction:column; align-items:center; justify-content:center; padding:24px;
+    background-image:radial-gradient(ellipse at 50% 0%, rgba(29,78,216,0.28), transparent 60%);
+  }
+  .tv-mode.open{display:flex;}
+  .tv-close{
+    position:absolute; top:18px; right:18px; width:44px; height:44px; border-radius:50%;
+    background:rgba(244,247,251,0.1); border:1px solid var(--line); color:var(--white);
+    font-size:1.1rem; cursor:pointer; z-index:2;
+  }
+  .tv-top{
+    position:absolute; top:22px; left:0; right:0; display:flex; justify-content:center;
+    gap:26px; flex-wrap:wrap; align-items:center;
+    padding:0 76px; /* deja libre la esquina del botón de cerrar */
+    pointer-events:none; /* es solo texto: no debe bloquear toques */
+  }
+  .tv-brand{font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:0.12em; color:rgba(244,247,251,0.75);}
+  .tv-brand small{display:block; font-family:'Work Sans',sans-serif; font-size:0.52rem; letter-spacing:0.28em; color:var(--blue-sky); font-weight:800;}
+  .tv-modo{font-size:0.8rem; letter-spacing:0.16em; text-transform:uppercase; color:rgba(244,247,251,0.5); font-weight:700;}
+  .tv-modo b{color:var(--blue-sky);}
+  .tv-board{display:flex; align-items:center; justify-content:center; gap:clamp(18px,6vw,80px); width:100%;}
+  .tv-side{display:flex; flex-direction:column; align-items:center; gap:6px; flex:1; min-width:0;}
+  .tv-letter{
+    width:clamp(44px,7vw,74px); height:clamp(44px,7vw,74px); border-radius:14px;
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,3.4vw,2.6rem); line-height:1;
+    background:linear-gradient(150deg, var(--blue), var(--blue-deep));
+  }
+  .tv-letter.away{background:linear-gradient(150deg,#e9eef7,#98a6bd); color:var(--black);}
+  .tv-name{
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(1.3rem,4vw,3rem); line-height:1.05;
+    text-align:center; text-transform:uppercase; max-width:100%; overflow-wrap:anywhere;
+  }
+  .tv-score{font-family:'Teko',sans-serif; font-size:clamp(5rem,22vw,16rem); line-height:0.85; font-weight:700;}
+  .tv-middle{display:flex; flex-direction:column; align-items:center; gap:8px; flex-shrink:0;}
+  .tv-clock{
+    font-family:'Teko',sans-serif; font-size:clamp(3rem,11vw,8rem); line-height:1; font-weight:600;
+    color:var(--blue-sky);
+  }
+  .tv-clock.urgente{color:#fff; animation:tvBlink 1s steps(2,end) infinite;}
+  @keyframes tvBlink{50%{opacity:0.35;}}
+  .tv-vs{font-family:'Bebas Neue',sans-serif; letter-spacing:0.3em; color:rgba(244,247,251,0.3); font-size:1rem;}
+  .tv-next{
+    position:absolute; bottom:26px; left:0; right:0; text-align:center;
+    font-size:0.95rem; color:rgba(244,247,251,0.55); font-weight:700; letter-spacing:0.04em;
+  }
+  @media(orientation:portrait) and (max-width:700px){
+    .tv-board{flex-direction:column; gap:10px;}
+    .tv-score{font-size:clamp(4rem,26vw,9rem);}
+  }
+
+  .champion-banner{
+    display:none; align-items:center; gap:18px; flex-wrap:wrap; margin-top:26px;
+    background:linear-gradient(120deg, rgba(244,247,251,0.14), rgba(22,26,34,0.9) 60%);
+    border:1px solid rgba(244,247,251,0.3); border-left:5px solid var(--white);
+    border-radius:12px; padding:18px 24px;
+  }
+  .champion-banner.show{display:flex;}
+  .champ-ico{font-size:2rem;}
+  .champ-txt{display:flex; flex-direction:column; line-height:1.15;}
+  .champ-txt small{font-size:0.66rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(244,247,251,0.5); font-weight:800;}
+  .champ-txt b{font-family:'Bebas Neue',sans-serif; font-size:1.7rem; letter-spacing:0.05em; text-transform:uppercase;}
+  .champ-pts{margin-left:auto; font-size:0.85rem; font-weight:700; color:var(--blue-sky);}
+
+  .rank-list{list-style:none; display:grid; gap:9px; margin-top:6px;}
+  .rank-list li{
+    display:flex; align-items:center; gap:12px; font-size:0.9rem;
+    background:var(--card); border:1px solid var(--line); border-radius:8px; padding:11px 15px;
+  }
+  .rank-list .rank-name small{color:rgba(244,247,251,0.45); font-weight:400; font-size:0.78rem;}
+  .rank-list .rank-val{color:var(--blue-sky);}
+
+  .pending-flag{
+    display:inline-block; margin:10px 0 14px; font-size:0.8rem; font-weight:700;
+    padding:6px 14px; border-radius:20px; color:rgba(244,247,251,0.6);
+    border:1px solid var(--line);
+  }
+  .pending-flag.pending{color:var(--blue-sky); border-color:rgba(96,165,250,0.45); background:rgba(29,78,216,0.14);}
+  .scorer-row{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px;
+    background:var(--black); border:1px solid var(--line); border-radius:9px; padding:11px 14px;
+  }
+  .scorer-team{font-size:0.86rem; color:rgba(244,247,251,0.7); min-width:150px;}
+  .scorer-team b{color:var(--blue-sky);}
+  .scorer-row .owner-select{margin-top:0; flex:1; min-width:140px;}
+  .card-btn{
+    border:1px solid var(--line); background:transparent; color:var(--white); cursor:pointer;
+    border-radius:6px; padding:9px 13px; font-size:0.76rem; font-weight:700;
+    transition:border-color 0.2s ease, background 0.2s ease;
+  }
+  .card-btn.amarilla:hover{border-color:#e6c84f; background:rgba(230,200,79,0.14);}
+  .card-btn.roja:hover{border-color:#d4553f; background:rgba(212,85,63,0.14);}
+  .owner-split{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:18px;}
+  @media(max-width:760px){ .owner-split{grid-template-columns:1fr;} }
+  .mini-title{
+    font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase;
+    color:rgba(244,247,251,0.5); font-weight:800; margin-bottom:10px;
+  }
+  .today-log.slim li{padding:9px 13px; font-size:0.84rem;}
+  .link-btn{
+    background:none; border:none; color:rgba(244,247,251,0.45); cursor:pointer;
+    font-size:0.76rem; text-decoration:underline; padding:0;
+  }
+  .link-btn:hover{color:var(--blue-sky);}
+
   /* ===== TABLA / ESTADISTICAS ===== */
   .table-sec{background:var(--charcoal); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
   .standings{
@@ -1163,6 +1273,13 @@
 
     <p class="match-note" id="matchNote">Duración del partido: <b>—</b></p>
 
+    <div class="tv-launch">
+      <button type="button" class="btn btn-outline btn-sm" id="tvBtn">📺 Pantalla grande</button>
+      <span class="tv-hint">Deja un celular o tablet a la vista de la cancha con el marcador gigante.</span>
+    </div>
+
+    <div class="champion-banner" id="championBanner"></div>
+
     <div class="queue-wrap">
       <div class="queue-title">⚽ Fila de espera · quién entra después</div>
       <div class="queue-list" id="queueList"></div>
@@ -1189,6 +1306,11 @@
     </div>
 
     <div class="editor-head" style="margin-bottom:6px;">
+      <h3>⚽ Goleadores de la liga</h3>
+    </div>
+    <ol class="rank-list" id="scorersList"></ol>
+
+    <div class="editor-head" style="margin-bottom:6px;">
       <h3>Partidos de hoy</h3>
     </div>
     <ul class="today-log" id="todayLog"></ul>
@@ -1209,6 +1331,36 @@
       <div class="owner-grand-total" id="ownerGrandTotal">Hoy: 0 partidos · 0 goles · 0 min jugados</div>
       <button type="button" id="resetDayBtn" class="btn btn-outline btn-sm">Reiniciar día</button>
       <button type="button" id="resetTournamentBtn" class="btn btn-outline btn-sm">Reiniciar fila (A vs B)</button>
+    </div>
+
+    <div class="owner-card" style="margin-bottom:32px;">
+      <h3>⚽ Goleadores · quién metió cada gol</h3>
+      <p>Esto solo se hace aquí. En la parte pública nadie puede poner nombres.</p>
+      <div class="pending-flag" id="unassignedGoals"></div>
+      <div id="scorerPickers"></div>
+      <div class="owner-split">
+        <div>
+          <h4 class="mini-title">Goles de este partido</h4>
+          <ul class="today-log slim" id="matchGoalsList"></ul>
+        </div>
+        <div>
+          <h4 class="mini-title">Goleadores de hoy</h4>
+          <ol class="rank-list" id="scorersPanelList"></ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="owner-card" style="margin-bottom:32px;">
+      <h3>🟨 Tarjetas y sanciones</h3>
+      <p>Elige el jugador y la tarjeta. Queda guardado en el partido y en el día.</p>
+      <div id="cardPickers"></div>
+      <h4 class="mini-title">Tarjetas de hoy</h4>
+      <ul class="today-log slim" id="cardsTodayList"></ul>
+    </div>
+
+    <div class="owner-card" style="margin-bottom:32px;">
+      <h3>🏆 Campeón de la jornada</h3>
+      <div id="championPanel"><span class="empty-note">Se decide cuando se jueguen al menos dos partidos.</span></div>
     </div>
 
     <div class="owner-card" style="margin-bottom:32px;">
@@ -1443,6 +1595,29 @@
   </div>
 </div>
 
+<!-- MODO PANTALLA GRANDE -->
+<div class="tv-mode" id="tvMode">
+  <button type="button" class="tv-close" id="tvClose" aria-label="Salir de pantalla grande">✕</button>
+  <div class="tv-top"><span class="tv-brand">LIGA•CLUB <small>LOS PRADOS F.C.</small></span><span class="tv-modo">Modalidad: <b id="tvMode-modo">Balance</b></span></div>
+  <div class="tv-board">
+    <div class="tv-side">
+      <span class="tv-letter" id="tvHomeLetter">A</span>
+      <span class="tv-name" id="tvHomeName">—</span>
+      <span class="tv-score" id="tvHomeScore">0</span>
+    </div>
+    <div class="tv-middle">
+      <span class="tv-clock" id="tvClock">15:00</span>
+      <span class="tv-vs">VS</span>
+    </div>
+    <div class="tv-side">
+      <span class="tv-letter away" id="tvAwayLetter">B</span>
+      <span class="tv-name" id="tvAwayName">—</span>
+      <span class="tv-score" id="tvAwayScore">0</span>
+    </div>
+  </div>
+  <div class="tv-next" id="tvNext"></div>
+</div>
+
 <!-- FLASH DE GOL -->
 <div class="gol-flash" id="golFlash"><span>¡GOOOL!</span></div>
 
@@ -1579,9 +1754,14 @@
     match = { home:'A', away:'B', queue: LETTERS.slice(2), sh:0, sa:0, secondsLeft:null, duration:null };
   }
   match.running = false;
+  match.endsAt = null;
+  // goles y tarjetas del partido en curso; el goleador se asigna en el panel del dueño
+  if(!Array.isArray(match.goles)) match.goles = [];
+  if(!Array.isArray(match.tarjetas)) match.tarjetas = [];
   function guardarPartido(){
     escribir(MATCH_KEY, { home:match.home, away:match.away, queue:match.queue, sh:match.sh, sa:match.sa,
-                          secondsLeft:match.secondsLeft, duration:match.duration });
+                          secondsLeft:match.secondsLeft, duration:match.duration,
+                          goles:match.goles, tarjetas:match.tarjetas });
   }
 
   /* ============================================================
@@ -1707,6 +1887,7 @@
     clockRingEl.classList.toggle('warning', match.secondsLeft <= 60 && match.secondsLeft > 0);
     clockStateEl.textContent = match.running ? 'Jugando' : (match.secondsLeft === match.duration ? 'Listo' : 'En pausa');
     startBtn.textContent = match.running ? 'Pausar' : (match.secondsLeft === match.duration ? 'Iniciar' : 'Seguir');
+    pintarTV();
   }
 
   function pintarPartido(){
@@ -1727,6 +1908,9 @@
     pintarReloj();
     pintarFila();
     pintarBarraAZ();
+    // los desplegables del panel deben seguir a los equipos que están jugando
+    pintarGoleadoresPanel();
+    pintarTarjetas();
   }
 
   function pintarFila(){
@@ -1741,29 +1925,92 @@
     }).join('');
   }
 
-  /* ---- cronómetro ---- */
+  /* ---- pitido de final (se genera solo, sin archivo de sonido) ---- */
+  let audioCtx = null;
+  function pitido(veces){
+    try{
+      if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if(audioCtx.state === 'suspended') audioCtx.resume();
+      for(let i = 0; i < veces; i++){
+        const inicio = audioCtx.currentTime + i * 0.55;
+        const osc = audioCtx.createOscillator();
+        const vol = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(1180, inicio);
+        vol.gain.setValueAtTime(0.0001, inicio);
+        vol.gain.exponentialRampToValueAtTime(0.5, inicio + 0.02);
+        vol.gain.exponentialRampToValueAtTime(0.0001, inicio + 0.42);
+        osc.connect(vol).connect(audioCtx.destination);
+        osc.start(inicio);
+        osc.stop(inicio + 0.45);
+      }
+    }catch(e){ /* si el navegador no deja sonar, el partido sigue igual */ }
+  }
+
+  /* ---- mantener la pantalla encendida mientras se juega ---- */
+  let wakeLock = null;
+  async function mantenerPantalla(){
+    try{
+      if('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen');
+    }catch(e){ /* no todos los navegadores lo permiten */ }
+  }
+  function soltarPantalla(){
+    try{ if(wakeLock){ wakeLock.release(); wakeLock = null; } }catch(e){}
+  }
+  document.addEventListener('visibilitychange', () => {
+    // al volver a la página: si el partido sigue corriendo, se recupera el bloqueo
+    // y se repinta el reloj, que se calcula por hora real y no se atrasa
+    if(document.visibilityState === 'visible' && match.running){
+      mantenerPantalla();
+      tic();
+    }
+  });
+
+  /* ---- cronómetro (contado por hora real: aunque se bloquee el
+         teléfono o se cambie de pestaña, al volver marca lo correcto) ---- */
   let intervalo = null;
+  let avisoUnMinuto = false;
+
+  function tic(){
+    if(!match.running) return;
+    const restante = Math.max(0, Math.round((match.endsAt - Date.now()) / 1000));
+    match.secondsLeft = restante;
+    if(restante <= 60 && restante > 0 && !avisoUnMinuto){
+      avisoUnMinuto = true;
+      pitido(1);
+    }
+    if(restante <= 0){
+      pausar();
+      pintarReloj();
+      pitido(3);
+      terminarPartido(null, true);
+      return;
+    }
+    pintarReloj();
+    guardarPartido();
+  }
+
   function arrancar(){
     if(match.running) return;
     match.running = true;
-    intervalo = setInterval(() => {
-      match.secondsLeft--;
-      if(match.secondsLeft <= 0){
-        match.secondsLeft = 0;
-        pausar();
-        pintarReloj();
-        terminarPartido(null, true);
-        return;
-      }
-      pintarReloj();
-      guardarPartido();
-    }, 1000);
+    match.endsAt = Date.now() + match.secondsLeft * 1000;
+    avisoUnMinuto = match.secondsLeft <= 60;
+    mantenerPantalla();
+    pitido(0); // despierta el audio con el toque del usuario, sin sonar
+    clearInterval(intervalo);
+    intervalo = setInterval(tic, 250);
     pintarReloj();
   }
+
   function pausar(){
+    if(match.running && match.endsAt){
+      match.secondsLeft = Math.max(0, Math.round((match.endsAt - Date.now()) / 1000));
+    }
     match.running = false;
+    match.endsAt = null;
     clearInterval(intervalo);
     intervalo = null;
+    soltarPantalla();
     pintarReloj();
     guardarPartido();
   }
@@ -1772,22 +2019,37 @@
   /* ---- goles ---- */
   document.querySelectorAll('[data-goal]').forEach(btn => {
     btn.addEventListener('click', () => {
-      const lado = btn.getAttribute('data-goal');
-      if(lado === 'home'){ match.sh++; bump(homeScoreEl); } else { match.sa++; bump(awayScoreEl); }
-      festejarGol();
-      homeScoreEl.textContent = match.sh;
-      awayScoreEl.textContent = match.sa;
-      guardarPartido();
+      anotarGol(btn.getAttribute('data-goal'), null);
     });
   });
+
+  // registra el gol; el jugador queda sin asignar y se le pone nombre
+  // desde el panel del dueño (en la parte pública no se pide quién fue)
+  function anotarGol(lado, jugador){
+    if(lado === 'home'){ match.sh++; bump(homeScoreEl); } else { match.sa++; bump(awayScoreEl); }
+    match.goles.push({ lado: lado, letra: lado === 'home' ? match.home : match.away, jugador: jugador || null });
+    festejarGol();
+    homeScoreEl.textContent = match.sh;
+    awayScoreEl.textContent = match.sa;
+    guardarPartido();
+    pintarGoleadoresPanel();
+    pintarTV();
+  }
+
   document.querySelectorAll('[data-ungoal]').forEach(btn => {
     btn.addEventListener('click', () => {
       const lado = btn.getAttribute('data-ungoal');
       if(lado === 'home') match.sh = Math.max(0, match.sh - 1);
       else match.sa = Math.max(0, match.sa - 1);
+      // se quita el último gol registrado de ese lado
+      for(let i = match.goles.length - 1; i >= 0; i--){
+        if(match.goles[i].lado === lado){ match.goles.splice(i, 1); break; }
+      }
       homeScoreEl.textContent = match.sh;
       awayScoreEl.textContent = match.sa;
       guardarPartido();
+      pintarGoleadoresPanel();
+      pintarTV();
     });
   });
   function bump(el){
@@ -1902,7 +2164,8 @@
     const jugados = Math.max(0, (match.duration || 0) - match.secondsLeft);
     dayLog.push({
       home: local, away: visita, sh: match.sh, sa: match.sa,
-      winner: ganador, seconds: jugados, at: Date.now(), byTime: !!porTiempo
+      winner: ganador, seconds: jugados, at: Date.now(), byTime: !!porTiempo,
+      goles: match.goles.slice(), tarjetas: match.tarjetas.slice()
     });
     guardarDia();
 
@@ -1933,6 +2196,8 @@
     }
 
     match.sh = 0; match.sa = 0;
+    match.goles = [];
+    match.tarjetas = [];
     match.duration = duracionPartido();
     match.secondsLeft = match.duration;
     guardarPartido();
@@ -1941,6 +2206,11 @@
     pintarTabla();
     pintarPartidosDeHoy();
     pintarPanelDueno();
+    pintarGoleadores();
+    pintarGoleadoresPanel();
+    pintarTarjetas();
+    pintarCampeon();
+    pintarTV();
   }
 
   function avisar(texto){
@@ -1952,6 +2222,266 @@
     document.body.appendChild(aviso);
     setTimeout(() => aviso.remove(), 4200);
   }
+
+  /* ============================================================
+     GOLEADORES, TARJETAS Y CAMPEÓN DEL DÍA
+     ============================================================ */
+
+  // Une los goles de los partidos terminados con los del partido en curso.
+  // clave del jugador: letra del equipo + nombre, para no mezclar tocayos.
+  function todosLosGoles(soloHoy){
+    const partidos = soloHoy ? dayLog : todosLosPartidos();
+    let goles = [];
+    partidos.forEach(m => { if(Array.isArray(m.goles)) goles = goles.concat(m.goles); });
+    return goles.concat(match.goles);
+  }
+
+  function tablaGoleadores(soloHoy){
+    const cuenta = {};
+    todosLosGoles(soloHoy).forEach(g => {
+      if(!g.jugador) return; // los goles sin asignar no entran en la tabla
+      const clave = g.letra + '|' + g.jugador;
+      cuenta[clave] = (cuenta[clave] || 0) + 1;
+    });
+    return Object.keys(cuenta).map(k => {
+      const [letra, jugador] = k.split('|');
+      return { letra, jugador, goles: cuenta[k] };
+    }).sort((a, b) => b.goles - a.goles || a.jugador.localeCompare(b.jugador));
+  }
+
+  function filaGoleador(g, i){
+    const t = equipo(g.letra);
+    return '<li><span class="rank-pos">#' + (i + 1) + '</span>' +
+      '<span class="rank-name">' + escapar(g.jugador) + '<small> · ' + g.letra + ' ' + escapar(t ? t.name : '') + '</small></span>' +
+      '<span class="rank-val">' + g.goles + ' gol' + (g.goles === 1 ? '' : 'es') + '</span></li>';
+  }
+
+  // tabla pública de goleadores (solo muestra, no deja asignar nada)
+  function pintarGoleadores(){
+    const cont = document.getElementById('scorersList');
+    if(!cont) return;
+    const tabla = tablaGoleadores(false);
+    cont.innerHTML = tabla.length
+      ? tabla.slice(0, 10).map(filaGoleador).join('')
+      : '<li class="empty-note">Todavía no hay goles con jugador asignado.</li>';
+  }
+
+  // panel del dueño: aquí y solo aquí se dice quién metió cada gol
+  function pintarGoleadoresPanel(){
+    const sinAsignar = document.getElementById('unassignedGoals');
+    const selects = document.getElementById('scorerPickers');
+    if(!sinAsignar || !selects) return;
+
+    const pendientes = match.goles.filter(g => !g.jugador).length;
+    sinAsignar.textContent = pendientes
+      ? pendientes + ' gol' + (pendientes === 1 ? '' : 'es') + ' de este partido sin asignar'
+      : 'Todos los goles de este partido tienen jugador';
+    sinAsignar.classList.toggle('pending', pendientes > 0);
+
+    selects.innerHTML = ['home', 'away'].map(lado => {
+      const letra = lado === 'home' ? match.home : match.away;
+      const t = equipo(letra);
+      if(!t) return '';
+      const opciones = t.players.length
+        ? t.players.map((p, n) => '<option value="' + escapar(p) + '">' + (n === 0 ? '🧤 ' : '') + escapar(p) + '</option>').join('')
+        : '<option value="">(sin jugadores apuntados)</option>';
+      return '<div class="scorer-row">' +
+        '<span class="scorer-team"><b>' + letra + '</b> ' + escapar(t.name) + '</span>' +
+        '<select class="owner-select" data-scorer-select="' + lado + '">' + opciones + '</select>' +
+        '<button type="button" class="btn btn-primary btn-sm" data-scorer-goal="' + lado + '">+ Gol</button>' +
+        (pendientes ? '<button type="button" class="btn btn-outline btn-sm" data-scorer-assign="' + lado + '">Asignar gol suelto</button>' : '') +
+      '</div>';
+    }).join('');
+
+    const lista = document.getElementById('matchGoalsList');
+    if(lista){
+      lista.innerHTML = match.goles.length
+        ? match.goles.map((g, i) =>
+            '<li><span>' + g.letra + ' · ' + (g.jugador ? escapar(g.jugador) : '<i style="opacity:0.55">sin asignar</i>') + '</span>' +
+            '<button type="button" class="link-btn" data-del-goal="' + i + '">quitar</button></li>').join('')
+        : '<li class="empty-note">Sin goles en este partido.</li>';
+    }
+
+    const panelTabla = document.getElementById('scorersPanelList');
+    if(panelTabla){
+      const hoy = tablaGoleadores(true);
+      panelTabla.innerHTML = hoy.length
+        ? hoy.slice(0, 8).map(filaGoleador).join('')
+        : '<li class="empty-note">Aún no hay goleadores hoy.</li>';
+    }
+  }
+
+  // tarjetas: también se ponen solo desde el panel del dueño
+  function pintarTarjetas(){
+    const selects = document.getElementById('cardPickers');
+    if(selects){
+      selects.innerHTML = ['home', 'away'].map(lado => {
+        const letra = lado === 'home' ? match.home : match.away;
+        const t = equipo(letra);
+        if(!t) return '';
+        const opciones = t.players.length
+          ? t.players.map(p => '<option value="' + escapar(p) + '">' + escapar(p) + '</option>').join('')
+          : '<option value="">(sin jugadores apuntados)</option>';
+        return '<div class="scorer-row">' +
+          '<span class="scorer-team"><b>' + letra + '</b> ' + escapar(t.name) + '</span>' +
+          '<select class="owner-select" data-card-select="' + lado + '">' + opciones + '</select>' +
+          '<button type="button" class="card-btn amarilla" data-card="amarilla" data-card-side="' + lado + '">🟨 Amarilla</button>' +
+          '<button type="button" class="card-btn roja" data-card="roja" data-card-side="' + lado + '">🟥 Roja</button>' +
+        '</div>';
+      }).join('');
+    }
+
+    const lista = document.getElementById('cardsTodayList');
+    if(!lista) return;
+    let todas = [];
+    dayLog.forEach(m => { if(Array.isArray(m.tarjetas)) todas = todas.concat(m.tarjetas); });
+    todas = todas.concat(match.tarjetas);
+    lista.innerHTML = todas.length
+      ? todas.slice().reverse().map(t =>
+          '<li><span>' + (t.tipo === 'roja' ? '🟥' : '🟨') + ' ' + escapar(t.jugador) +
+          '<small> · ' + t.letra + ' ' + escapar((equipo(t.letra) || {}).name || '') + '</small></span>' +
+          '<span class="tl-res' + (t.tipo === 'roja' ? '' : ' draw') + '">' + (t.tipo === 'roja' ? 'Expulsado' : 'Amonestado') + '</span></li>').join('')
+      : '<li class="empty-note">Sin tarjetas hoy.</li>';
+  }
+
+  // campeón del día: el que más puntos hizo en la jornada
+  function campeonDelDia(partidos){
+    const tabla = calcularTabla(partidos);
+    const orden = Object.values(tabla).filter(f => f.pj > 0)
+      .sort((x, y) => y.pts - x.pts || (y.gf - y.gc) - (x.gf - x.gc) || y.gf - x.gf);
+    return orden.length ? orden[0] : null;
+  }
+
+  function pintarCampeon(){
+    const banner = document.getElementById('championBanner');
+    if(!banner) return;
+    const c = campeonDelDia(dayLog);
+    if(!c || dayLog.length < 2){
+      banner.classList.remove('show');
+      banner.innerHTML = '';
+      return;
+    }
+    const t = equipo(c.letter);
+    banner.classList.add('show');
+    banner.innerHTML = '<span class="champ-ico">🏆</span>' +
+      '<span class="champ-txt"><small>Va ganando la jornada</small>' +
+      '<b>' + c.letter + ' · ' + escapar(t.name) + '</b></span>' +
+      '<span class="champ-pts">' + c.pts + ' pts · ' + c.g + 'G ' + c.e + 'E ' + c.p + 'P</span>';
+
+    const panel = document.getElementById('championPanel');
+    if(panel){
+      panel.innerHTML = '<div style="font-size:1.05rem;font-weight:800;color:var(--blue-sky);">🏆 ' +
+        escapar(t.name) + ' (' + c.letter + ')</div>' +
+        '<p>' + c.pts + ' punto' + (c.pts === 1 ? '' : 's') + ' · ' +
+        c.g + ' ganado' + (c.g === 1 ? '' : 's') + ', ' +
+        c.e + ' empatado' + (c.e === 1 ? '' : 's') + ', ' +
+        c.p + ' perdido' + (c.p === 1 ? '' : 's') + ' · ' +
+        c.gf + ' gol' + (c.gf === 1 ? '' : 'es') + ' a favor.</p>';
+    }
+  }
+
+  /* ---- acciones del panel del dueño sobre goles y tarjetas ---- */
+  document.addEventListener('click', (e) => {
+    const panelAbierto = panelDueno.classList.contains('unlocked');
+
+    const golBtn = e.target.closest('[data-scorer-goal]');
+    if(golBtn && panelAbierto){
+      const lado = golBtn.getAttribute('data-scorer-goal');
+      const sel = document.querySelector('[data-scorer-select="' + lado + '"]');
+      const jugador = sel && sel.value ? sel.value : null;
+      if(!jugador){ avisar('Ese equipo no tiene jugadores apuntados'); return; }
+      anotarGol(lado, jugador);
+      avisar('Gol de ' + jugador);
+      return;
+    }
+
+    const asignar = e.target.closest('[data-scorer-assign]');
+    if(asignar && panelAbierto){
+      const lado = asignar.getAttribute('data-scorer-assign');
+      const sel = document.querySelector('[data-scorer-select="' + lado + '"]');
+      const jugador = sel && sel.value ? sel.value : null;
+      if(!jugador){ avisar('Ese equipo no tiene jugadores apuntados'); return; }
+      const suelto = match.goles.find(g => !g.jugador && g.lado === lado);
+      if(!suelto){ avisar('No hay goles sueltos de ese equipo'); return; }
+      suelto.jugador = jugador;
+      guardarPartido();
+      pintarGoleadoresPanel();
+      pintarGoleadores();
+      avisar('Gol asignado a ' + jugador);
+      return;
+    }
+
+    const quitar = e.target.closest('[data-del-goal]');
+    if(quitar && panelAbierto){
+      const i = Number(quitar.getAttribute('data-del-goal'));
+      const g = match.goles[i];
+      if(!g) return;
+      if(g.lado === 'home') match.sh = Math.max(0, match.sh - 1);
+      else match.sa = Math.max(0, match.sa - 1);
+      match.goles.splice(i, 1);
+      homeScoreEl.textContent = match.sh;
+      awayScoreEl.textContent = match.sa;
+      guardarPartido();
+      pintarGoleadoresPanel();
+      pintarGoleadores();
+      pintarTV();
+      return;
+    }
+
+    const tarjeta = e.target.closest('[data-card]');
+    if(tarjeta && panelAbierto){
+      const tipo = tarjeta.getAttribute('data-card');
+      const lado = tarjeta.getAttribute('data-card-side');
+      const sel = document.querySelector('[data-card-select="' + lado + '"]');
+      const jugador = sel && sel.value ? sel.value : null;
+      if(!jugador){ avisar('Ese equipo no tiene jugadores apuntados'); return; }
+      match.tarjetas.push({ tipo, jugador, letra: lado === 'home' ? match.home : match.away });
+      guardarPartido();
+      pintarTarjetas();
+      avisar((tipo === 'roja' ? '🟥 Roja' : '🟨 Amarilla') + ' para ' + jugador);
+      return;
+    }
+  });
+
+  /* ============================================================
+     MODO PANTALLA GRANDE (para dejar un celular a la vista)
+     ============================================================ */
+  const tvOverlay = document.getElementById('tvMode');
+
+  function pintarTV(){
+    if(!tvOverlay || !tvOverlay.classList.contains('open')) return;
+    const l = equipo(match.home), v = equipo(match.away);
+    document.getElementById('tvHomeName').textContent = l ? l.name : '—';
+    document.getElementById('tvAwayName').textContent = v ? v.name : '—';
+    document.getElementById('tvHomeLetter').textContent = match.home;
+    document.getElementById('tvAwayLetter').textContent = match.away;
+    document.getElementById('tvHomeScore').textContent = match.sh;
+    document.getElementById('tvAwayScore').textContent = match.sa;
+    document.getElementById('tvClock').textContent = mmss(match.secondsLeft);
+    document.getElementById('tvClock').classList.toggle('urgente', match.secondsLeft <= 60 && match.running);
+    document.getElementById('tvMode-modo').textContent = MODOS[modo].nombre;
+    const sigue = match.queue[0] ? equipo(match.queue[0]) : null;
+    document.getElementById('tvNext').textContent = sigue ? ('Sigue: ' + match.queue[0] + ' · ' + sigue.name) : '';
+  }
+
+  function abrirTV(){
+    if(!tvOverlay) return;
+    tvOverlay.classList.add('open');
+    pintarTV();
+    try{ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }catch(e){}
+    mantenerPantalla();
+  }
+  function cerrarTV(){
+    if(!tvOverlay) return;
+    tvOverlay.classList.remove('open');
+    try{ if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen(); }catch(e){}
+    if(!match.running) soltarPantalla();
+  }
+  const tvBtn = document.getElementById('tvBtn');
+  if(tvBtn) tvBtn.addEventListener('click', abrirTV);
+  const tvClose = document.getElementById('tvClose');
+  if(tvClose) tvClose.addEventListener('click', cerrarTV);
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') cerrarTV(); });
 
   /* ============================================================
      TABLA DE POSICIONES
@@ -2405,6 +2935,10 @@
   pintarPartidosDeHoy();
   pintarEditor();
   pintarPanelDueno();
+  pintarGoleadores();
+  pintarGoleadoresPanel();
+  pintarTarjetas();
+  pintarCampeon();
 })();
 </script>
 
