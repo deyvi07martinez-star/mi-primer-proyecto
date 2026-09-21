@@ -647,8 +647,34 @@
   }
 
   /* ===== PANTALLA GRANDE, CAMPEÓN, GOLEADORES Y TARJETAS ===== */
-  /* quien solo mira no ve los botones del partido: el marcador lo lleva el dueño */
-  body:not(.dueno) .control{display:none !important;}
+  /* el marcador público es solo para mirar: los botones viven en el panel del dueño */
+  .control-card{border-color:rgba(96,165,250,0.4); box-shadow:0 0 0 1px rgba(96,165,250,0.18);}
+  .oc-board{
+    display:grid; grid-template-columns:1fr auto 1fr; gap:14px; align-items:center;
+    background:var(--black); border:1px solid var(--line); border-radius:12px;
+    padding:20px 16px; margin:16px 0 18px;
+  }
+  .oc-side{display:flex; flex-direction:column; align-items:center; gap:4px; min-width:0;}
+  .oc-letter{
+    width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+    font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:#fff;
+    background:linear-gradient(150deg, var(--blue), var(--blue-deep));
+  }
+  .oc-letter.away{background:linear-gradient(150deg,#e9eef7,#98a6bd); color:var(--black);}
+  .oc-name{
+    font-size:0.86rem; font-weight:700; text-align:center; color:var(--white);
+    overflow-wrap:anywhere; line-height:1.2;
+  }
+  .oc-score{font-family:'Teko',sans-serif; font-size:3.2rem; line-height:0.9; font-weight:700;}
+  .oc-clock{display:flex; flex-direction:column; align-items:center; gap:2px; padding:0 8px;}
+  .oc-time{font-family:'Teko',sans-serif; font-size:2.6rem; line-height:1; font-weight:600; color:var(--blue-sky);}
+  .oc-state{
+    font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase;
+    color:rgba(244,247,251,0.45); font-weight:800;
+  }
+  .oc-state.corriendo{color:var(--blue-sky);}
+  .oc-actions{display:flex; gap:10px; flex-wrap:wrap;}
+  .oc-actions .win-btn{margin-top:0;}
   .solo-mirar{
     display:none; margin-top:18px; font-size:0.88rem; color:rgba(244,247,251,0.6);
     background:rgba(29,78,216,0.1); border:1px solid rgba(59,130,246,0.28);
@@ -1245,11 +1271,6 @@
         <span class="side-tag" id="homeTag">Local</span>
         <h3 id="homeName">—</h3>
         <div class="score" id="homeScore">0</div>
-        <div class="goal-row control">
-          <button type="button" class="goal-minus" data-ungoal="home" aria-label="Quitar gol al local">−</button>
-          <button type="button" class="goal-btn" data-goal="home">+ Gol</button>
-        </div>
-        <button type="button" class="win-btn control" data-win="home">Ganó este equipo</button>
         <ul class="lineup" id="homeLineup"></ul>
       </div>
 
@@ -1263,13 +1284,6 @@
           </svg>
           <div class="clock-text"><span id="clockText">00:00</span><small id="clockState">Listo</small></div>
         </div>
-        <div class="clock-actions control">
-          <button type="button" class="btn btn-primary btn-sm" id="startBtn">Iniciar</button>
-          <button type="button" class="btn btn-outline btn-sm" id="endBtn">Terminar</button>
-        </div>
-        <div class="clock-actions control">
-          <button type="button" class="btn btn-outline btn-sm" id="drawBtn">Empate · pasan los dos</button>
-        </div>
       </div>
 
       <div class="side side-away">
@@ -1277,18 +1291,13 @@
         <span class="side-tag" id="awayTag">Visitante</span>
         <h3 id="awayName">—</h3>
         <div class="score" id="awayScore">0</div>
-        <div class="goal-row control">
-          <button type="button" class="goal-btn" data-goal="away">+ Gol</button>
-          <button type="button" class="goal-minus" data-ungoal="away" aria-label="Quitar gol al visitante">−</button>
-        </div>
-        <button type="button" class="win-btn control" data-win="away">Ganó este equipo</button>
         <ul class="lineup" id="awayLineup"></ul>
       </div>
     </div>
 
     <p class="match-note" id="matchNote">Duración del partido: <b>—</b></p>
 
-    <p class="solo-mirar" id="soloMirar">👀 Estás viendo el partido en vivo. Para llevar el marcador hay que entrar al panel del dueño.</p>
+    <p class="solo-mirar" id="soloMirar">👀 Esto es el marcador en vivo. El reloj y los goles los lleva el dueño desde su panel, así nadie puede poner un gol falso ni parar el tiempo.</p>
 
     <div class="tv-launch">
       <span class="sync-badge off" id="syncBadge">🟡 Solo en este teléfono</span>
@@ -1351,11 +1360,48 @@
       <button type="button" id="resetTournamentBtn" class="btn btn-outline btn-sm">Reiniciar fila (A vs B)</button>
     </div>
 
+    <!-- TODO el control del partido vive aquí: nadie de fuera puede tocarlo -->
+    <div class="owner-card control-card" style="margin-bottom:32px;">
+      <h3>🎮 Control del partido</h3>
+      <p>El reloj y los goles solo se manejan desde aquí. Lo que hagas se ve al instante en la página de todo el mundo.</p>
+
+      <div class="oc-board">
+        <div class="oc-side">
+          <span class="oc-letter" id="ocHomeLetter">A</span>
+          <span class="oc-name" id="ocHomeName">—</span>
+          <span class="oc-score" id="ocHomeScore">0</span>
+        </div>
+        <div class="oc-clock">
+          <span class="oc-time" id="ownerClock">15:00</span>
+          <span class="oc-state" id="ownerClockState">Listo</span>
+        </div>
+        <div class="oc-side">
+          <span class="oc-letter away" id="ocAwayLetter">B</span>
+          <span class="oc-name" id="ocAwayName">—</span>
+          <span class="oc-score" id="ocAwayScore">0</span>
+        </div>
+      </div>
+
+      <div class="oc-actions">
+        <button type="button" class="btn btn-primary" id="startBtn">Iniciar</button>
+        <button type="button" class="btn btn-outline" id="endBtn">Terminar partido</button>
+        <button type="button" class="btn btn-outline" id="drawBtn">Empate · pasan los dos</button>
+      </div>
+
+      <h4 class="mini-title" style="margin-top:22px;">Goles · elige quién lo metió</h4>
+      <div id="scorerPickers"></div>
+
+      <h4 class="mini-title" style="margin-top:18px;">¿Quién ganó?</h4>
+      <div class="oc-actions">
+        <button type="button" class="win-btn" data-win="home" id="winHomeBtn">Ganó el local</button>
+        <button type="button" class="win-btn" data-win="away" id="winAwayBtn">Ganó el visitante</button>
+      </div>
+    </div>
+
     <div class="owner-card" style="margin-bottom:32px;">
       <h3>⚽ Goleadores · quién metió cada gol</h3>
       <p>Esto solo se hace aquí. En la parte pública nadie puede poner nombres.</p>
       <div class="pending-flag" id="unassignedGoals"></div>
-      <div id="scorerPickers"></div>
       <div class="owner-split">
         <div>
           <h4 class="mini-title">Goles de este partido</h4>
@@ -1902,7 +1948,7 @@
   // gratis aguanta de sobra una tarde entera de liga.
   function ritmo(){
     if(document.hidden) return 0;
-    return match.running ? 2000 : 4000;
+    return match.running ? 2000 : 3000;
   }
 
   async function arrancarSincronizacion(){
@@ -2095,6 +2141,13 @@
     clockRingEl.classList.toggle('warning', match.secondsLeft <= 60 && match.secondsLeft > 0);
     clockStateEl.textContent = match.running ? 'Jugando' : (match.secondsLeft === match.duration ? 'Listo' : 'En pausa');
     startBtn.textContent = match.running ? 'Pausar' : (match.secondsLeft === match.duration ? 'Iniciar' : 'Seguir');
+    const oc = document.getElementById('ownerClock');
+    if(oc) oc.textContent = mmss(match.secondsLeft);
+    const ocEstado = document.getElementById('ownerClockState');
+    if(ocEstado){
+      ocEstado.textContent = clockStateEl.textContent;
+      ocEstado.classList.toggle('corriendo', match.running);
+    }
     pintarTV();
   }
 
@@ -2108,6 +2161,19 @@
     awayScoreEl.textContent = match.sa;
     homeLineupEl.innerHTML = alineacion(match.home);
     awayLineupEl.innerHTML = alineacion(match.away);
+    const espejo = {
+      ocHomeLetter: match.home, ocAwayLetter: match.away,
+      ocHomeName: local ? local.name : '—', ocAwayName: visita ? visita.name : '—',
+      ocHomeScore: match.sh, ocAwayScore: match.sa
+    };
+    pintarMarcador();
+    Object.keys(espejo).forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.textContent = espejo[id];
+    });
+    const wh = document.getElementById('winHomeBtn'), wa = document.getElementById('winAwayBtn');
+    if(wh) wh.textContent = 'Ganó ' + (local ? local.name : 'el local');
+    if(wa) wa.textContent = 'Ganó ' + (visita ? visita.name : 'el visitante');
     const mismoTiempo = minutosDe(match.home) === minutosDe(match.away);
     matchNoteEl.innerHTML = 'Duración de este partido: <b>' + Math.round(match.duration / 60) + ' min</b> · 5 contra 5, un portero y 4 jugadores' +
       (mismoTiempo ? '.' :
@@ -2208,6 +2274,9 @@
   }
 
   function arrancar(){
+    // el reloj solo lo mueve el dueño: ni forzando el botón desde el
+    // navegador puede un espectador arrancarlo o pararlo
+    if(enVivo && !esDueno()) return;
     if(match.running) return;
     match.running = true;
     match.endsAt = Date.now() + match.secondsLeft * 1000;
@@ -2221,6 +2290,7 @@
   }
 
   function pausar(){
+    if(enVivo && !esDueno()) return;
     if(match.running && match.endsAt){
       match.secondsLeft = Math.max(0, Math.round((match.endsAt - Date.now()) / 1000));
     }
@@ -2243,12 +2313,21 @@
 
   // registra el gol; el jugador queda sin asignar y se le pone nombre
   // desde el panel del dueño (en la parte pública no se pide quién fue)
+  // pinta el marcador en la cancha pública y en el espejo del panel del dueño
+  function pintarMarcador(){
+    homeScoreEl.textContent = match.sh;
+    awayScoreEl.textContent = match.sa;
+    const a = document.getElementById('ocHomeScore'), b = document.getElementById('ocAwayScore');
+    if(a) a.textContent = match.sh;
+    if(b) b.textContent = match.sa;
+  }
+
   function anotarGol(lado, jugador){
+    if(enVivo && !esDueno()) return;   // ningún gol falso desde fuera
     if(lado === 'home'){ match.sh++; bump(homeScoreEl); } else { match.sa++; bump(awayScoreEl); }
     match.goles.push({ lado: lado, letra: lado === 'home' ? match.home : match.away, jugador: jugador || null });
     festejarGol();
-    homeScoreEl.textContent = match.sh;
-    awayScoreEl.textContent = match.sa;
+    pintarMarcador();
     guardarPartido();
     pintarGoleadoresPanel();
     pintarTV();
@@ -2263,8 +2342,7 @@
       for(let i = match.goles.length - 1; i >= 0; i--){
         if(match.goles[i].lado === lado){ match.goles.splice(i, 1); break; }
       }
-      homeScoreEl.textContent = match.sh;
-      awayScoreEl.textContent = match.sa;
+      pintarMarcador();
       guardarPartido();
       pintarGoleadoresPanel();
       pintarTV();
@@ -2364,6 +2442,7 @@
   document.getElementById('drawBtn').addEventListener('click', () => terminarPartido('empate', false));
 
   function terminarPartido(forzado, porTiempo){
+    if(enVivo && !esDueno()) return;   // solo el dueño cierra el partido
     pausar();
     const local = match.home, visita = match.away;
     let ganador = null;
@@ -2637,8 +2716,7 @@
       if(g.lado === 'home') match.sh = Math.max(0, match.sh - 1);
       else match.sa = Math.max(0, match.sa - 1);
       match.goles.splice(i, 1);
-      homeScoreEl.textContent = match.sh;
-      awayScoreEl.textContent = match.sa;
+      pintarMarcador();
       guardarPartido();
       pintarGoleadoresPanel();
       pintarGoleadores();
