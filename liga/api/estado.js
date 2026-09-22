@@ -3,25 +3,27 @@
 // Guarda un solo documento JSON (equipos, partido en curso, modalidad y
 // partidos del día) para que todos los que abran la página vean lo mismo.
 //
-// Necesita una base de datos Redis conectada al proyecto en Vercel. La
-// integración de Upstash inyecta sola las variables; se aceptan los dos
-// nombres que usa Vercel. Si no hay base de datos, la función responde
-// "configurado: false" y la página sigue funcionando en modo local.
+// Usa Supabase (PostgreSQL) como base de datos. Si no hay conexión,
+// la función responde "configurado: false" y la página sigue funcionando en modo local.
 
-const BASE = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-const CLAVE_DOC = 'liga-club-los-prados:estado';
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
 const CLAVE_DUENO = process.env.CLAVE_DUENO || 'futbolclub';
 
-async function redis(comando) {
-  const r = await fetch(BASE, {
-    method: 'POST',
-    headers: { Authorization: 'Bearer ' + TOKEN, 'Content-Type': 'application/json' },
-    body: JSON.stringify(comando),
-  });
-  if (!r.ok) throw new Error('redis respondio ' + r.status);
-  const data = await r.json();
-  return data.result;
+async function supabase(method, path, body = null) {
+  const url = `${SUPABASE_URL}/rest/v1${path}`;
+  const opts = {
+    method,
+    headers: {
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer: 'return=representation',
+    },
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(url, opts);
+  if (!r.ok) throw new Error(`supabase ${r.status}: ${r.statusText}`);
+  return await r.json();
 }
 
 module.exports = async (req, res) => {
@@ -32,20 +34,19 @@ module.exports = async (req, res) => {
 
   if (req.method === 'OPTIONS') { res.status(204).end(); return; }
 
-  if (!BASE || !TOKEN) {
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
     res.status(200).json({ configurado: false });
     return;
   }
 
   try {
     if (req.method === 'GET') {
-      // Se cachea 2 segundos en el borde de Vercel: aunque haya cien personas
-      // mirando el partido, a la base de datos solo le llega una consulta cada
-      // 2 segundos en vez de cien. Es lo que mantiene el plan gratis con holgura.
       res.setHeader('Cache-Control', 'public, s-maxage=2, stale-while-revalidate=10');
-      const raw = await redis(['GET', CLAVE_DOC]);
+      const rows = await supabase('GET', '/estado?select=data,updated_at');
       let estado = null;
-      if (raw) { try { estado = JSON.parse(raw); } catch (e) { estado = null; } }
+      if (rows && rows.length > 0) {
+        estado = rows[0].data;
+      }
       res.status(200).json({ configurado: true, estado });
       return;
     }
@@ -55,7 +56,6 @@ module.exports = async (req, res) => {
       if (typeof body === 'string') { try { body = JSON.parse(body || '{}'); } catch (e) { body = {}; } }
       if (!body || typeof body !== 'object') body = {};
 
-      // solo escribe quien tiene la clave del panel del dueño
       if (body.clave !== CLAVE_DUENO) {
         res.status(401).json({ configurado: true, error: 'clave incorrecta' });
         return;
@@ -63,7 +63,7 @@ module.exports = async (req, res) => {
 
       const estado = body.estado && typeof body.estado === 'object' ? body.estado : {};
       estado.updatedAt = Date.now();
-      await redis(['SET', CLAVE_DOC, JSON.stringify(estado)]);
+      await supabase('PATCH', '/estado?id=eq.1', { data: estado });
       res.status(200).json({ configurado: true, ok: true, updatedAt: estado.updatedAt });
       return;
     }
