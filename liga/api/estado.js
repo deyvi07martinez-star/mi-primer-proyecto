@@ -35,7 +35,11 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') { res.status(204).end(); return; }
 
   if (!SUPABASE_URL || !SUPABASE_KEY) {
-    res.status(200).json({ configurado: false });
+    const faltan = [];
+    if (!SUPABASE_URL) faltan.push('SUPABASE_URL');
+    if (!SUPABASE_KEY) faltan.push('SUPABASE_ANON_KEY');
+    const parecidas = Object.keys(process.env).filter((k) => /supa/i.test(k));
+    res.status(200).json({ configurado: false, faltan, parecidas });
     return;
   }
 
