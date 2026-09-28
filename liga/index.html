@@ -2244,6 +2244,7 @@
          teléfono o se cambie de pestaña, al volver marca lo correcto) ---- */
   let intervalo = null;
   let avisoUnMinuto = false;
+  let avisoFinal = false;
 
   function tic(){
     if(!match.running) return;
@@ -2253,21 +2254,11 @@
       avisoUnMinuto = true;
       pitido(1);
     }
-    if(restante <= 0){
-      // el partido lo cierra solo el teléfono del dueño; los que miran se
-      // quedan en 00:00 hasta que llegue el resultado desde el servidor
-      if(enVivo && !esDueno()){
-        clearInterval(intervalo);
-        intervalo = null;
-        match.running = false;
-        pintarReloj();
-        return;
-      }
-      pausar();
-      pintarReloj();
-      pitido(3);
-      terminarPartido(null, true);
-      return;
+    if(restante <= 0 && !avisoFinal){
+      // al llegar a 00:00 solo suena el pitido: el reloj no se pausa ni el
+      // partido se cierra solo; eso lo decide el dueño desde su panel
+      avisoFinal = true;
+      if(!enVivo || esDueno()) pitido(3);
     }
     pintarReloj();
     guardarPartidoLocal();
@@ -2281,6 +2272,7 @@
     match.running = true;
     match.endsAt = Date.now() + match.secondsLeft * 1000;
     avisoUnMinuto = match.secondsLeft <= 60;
+    avisoFinal = match.secondsLeft <= 0;
     mantenerPantalla();
     pitido(0); // despierta el audio con el toque del usuario, sin sonar
     clearInterval(intervalo);
