@@ -6,8 +6,8 @@
 // Usa Supabase (PostgreSQL) como base de datos. Si no hay conexión,
 // la función responde "configurado: false" y la página sigue funcionando en modo local.
 
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
+const SUPABASE_URL = 'https://cxqjlnvnxbetlukvisff.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_8kdvZC9AD074Bf7xCbAJdQ_L6yJaQgk';
 const CLAVE_DUENO = process.env.CLAVE_DUENO || 'futbolclub';
 
 async function supabase(method, path, body = null) {
