@@ -15,11 +15,13 @@ async function supabase(method, path, body = null) {
   const opts = {
     method,
     headers: {
-      Authorization: `Bearer ${SUPABASE_KEY}`,
+      apikey: SUPABASE_KEY,
       'Content-Type': 'application/json',
       Prefer: 'return=representation',
     },
   };
+  // las claves antiguas (JWT) también van como Bearer; las sb_publishable_ no
+  if (!SUPABASE_KEY.startsWith('sb_')) opts.headers.Authorization = `Bearer ${SUPABASE_KEY}`;
   if (body) opts.body = JSON.stringify(body);
   const r = await fetch(url, opts);
   if (!r.ok) throw new Error(`supabase ${r.status}: ${r.statusText}`);
