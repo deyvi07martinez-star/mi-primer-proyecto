@@ -3157,13 +3157,20 @@
   }
 
   document.getElementById('resetDayBtn').addEventListener('click', () => {
-    if(!confirm('¿Seguro que quieres reiniciar el día? Se borran los partidos de hoy.')) return;
+    if(!confirm('¿Reiniciar el día? Se borran los partidos de hoy, los goles, los goleadores y las tarjetas; el reloj vuelve a empezar y los 26 equipos quedan como al principio (nombres, jugadores y minutos por defecto). El historial de días pasados no se toca.')) return;
+    pausar();
+    teams = equiposPorDefecto();
     dayLog = [];
+    match.home = 'A'; match.away = 'B'; match.queue = LETTERS.slice(2);
+    match.sh = 0; match.sa = 0;
+    match.goles = []; match.tarjetas = [];
+    match.duration = duracionPartido();
+    match.secondsLeft = match.duration;
+    guardarEquipos();
     guardarDia();
-    pintarPartidosDeHoy();
-    pintarTabla();
-    pintarPanelDueno();
-    avisar('Día reiniciado');
+    guardarPartido();
+    repintarTodo();
+    avisar('Día reiniciado: todo quedó como al principio');
   });
   document.getElementById('resetTournamentBtn').addEventListener('click', () => {
     if(!confirm('¿Reiniciar la fila? Vuelve a empezar con el equipo A contra el B.')) return;
