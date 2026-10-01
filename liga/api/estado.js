@@ -8,16 +8,17 @@
 
 const SUPABASE_URL = 'https://cxqjlnvnxbetlukvisff.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_8kdvZC9AD074Bf7xCbAJdQ_L6yJaQgk';
+const DOC_STAFF_ID = 2; // fila aparte para el cuerpo técnico y sus fotos
 const CLAVE_DUENO = process.env.CLAVE_DUENO || 'futbolclub';
 
-async function supabase(method, path, body = null) {
+async function supabase(method, path, body = null, prefer = 'return=representation') {
   const url = `${SUPABASE_URL}/rest/v1${path}`;
   const opts = {
     method,
     headers: {
       apikey: SUPABASE_KEY,
       'Content-Type': 'application/json',
-      Prefer: 'return=representation',
+      Prefer: prefer,
     },
   };
   // las claves antiguas (JWT) también van como Bearer; las sb_publishable_ no
@@ -46,9 +47,18 @@ module.exports = async (req, res) => {
   }
 
   try {
+    const esStaff = (req.query && req.query.doc) === 'staff';
+
+    if (req.method === 'GET' && esStaff) {
+      res.setHeader('Cache-Control', 'public, s-maxage=15, stale-while-revalidate=60');
+      const rows = await supabase('GET', `/estado?id=eq.${DOC_STAFF_ID}&select=data`);
+      res.status(200).json({ configurado: true, estado: rows && rows.length ? rows[0].data : null });
+      return;
+    }
+
     if (req.method === 'GET') {
       res.setHeader('Cache-Control', 'public, s-maxage=2, stale-while-revalidate=10');
-      const rows = await supabase('GET', '/estado?select=data,updated_at');
+      const rows = await supabase('GET', '/estado?id=eq.1&select=data,updated_at');
       let estado = null;
       if (rows && rows.length > 0) {
         estado = rows[0].data;
@@ -69,6 +79,15 @@ module.exports = async (req, res) => {
 
       const estado = body.estado && typeof body.estado === 'object' ? body.estado : {};
       estado.updatedAt = Date.now();
+
+      if (body.doc === 'staff') {
+        await supabase('POST', '/estado?on_conflict=id',
+          { id: DOC_STAFF_ID, data: estado, updated_at: estado.updatedAt },
+          'resolution=merge-duplicates,return=representation');
+        res.status(200).json({ configurado: true, ok: true, updatedAt: estado.updatedAt });
+        return;
+      }
+
       await supabase('PATCH', '/estado?id=eq.1', { data: estado });
       res.status(200).json({ configurado: true, ok: true, updatedAt: estado.updatedAt });
       return;

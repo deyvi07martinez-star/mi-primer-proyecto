@@ -987,6 +987,37 @@
   @media(max-width:980px){ .staff-wrap{grid-template-columns:1fr; gap:42px;} }
   @media(max-width:620px){ .staff-grid{grid-template-columns:repeat(2,1fr); gap:12px;} .staff-grid.teacher{grid-template-columns:repeat(2,1fr);} }
 
+  .staff-wrap.solo{grid-template-columns:1fr;}
+  .staff-wrap.solo .staff-grid:not(.teacher){grid-template-columns:repeat(4,1fr);}
+  @media(max-width:620px){ .staff-wrap.solo .staff-grid:not(.teacher){grid-template-columns:repeat(2,1fr);} }
+  /* editor del dueño */
+  .staff-edit-list{display:grid; gap:10px; margin:10px 0 14px;}
+  .staff-edit-row{
+    display:grid; grid-template-columns:76px 1fr auto; gap:12px; align-items:center;
+    background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 12px;
+  }
+  .staff-edit-row:focus-within{border-color:var(--blue-light);}
+  .se-photo{cursor:pointer; display:block;}
+  .se-thumb{
+    width:76px; height:76px; border-radius:10px; overflow:hidden; display:flex; align-items:center; justify-content:center;
+    background:var(--black); border:1px dashed rgba(244,247,251,0.3); color:var(--blue-sky);
+    font-size:0.7rem; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; text-align:center;
+  }
+  .se-thumb img{width:100%; height:100%; object-fit:cover; display:block;}
+  .se-fields{display:grid; gap:8px; min-width:0;}
+  .se-fields input{
+    width:100%; background:var(--black); border:1px solid var(--line); color:var(--white);
+    border-radius:6px; padding:9px 12px; font-size:0.88rem; font-family:'Work Sans',sans-serif;
+  }
+  .se-fields input:focus{outline:none; border-color:var(--blue-light);}
+  .se-actions{display:flex; flex-direction:column; gap:6px;}
+  .se-actions button{
+    background:transparent; border:1px solid var(--line); color:rgba(244,247,251,0.7); cursor:pointer;
+    border-radius:6px; padding:7px 10px; font-size:0.7rem; font-weight:700;
+  }
+  .se-actions button:hover{border-color:var(--blue-light); color:var(--white);}
+  @media(max-width:620px){ .staff-edit-row{grid-template-columns:76px 1fr;} .se-actions{grid-column:1 / -1; flex-direction:row;} }
+
   /* ===== HORARIO ===== */
   .hours{background:var(--charcoal); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
   .hours-wrap{display:grid; grid-template-columns:0.9fr 1.1fr; gap:60px; align-items:center;}
@@ -1546,22 +1577,36 @@
       <span>Letra</span><span>Nombre del equipo</span><span>Integrantes · el primero es el portero</span><span>Tiempo</span><span>Acciones</span>
     </div>
     <div class="editor-grid" id="editorGrid"></div>
+
+    <div class="editor-head" style="margin-top:46px;">
+      <h3>👥 Cuerpo técnico y profesor</h3>
+      <span class="saved-flag" id="staffSaved">Guardado ✓</span>
+    </div>
+    <p class="section-sub" style="margin-bottom:10px;">Toca el cuadro de la foto para poner o cambiar la foto, y escribe el nombre y el cargo. Lo que dejes vacío no se muestra en la página.</p>
+    <div id="staffEditor">
+      <h4 class="mini-title">Cuerpo técnico</h4>
+      <div class="staff-edit-list" id="staffEditTec"></div>
+      <button type="button" class="btn btn-outline btn-sm" data-se-add="tecnico">+ Añadir persona</button>
+      <h4 class="mini-title" style="margin-top:26px;">Profesor de la liga</h4>
+      <div class="staff-edit-list" id="staffEditProf"></div>
+      <button type="button" class="btn btn-outline btn-sm" data-se-add="profesores">+ Añadir profesor</button>
+    </div>
   </div>
 </section>
 
 <!-- CUERPO TÉCNICO Y PROFESOR -->
-<section class="staff" id="cuerpo-tecnico">
+<section class="staff" id="cuerpo-tecnico" style="display:none;">
   <div class="container">
     <div class="eyebrow reveal in">La gente de la liga</div>
     <h2 class="section-title reveal in">Cuerpo técnico</h2>
     <p class="section-sub reveal in">Las personas que organizan, arbitran y cuidan que cada jornada salga bien.</p>
-    <div class="staff-wrap">
-      <div class="staff-block">
+    <div class="staff-wrap" id="staffWrap">
+      <div class="staff-block" id="staffBlockTec">
         <h3>Cuerpo técnico</h3>
         <p class="staff-sub">Quienes te atienden en la cancha.</p>
         <div class="staff-grid" id="staffGrid"></div>
       </div>
-      <div class="staff-block">
+      <div class="staff-block" id="staffBlockProf">
         <h3>Profesor de la liga</h3>
         <p class="staff-sub">Quien enseña y dirige el fútbol.</p>
         <div class="staff-grid teacher" id="teacherGrid"></div>
@@ -3425,40 +3470,175 @@
   pintarGoleadoresPanel();
   pintarTarjetas();
   pintarCampeon();
+  /* ============================================================
+     CUERPO TÉCNICO Y PROFESOR (lo edita el dueño, lo ve todo el mundo)
+     Se guarda aparte del marcador en vivo, en su propio documento.
+     ============================================================ */
+  const STAFF_KEY = 'ligaClubStaff';
+  const personaVacia = () => ({ nombre: '', cargo: '', foto: '' });
+  let staff = leer(STAFF_KEY, null);
+  if(!staff || !Array.isArray(staff.tecnico) || !Array.isArray(staff.profesores)){
+    staff = { tecnico: Array.from({ length: 12 }, personaVacia), profesores: [personaVacia()] };
+  }
+  const staffGrid = document.getElementById('staffGrid');
+  const teacherGrid = document.getElementById('teacherGrid');
+  const staffSection = document.getElementById('cuerpo-tecnico');
+  const staffWrap = document.getElementById('staffWrap');
+  const staffSaved = document.getElementById('staffSaved');
+
+  function tarjetaPersona(p, cargoPorDefecto){
+    return '<div class="staff-card">' +
+      '<div class="staff-photo">' +
+        (p.foto ? '<img src="' + escapar(p.foto) + '" alt="' + escapar(p.nombre || cargoPorDefecto) + '" loading="lazy">'
+                : '<span class="silueta"></span>') +
+      '</div>' +
+      '<div class="staff-info"><div class="staff-name">' + escapar(p.nombre || '') + '</div>' +
+      '<div class="staff-role">' + escapar(p.cargo || cargoPorDefecto) + '</div></div>' +
+    '</div>';
+  }
+
+  function pintarStaff(){
+    const tec = staff.tecnico.filter(p => p.nombre || p.foto);
+    const prof = staff.profesores.filter(p => p.nombre || p.foto);
+    staffGrid.innerHTML = tec.map(p => tarjetaPersona(p, 'Cuerpo técnico')).join('');
+    teacherGrid.innerHTML = prof.map(p => tarjetaPersona(p, 'Profesor de fútbol')).join('');
+    document.getElementById('staffBlockTec').style.display = tec.length ? '' : 'none';
+    document.getElementById('staffBlockProf').style.display = prof.length ? '' : 'none';
+    staffWrap.classList.toggle('solo', !(tec.length && prof.length));
+    const hay = tec.length + prof.length > 0;
+    staffSection.style.display = hay ? '' : 'none';
+    const enlace = document.querySelector('.nav-links a[href="#cuerpo-tecnico"]');
+    if(enlace) enlace.parentElement.style.display = hay ? '' : 'none';
+  }
+
+  function filaEditor(p, grupo, i){
+    return '<div class="staff-edit-row" data-g="' + grupo + '" data-i="' + i + '">' +
+      '<label class="se-photo"><input type="file" accept="image/*" data-se="foto" hidden>' +
+        '<span class="se-thumb">' + (p.foto ? '<img src="' + escapar(p.foto) + '" alt="">' : '+ Foto') + '</span></label>' +
+      '<div class="se-fields">' +
+        '<input type="text" data-se="nombre" maxlength="40" placeholder="Nombre" value="' + escapar(p.nombre) + '">' +
+        '<input type="text" data-se="cargo" maxlength="30" placeholder="Cargo (ej. ' + (grupo === 'tecnico' ? 'Árbitro' : 'Profesor de fútbol') + ')" value="' + escapar(p.cargo) + '">' +
+      '</div>' +
+      '<div class="se-actions">' +
+        (p.foto ? '<button type="button" data-se="quitarfoto">Quitar foto</button>' : '') +
+        '<button type="button" data-se="borrar">Quitar</button>' +
+      '</div>' +
+    '</div>';
+  }
+  function pintarEditorStaff(){
+    document.getElementById('staffEditTec').innerHTML = staff.tecnico.map((p, i) => filaEditor(p, 'tecnico', i)).join('');
+    document.getElementById('staffEditProf').innerHTML = staff.profesores.map((p, i) => filaEditor(p, 'profesores', i)).join('');
+  }
+
+  // achica y recorta la foto cuadrada para que pese poco (unos 20-30 KB)
+  function reducirFoto(archivo){
+    return new Promise((listo, fallo) => {
+      const url = URL.createObjectURL(archivo);
+      const img = new Image();
+      img.onload = () => {
+        const L = 360, lado = Math.min(img.width, img.height);
+        const sx = (img.width - lado) / 2;
+        const sy = (img.height - lado) * 0.25; // en fotos de pie se queda con la parte de arriba (la cara)
+        const c = document.createElement('canvas');
+        c.width = c.height = L;
+        c.getContext('2d').drawImage(img, sx, sy, lado, lado, 0, 0, L, L);
+        URL.revokeObjectURL(url);
+        listo(c.toDataURL('image/jpeg', 0.8));
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); fallo(new Error('foto')); };
+      img.src = url;
+    });
+  }
+
+  let staffTimer = null;
+  function guardarStaff(){
+    escribir(STAFF_KEY, staff);
+    if(!esDueno()) return;
+    clearTimeout(staffTimer);
+    staffTimer = setTimeout(async () => {
+      let ok = false;
+      try{
+        const r = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clave: PASS, doc: 'staff', estado: staff })
+        });
+        const d = await r.json();
+        ok = !!(d && d.ok);
+      }catch(e){}
+      staffSaved.textContent = ok ? 'Guardado ✓' : 'Solo en este teléfono';
+      staffSaved.classList.add('show');
+      setTimeout(() => staffSaved.classList.remove('show'), 2200);
+    }, 700);
+  }
+
+  const staffEditor = document.getElementById('staffEditor');
+  function datosDeFila(el){
+    const fila = el.closest('.staff-edit-row');
+    if(!fila) return null;
+    return { fila, lista: staff[fila.getAttribute('data-g')], i: Number(fila.getAttribute('data-i')) };
+  }
+  staffEditor.addEventListener('input', (e) => {
+    const campo = e.target.getAttribute('data-se');
+    if(campo !== 'nombre' && campo !== 'cargo') return;
+    const d = datosDeFila(e.target); if(!d) return;
+    d.lista[d.i][campo] = e.target.value.trim();
+    pintarStaff();
+    guardarStaff();
+  });
+  staffEditor.addEventListener('change', async (e) => {
+    if(e.target.getAttribute('data-se') !== 'foto') return;
+    const d = datosDeFila(e.target); if(!d) return;
+    const archivo = e.target.files && e.target.files[0];
+    if(!archivo) return;
+    try{
+      d.lista[d.i].foto = await reducirFoto(archivo);
+    }catch(err){ avisar('No se pudo leer esa foto, prueba con otra'); return; }
+    pintarEditorStaff();
+    pintarStaff();
+    guardarStaff();
+  });
+  staffEditor.addEventListener('click', (e) => {
+    const add = e.target.closest('[data-se-add]');
+    if(add){
+      staff[add.getAttribute('data-se-add')].push(personaVacia());
+      pintarEditorStaff();
+      guardarStaff();
+      return;
+    }
+    const accion = e.target.getAttribute('data-se');
+    if(accion !== 'quitarfoto' && accion !== 'borrar') return;
+    const d = datosDeFila(e.target); if(!d) return;
+    if(accion === 'quitarfoto') d.lista[d.i].foto = '';
+    else d.lista.splice(d.i, 1);
+    pintarEditorStaff();
+    pintarStaff();
+    guardarStaff();
+  });
+
+  async function cargarStaff(){
+    try{
+      const r = await fetch(API + '?doc=staff', { cache: 'no-store' });
+      const d = await r.json();
+      const e = d && d.estado;
+      if(e && Array.isArray(e.tecnico) && Array.isArray(e.profesores)){
+        // el dueño que está editando no recibe cambios encima de lo que escribe
+        if(esDueno() && staffEditor.contains(document.activeElement)) return;
+        staff = { tecnico: e.tecnico, profesores: e.profesores };
+        escribir(STAFF_KEY, staff);
+        pintarStaff();
+        pintarEditorStaff();
+      }
+    }catch(err){}
+  }
+  pintarStaff();
+  pintarEditorStaff();
+  cargarStaff();
+  setInterval(() => { if(!document.hidden && !esDueno()) cargarStaff(); }, 60000);
+
   arrancarSincronizacion();
 })();
 
-  /* ============================================================
-     CUERPO TÉCNICO Y PROFESOR
-     Para poner a una persona: escribe su nombre y la ruta de su foto
-     (las fotos van en la carpeta fotos/, ej. 'fotos/juan.jpg').
-     Sin foto se ve una silueta.
-     ============================================================ */
-  const CUERPO_TECNICO = [
-    { nombre: '', cargo: 'Cuerpo técnico', foto: '' }, { nombre: '', cargo: 'Cuerpo técnico', foto: '' },
-    { nombre: '', cargo: 'Cuerpo técnico', foto: '' }, { nombre: '', cargo: 'Cuerpo técnico', foto: '' },
-    { nombre: '', cargo: 'Cuerpo técnico', foto: '' }, { nombre: '', cargo: 'Cuerpo técnico', foto: '' },
-    { nombre: '', cargo: 'Cuerpo técnico', foto: '' }, { nombre: '', cargo: 'Cuerpo técnico', foto: '' },
-    { nombre: '', cargo: 'Cuerpo técnico', foto: '' }, { nombre: '', cargo: 'Cuerpo técnico', foto: '' },
-    { nombre: '', cargo: 'Cuerpo técnico', foto: '' }, { nombre: '', cargo: 'Cuerpo técnico', foto: '' }
-  ];
-  const PROFESORES = [
-    { nombre: '', cargo: 'Profesor de fútbol', foto: '' }
-  ];
-  function esc(t){ return String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-  function tarjetaPersona(p){
-    const vacio = !p.nombre;
-    return '<div class="staff-card' + (vacio ? ' vacio' : '') + '">' +
-      '<div class="staff-photo">' +
-        (p.foto ? '<img src="' + esc(p.foto) + '" alt="' + esc(p.nombre || p.cargo) + '" loading="lazy">'
-                : '<span class="silueta"></span>') +
-      '</div>' +
-      '<div class="staff-info"><div class="staff-name">' + (vacio ? 'Próximamente' : esc(p.nombre)) + '</div>' +
-      '<div class="staff-role">' + esc(p.cargo) + '</div></div>' +
-    '</div>';
-  }
-  document.getElementById('staffGrid').innerHTML = CUERPO_TECNICO.map(tarjetaPersona).join('');
-  document.getElementById('teacherGrid').innerHTML = PROFESORES.map(tarjetaPersona).join('');
 </script>
 
 </body>
