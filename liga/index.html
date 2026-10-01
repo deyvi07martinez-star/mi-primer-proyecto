@@ -1595,7 +1595,7 @@
 </section>
 
 <!-- CUERPO TÉCNICO Y PROFESOR -->
-<section class="staff" id="cuerpo-tecnico" style="display:none;">
+<section class="staff" id="cuerpo-tecnico">
   <div class="container">
     <div class="eyebrow reveal in">La gente de la liga</div>
     <h2 class="section-title reveal in">Cuerpo técnico</h2>
@@ -3482,33 +3482,35 @@
   }
   const staffGrid = document.getElementById('staffGrid');
   const teacherGrid = document.getElementById('teacherGrid');
-  const staffSection = document.getElementById('cuerpo-tecnico');
   const staffWrap = document.getElementById('staffWrap');
   const staffSaved = document.getElementById('staffSaved');
 
   function tarjetaPersona(p, cargoPorDefecto){
-    return '<div class="staff-card">' +
+    const vacio = !p.nombre && !p.foto;
+    return '<div class="staff-card' + (vacio ? ' vacio' : '') + '">' +
       '<div class="staff-photo">' +
         (p.foto ? '<img src="' + escapar(p.foto) + '" alt="' + escapar(p.nombre || cargoPorDefecto) + '" loading="lazy">'
                 : '<span class="silueta"></span>') +
       '</div>' +
-      '<div class="staff-info"><div class="staff-name">' + escapar(p.nombre || '') + '</div>' +
+      '<div class="staff-info"><div class="staff-name">' + (vacio ? 'Próximamente' : escapar(p.nombre || '')) + '</div>' +
       '<div class="staff-role">' + escapar(p.cargo || cargoPorDefecto) + '</div></div>' +
     '</div>';
   }
 
+  // todos ven lo mismo (dueño y público); solo el dueño lo edita, más arriba en su panel.
+  // Mientras no haya nadie puesto, se muestran los cuadros vacíos para que se vea cómo queda.
   function pintarStaff(){
-    const tec = staff.tecnico.filter(p => p.nombre || p.foto);
-    const prof = staff.profesores.filter(p => p.nombre || p.foto);
+    let tec = staff.tecnico.filter(p => p.nombre || p.foto);
+    let prof = staff.profesores.filter(p => p.nombre || p.foto);
+    if(!tec.length && !prof.length){
+      tec = Array.from({ length: 12 }, personaVacia);
+      prof = [personaVacia()];
+    }
     staffGrid.innerHTML = tec.map(p => tarjetaPersona(p, 'Cuerpo técnico')).join('');
     teacherGrid.innerHTML = prof.map(p => tarjetaPersona(p, 'Profesor de fútbol')).join('');
     document.getElementById('staffBlockTec').style.display = tec.length ? '' : 'none';
     document.getElementById('staffBlockProf').style.display = prof.length ? '' : 'none';
     staffWrap.classList.toggle('solo', !(tec.length && prof.length));
-    const hay = tec.length + prof.length > 0;
-    staffSection.style.display = hay ? '' : 'none';
-    const enlace = document.querySelector('.nav-links a[href="#cuerpo-tecnico"]');
-    if(enlace) enlace.parentElement.style.display = hay ? '' : 'none';
   }
 
   function filaEditor(p, grupo, i){
