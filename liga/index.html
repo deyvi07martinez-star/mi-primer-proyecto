@@ -3539,7 +3539,7 @@
         '<span class="se-thumb">' + (p.foto ? '<img src="' + escapar(p.foto) + '" alt="">' : '+ Foto') + '</span></label>' +
       '<div class="se-fields">' +
         '<input type="text" data-se="nombre" maxlength="40" placeholder="Nombre" value="' + escapar(p.nombre) + '">' +
-        '<input type="text" data-se="cargo" maxlength="30" placeholder="Cargo (ej. ' + (grupo === 'tecnico' ? 'Árbitro' : 'Profesor de fútbol') + ')" value="' + escapar(p.cargo) + '">' +
+        '<input type="text" data-se="cargo" maxlength="80" placeholder="Cargo (ej. ' + (grupo === 'tecnico' ? 'Árbitro' : 'Profesor de fútbol') + ')" value="' + escapar(p.cargo) + '">' +
       '</div>' +
       '<div class="se-actions">' +
         (p.foto ? '<button type="button" data-se="quitarfoto">Quitar foto</button>' : '') +
@@ -3573,7 +3573,9 @@
   }
 
   let staffTimer = null;
+  let staffTocado = false;
   function guardarStaff(){
+    staffTocado = true;
     escribir(STAFF_KEY, staff);
     if(!esDueno()) return;
     clearTimeout(staffTimer);
@@ -3588,9 +3590,9 @@
         const d = await r.json();
         ok = !!(d && d.ok);
       }catch(e){}
-      staffSaved.textContent = ok ? 'Guardado ✓' : 'Solo en este teléfono';
+      staffSaved.textContent = ok ? 'Guardado ✓' : '⚠ No se guardó para todos, intenta otra vez';
       staffSaved.classList.add('show');
-      setTimeout(() => staffSaved.classList.remove('show'), 2200);
+      setTimeout(() => staffSaved.classList.remove('show'), ok ? 2200 : 6000);
     }, 700);
   }
 
@@ -3615,7 +3617,7 @@
     if(!archivo) return;
     try{
       d.lista[d.i].foto = await reducirFoto(archivo);
-    }catch(err){ avisar('No se pudo leer esa foto, prueba con otra'); return; }
+    }catch(err){ avisar('No se pudo leer esa foto (prueba con una captura o una foto en JPG/PNG)'); return; }
     pintarEditorStaff();
     pintarStaff();
     guardarStaff();
@@ -3640,12 +3642,12 @@
 
   async function cargarStaff(){
     try{
-      const r = await fetch(API + '?doc=staff', { cache: 'no-store' });
+      const r = await fetch(API + '?doc=staff' + (esDueno() ? '&t=' + Date.now() : ''), { cache: 'no-store' });
       const d = await r.json();
       const e = d && d.estado;
       if(e && Array.isArray(e.tecnico) && Array.isArray(e.profesores)){
         // el dueño que está editando no recibe cambios encima de lo que escribe
-        if(esDueno() && staffEditor.contains(document.activeElement)) return;
+        if(esDueno() && (staffTocado || staffEditor.contains(document.activeElement))) return;
         staff = { tecnico: e.tecnico, profesores: e.profesores };
         escribir(STAFF_KEY, staff);
         pintarStaff();
