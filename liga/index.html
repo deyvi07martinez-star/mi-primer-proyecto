@@ -949,14 +949,15 @@
 
   /* ===== CUERPO TÉCNICO Y PROFESOR ===== */
   .staff{background:var(--black);}
-  .staff-wrap{display:grid; grid-template-columns:2fr 1fr; gap:48px; align-items:start;}
+  .staff-wrap{display:grid; grid-template-columns:1fr; gap:46px; align-items:start;}
+  #staffBlockProf{order:-1;} /* el profesor siempre va arriba */
   .staff-block h3{
     font-family:'Bebas Neue',sans-serif; font-size:1.7rem; letter-spacing:0.05em; text-transform:uppercase;
     margin-bottom:6px;
   }
   .staff-block .staff-sub{font-size:0.9rem; color:rgba(244,247,251,0.55); margin-bottom:22px;}
-  .staff-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
-  .staff-grid.teacher{grid-template-columns:1fr;}
+  .staff-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  .staff-grid.teacher{grid-template-columns:repeat(auto-fill,minmax(190px,250px));}
   .staff-card{
     background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden;
     transition:transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
@@ -984,16 +985,19 @@
     color:var(--blue-sky); font-weight:800;
   }
   .staff-card.vacio .staff-name{color:rgba(244,247,251,0.45); font-weight:600;}
-  @media(max-width:980px){
-    .staff-wrap{grid-template-columns:1fr; gap:42px;}
-    #staffBlockProf{order:-1;} /* en pantallas chicas el profesor sale primero */
-    .staff-grid.teacher{max-width:300px;}
+  @media(max-width:980px){ .staff-grid{grid-template-columns:repeat(3,1fr);} }
+  @media(max-width:620px){
+    .staff-grid{grid-template-columns:repeat(2,1fr); gap:12px;}
+    .staff-grid.teacher{grid-template-columns:minmax(0,300px);}
   }
-  @media(max-width:620px){ .staff-grid{grid-template-columns:repeat(2,1fr); gap:12px;} .staff-grid.teacher{grid-template-columns:1fr;} }
-
-  .staff-wrap.solo{grid-template-columns:1fr;}
-  .staff-wrap.solo .staff-grid:not(.teacher){grid-template-columns:repeat(4,1fr);}
-  @media(max-width:620px){ .staff-wrap.solo .staff-grid:not(.teacher){grid-template-columns:repeat(2,1fr);} }
+  .staff-cta{
+    margin-top:46px; display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
+    background:linear-gradient(120deg, rgba(29,78,216,0.22), rgba(22,26,34,0.9) 65%);
+    border:1px solid rgba(59,130,246,0.4); border-left:5px solid var(--blue-light);
+    border-radius:12px; padding:22px 26px;
+  }
+  .staff-cta b{display:block; font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:0.05em; text-transform:uppercase;}
+  .staff-cta span{display:block; margin-top:2px; font-size:0.95rem; color:rgba(244,247,251,0.75); max-width:560px;}
   /* editor del dueño */
   .staff-edit-list{display:grid; gap:10px; margin:10px 0 14px;}
   .staff-edit-row{
@@ -1324,7 +1328,7 @@
         <li><span class="ico">✓</span> 26 equipos, de la A a la Z, con sus integrantes a la vista</li>
         <li><span class="ico">✓</span> Equipos de 5: un portero y 4 jugadores</li>
         <li><span class="ico">✓</span> Partidos de 15 minutos con cronómetro en pantalla</li>
-        <li><span class="ico">✓</span> El encargado de la liga es quien arma los equipos</li>
+        <li><span class="ico">✓</span> El cuerpo técnico y el profesor son quienes arman los equipos</li>
         <li><span class="ico">✓</span> Tabla de posiciones que se actualiza sola con cada partido</li>
       </ul>
       <div class="about-stats stagger">
@@ -1342,7 +1346,7 @@
   <div class="container">
     <div class="eyebrow reveal in">Los equipos</div>
     <h2 class="section-title reveal in">De la A a la Z</h2>
-    <p class="section-sub reveal in">Cada letra es un equipo de 5: un portero (el primero de la lista) y 4 jugadores, con 15 minutos por partido. Toca una letra para saltar a su equipo y mira quién está en cada uno. Para entrar en un equipo, habla con el encargado de la liga.</p>
+    <p class="section-sub reveal in">Cada letra es un equipo de 5: un portero (el primero de la lista) y 4 jugadores, con 15 minutos por partido. Toca una letra para saltar a su equipo y mira quién está en cada uno. Para entrar en un equipo o armar uno nuevo, habla con el cuerpo técnico o con el profesor de la liga.</p>
     <div class="az-bar" id="azBar"></div>
     <div class="team-grid stagger" id="teamGrid"></div>
   </div>
@@ -1616,6 +1620,13 @@
         <div class="staff-grid teacher" id="teacherGrid"></div>
       </div>
     </div>
+    <div class="staff-cta reveal in">
+      <div>
+        <b>¿Quieres armar un equipo?</b>
+        <span>Habla con el cuerpo técnico o con el profesor de la liga: ellos te anotan y te dicen en qué letra entras.</span>
+      </div>
+      <a class="btn btn-primary" href="https://wa.me/18097920306?text=Hola%2C%20quiero%20armar%20un%20equipo%20en%20Liga%20Club%20Los%20Prados%20F.C." target="_blank" rel="noopener">Escribir por WhatsApp</a>
+    </div>
   </div>
 </section>
 
@@ -1717,7 +1728,7 @@
 <section class="cta-band">
   <div class="container">
     <h2 class="reveal in">¿Quieres jugar?</h2>
-    <p class="reveal in">Escríbenos por WhatsApp y el encargado de la liga te mete en un equipo. Martes y viernes, 2:00 pm.</p>
+    <p class="reveal in">Escríbenos por WhatsApp y el cuerpo técnico o el profesor te mete en un equipo. Martes y viernes, 2:00 pm.</p>
     <a class="btn btn-white reveal in" href="https://wa.me/18097920306?text=Hola%2C%20quiero%20jugar%20en%20Liga%20Club%20Los%20Prados%20F.C." target="_blank" rel="noopener">Escribir por WhatsApp</a>
   </div>
 </section>
