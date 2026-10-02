@@ -1428,7 +1428,7 @@
     </div>
 
     <div class="editor-head" style="margin-bottom:6px;">
-      <h3>⚽ Goleadores de la liga</h3>
+      <h3>⚽ Goleadores de la liga · hoy</h3>
     </div>
     <ol class="rank-list" id="scorersList"></ol>
 
@@ -2484,6 +2484,7 @@
     pintarMarcador();
     guardarPartido();
     pintarGoleadoresPanel();
+    pintarGoleadores();
     pintarTV();
   }
 
@@ -2499,6 +2500,7 @@
       pintarMarcador();
       guardarPartido();
       pintarGoleadoresPanel();
+      pintarGoleadores();
       pintarTV();
     });
   });
@@ -2711,10 +2713,10 @@
   function pintarGoleadores(){
     const cont = document.getElementById('scorersList');
     if(!cont) return;
-    const tabla = tablaGoleadores(false);
+    const tabla = tablaGoleadores(true); // solo la jornada de hoy: empieza en cero cada día o al reiniciar
     cont.innerHTML = tabla.length
       ? tabla.slice(0, 10).map(filaGoleador).join('')
-      : '<li class="empty-note">Todavía no hay goles con jugador asignado.</li>';
+      : '<li class="empty-note">Todavía no hay goleadores hoy.</li>';
   }
 
   // panel del dueño: aquí y solo aquí se dice quién metió cada gol
