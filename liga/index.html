@@ -984,8 +984,12 @@
     color:var(--blue-sky); font-weight:800;
   }
   .staff-card.vacio .staff-name{color:rgba(244,247,251,0.45); font-weight:600;}
-  @media(max-width:980px){ .staff-wrap{grid-template-columns:1fr; gap:42px;} }
-  @media(max-width:620px){ .staff-grid{grid-template-columns:repeat(2,1fr); gap:12px;} .staff-grid.teacher{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:980px){
+    .staff-wrap{grid-template-columns:1fr; gap:42px;}
+    #staffBlockProf{order:-1;} /* en pantallas chicas el profesor sale primero */
+    .staff-grid.teacher{max-width:300px;}
+  }
+  @media(max-width:620px){ .staff-grid{grid-template-columns:repeat(2,1fr); gap:12px;} .staff-grid.teacher{grid-template-columns:1fr;} }
 
   .staff-wrap.solo{grid-template-columns:1fr;}
   .staff-wrap.solo .staff-grid:not(.teacher){grid-template-columns:repeat(4,1fr);}
