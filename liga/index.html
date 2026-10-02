@@ -1604,6 +1604,7 @@
       <div id="historyEmptyMsg" class="empty-note">Todavía no hay días anteriores guardados — en cuanto cambie el día, lo de hoy queda guardado aquí automáticamente.</div>
       <select id="historySelect" class="owner-select" style="display:none;"></select>
       <div id="historyDetail"></div>
+      <button type="button" id="clearHistoryBtn" class="btn btn-outline btn-sm" style="display:none; margin-top:18px;">Reiniciar historial</button>
     </div>
 
     <div class="editor-head">
@@ -3258,9 +3259,12 @@
     const vacio = document.getElementById('historyEmptyMsg');
     const select = document.getElementById('historySelect');
     const detalle = document.getElementById('historyDetail');
+    const botonBorrar = document.getElementById('clearHistoryBtn');
+    botonBorrar.style.display = dias.length ? 'inline-flex' : 'none';
     if(!dias.length){
       vacio.style.display = 'block';
       select.style.display = 'none';
+      select.innerHTML = '';
       detalle.innerHTML = '';
       return;
     }
@@ -3283,6 +3287,15 @@
     }
   }
 
+  document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+    if(!esDueno()) return;
+    if(!confirm('¿Reiniciar el historial? Se borran TODOS los días pasados guardados y la tabla de posiciones empieza de nuevo. Lo de hoy no se toca. No se puede deshacer.')) return;
+    escribir(HISTORY_KEY, {});
+    pintarHistorial();
+    pintarTabla();
+    pintarPanelDueno();
+    avisar('Historial reiniciado: empieza de nuevo');
+  });
   document.getElementById('resetDayBtn').addEventListener('click', () => {
     if(!confirm('¿Reiniciar el día? Se borran los partidos de hoy, los goles, los goleadores y las tarjetas; el reloj vuelve a empezar y los 26 equipos quedan como al principio (nombres, jugadores y minutos por defecto). El historial de días pasados no se toca.')) return;
     pausar();
