@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D'Rufo Sport — Cuentas para transferencias</title>
+
+<!-- Datos para Google y para cuando se comparte el enlace -->
+<meta name="description" content="Cuentas de D'Rufo Sport para pagar por transferencia: Banreservas, Banco Popular y BHD León. Toca y copia el número de cuenta. Todo para deportes.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0d2a7a">
+<link rel="canonical" href="https://drufo-sport.vercel.app/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="D'Rufo Sport">
+<meta property="og:locale" content="es_DO">
+<meta property="og:url" content="https://drufo-sport.vercel.app/">
+<meta property="og:title" content="D'Rufo Sport — Cuentas para transferencias">
+<meta property="og:description" content="Toca y copia la cuenta: Banreservas, Banco Popular y BHD León. Manda tu comprobante por WhatsApp.">
+<meta property="og:image" content="https://drufo-sport.vercel.app/og-drufo.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="D'Rufo Sport — Cuentas para transferencias">
+<meta name="twitter:description" content="Toca y copia la cuenta: Banreservas, Banco Popular y BHD León.">
+<meta name="twitter:image" content="https://drufo-sport.vercel.app/og-drufo.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SportingGoodsStore",
+  "name": "D'Rufo Sport SRL",
+  "slogan": "Todo para Deportes",
+  "url": "https://drufo-sport.vercel.app/",
+  "image": "https://drufo-sport.vercel.app/og-drufo.png",
+  "telephone": "+1-829-788-8096",
+  "address": { "@type": "PostalAddress", "addressCountry": "DO" },
+  "paymentAccepted": "Transferencia bancaria",
+  "sameAs": ["https://www.instagram.com/rufosport01/"]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d2a7a; --navy2:#06164a; --blue:#1d6fe0; --sky:#7cc4ff;
+  --red:#e3262f; --yellow:#ffd21f; --ink:#0b1430; --paper:#f4f7fc;
+  --card:#ffffff; --muted:#5b6788; --turf:#0f3d1c; --turf2:#17602b; --clay:#b8322b;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--ink);font-family:'Work Sans',Arial,sans-serif;min-height:100vh;}
+
+/* ---------- Portada: la pared de guantes con el logo iluminado ---------- */
+.hero{position:relative;overflow:hidden;color:#fff;text-align:center;background:var(--turf);
+  min-height:min(92vh,760px);display:flex;flex-direction:column;justify-content:flex-end;padding:0 16px 46px;}
+.hero .foto{position:absolute;inset:0;background:var(--turf) url(portada.jpg) center top/100% auto no-repeat;
+  animation:zoom 6s ease-out both;transform-origin:50% 30%;}
+.hero .foto::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(6,20,10,0) 34%,rgba(10,40,18,.7) 56%,var(--turf) 72%);}
+/* luces hexagonales del techo */
+.hex{position:absolute;top:-30px;left:50%;width:520px;height:120px;transform:translateX(-50%);z-index:1;
+  background:
+    linear-gradient(60deg,transparent 47%,rgba(255,255,255,.7) 48%,rgba(255,255,255,.7) 52%,transparent 53%),
+    linear-gradient(-60deg,transparent 47%,rgba(255,255,255,.7) 48%,rgba(255,255,255,.7) 52%,transparent 53%);
+  background-size:120px 70px;opacity:.35;filter:blur(.4px) drop-shadow(0 0 6px #fff);
+  -webkit-mask:linear-gradient(#000,transparent);mask:linear-gradient(#000,transparent);}
+.hero .txt{position:relative;z-index:2;}
+.tag{display:inline-block;background:var(--yellow);color:var(--navy);font-weight:800;font-size:12px;
+  letter-spacing:2px;padding:7px 14px;border-radius:30px;text-transform:uppercase;animation:up .7s .2s both;}
+.hero h1{margin-top:14px;font-family:'Anton',sans-serif;font-weight:400;
+  font-size:46px;letter-spacing:1.5px;line-height:.98;text-transform:uppercase;
+  text-shadow:0 4px 20px rgba(0,0,0,.5);animation:up .7s .3s both;}
+.hero h1 span{color:var(--yellow);}
+.hero p{margin:12px auto 0;max-width:330px;font-size:16px;color:rgba(255,255,255,.9);animation:up .7s .4s both;}
+.bajar{display:inline-flex;margin-top:22px;width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,255,255,.6);
+  align-items:center;justify-content:center;color:#fff;text-decoration:none;font-size:20px;animation:bote 1.6s infinite;}
+
+/* carril rojo de bateo con el home */
+.carril{position:relative;height:64px;background:var(--clay);
+  background-image:linear-gradient(90deg,transparent 18%,#fff 18%,#fff calc(18% + 4px),transparent calc(18% + 4px),
+    transparent calc(82% - 4px),#fff calc(82% - 4px),#fff 82%,transparent 82%);}
+.carril .home{position:absolute;left:50%;top:50%;width:46px;height:40px;transform:translate(-50%,-50%);
+  background:#f4f1ea;clip-path:polygon(0 0,100% 0,100% 55%,50% 100%,0 55%);}
+
+/* ---------- Cuentas ---------- */
+main{max-width:520px;margin:0 auto;padding:22px 16px 40px;position:relative;z-index:3;}
+.acc{background:var(--card);border-radius:22px;padding:20px 18px 18px;margin-bottom:16px;
+  box-shadow:0 10px 30px rgba(13,42,122,.12);border-top:6px solid var(--c);
+  animation:up .6s both;}
+.acc:nth-child(2){animation-delay:.08s}.acc:nth-child(3){animation-delay:.16s}
+.head{display:flex;align-items:center;gap:12px;}
+.badge{flex:0 0 46px;height:46px;border-radius:14px;background:var(--c);color:#fff;
+  display:grid;place-items:center;font-family:'Anton',sans-serif;font-size:20px;letter-spacing:1px;}
+.bank{font-weight:800;font-size:20px;line-height:1.1;}
+.type{font-size:13px;color:var(--muted);font-weight:600;margin-top:2px;}
+.num{margin-top:16px;font-family:'Anton',sans-serif;font-size:36px;letter-spacing:3px;color:var(--red);
+  line-height:1;word-break:break-all;user-select:all;}
+.holder{margin-top:6px;font-size:14px;color:var(--blue);font-weight:700;}
+.copy{margin-top:14px;width:100%;border:0;border-radius:14px;padding:15px 12px;cursor:pointer;
+  background:var(--navy);color:#fff;font:700 17px 'Work Sans',sans-serif;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,background .2s;}
+.copy:active{transform:scale(.97);}
+.copy.ok{background:#16a34a;}
+.copy svg{width:20px;height:20px;}
+.small{display:flex;gap:8px;margin-top:8px;}
+.small button{flex:1;border:2px solid #dbe3f3;background:#fff;color:var(--navy);border-radius:12px;
+  padding:10px 6px;font:700 13px 'Work Sans',sans-serif;cursor:pointer;}
+.small button:active{background:#eef3ff;}
+
+.all{width:100%;border:2px dashed var(--navy);background:transparent;color:var(--navy);border-radius:16px;
+  padding:14px;font:800 15px 'Work Sans',sans-serif;cursor:pointer;margin:4px 0 22px;}
+
+.steps{background:var(--card);border-radius:22px;padding:20px 18px;box-shadow:0 10px 30px rgba(13,42,122,.08);}
+.steps h2{font-family:'Anton',sans-serif;font-weight:400;font-size:22px;letter-spacing:1px;color:var(--navy);}
+.steps ol{list-style:none;margin-top:12px;counter-reset:s;}
+.steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;padding:8px 0;font-size:15px;line-height:1.4;}
+.steps li::before{content:counter(s);flex:0 0 28px;height:28px;background:var(--yellow);clip-path:polygon(0 0,100% 0,100% 58%,50% 100%,0 58%);padding-bottom:4px;
+  color:var(--navy);font-weight:800;display:grid;place-items:center;font-size:14px;}
+
+.wa{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;padding:16px;border-radius:16px;
+  background:#22c55e;color:#fff;text-decoration:none;font-weight:800;font-size:17px;box-shadow:0 8px 22px rgba(34,197,94,.35);}
+.wa svg{width:22px;height:22px;}
+.ig{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;padding:14px;border-radius:16px;
+  background:linear-gradient(90deg,#f9a825,#e1306c,#833ab4);color:#fff;text-decoration:none;font-weight:800;font-size:15px;}
+
+footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 16px 30px;}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:var(--ink);color:#fff;
+  padding:14px 22px;border-radius:40px;font-weight:700;font-size:15px;box-shadow:0 10px 30px rgba(0,0,0,.3);
+  transition:transform .3s cubic-bezier(.2,1.2,.4,1);z-index:50;max-width:calc(100% - 32px);text-align:center;}
+.toast.show{transform:translate(-50%,0);}
+
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes zoom{from{transform:scale(1.06)}to{transform:scale(1)}}
+@keyframes bote{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="foto" role="img" aria-label="Logo de D'Rufo Sport en la pared de guantes de la tienda"></div>
+  <div class="hex"></div>
+  <div class="txt">
+    <span class="tag">⚾ Todo para Deportes</span>
+    <h1>Paga por<br><span>transferencia</span></h1>
+    <p>Toca <b>Copiar</b> y pega el número en la app de tu banco.</p>
+    <a class="bajar" href="#cuentas" aria-label="Ver cuentas">↓</a>
+  </div>
+</header>
+<div class="carril"><div class="home"></div></div>
+
+<main>
+  <section id="cuentas"></section>
+
+  <button class="all" id="copiarTodo">📋 Copiar todas las cuentas</button>
+
+  <section class="steps">
+    <h2>¿CÓMO PAGAR?</h2>
+    <ol>
+      <li>Copia la cuenta del banco que tú uses.</li>
+      <li>Haz la transferencia desde tu app.</li>
+      <li>Mándanos el comprobante por WhatsApp y listo.</li>
+    </ol>
+    <a class="wa" id="wa" href="https://wa.me/18297888096" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 .9c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z"/></svg>
+      Enviar comprobante
+    </a>
+    <a class="wa" style="background:#fff;color:var(--navy);border:2px solid #dbe3f3;box-shadow:none;margin-top:10px" href="tel:+18297888096">📞 Llamar · 829-788-8096</a>
+    <a class="ig" href="https://www.instagram.com/rufosport01/" target="_blank" rel="noopener">📸 @rufosport01</a>
+  </section>
+</main>
+
+<footer>D'Rufo Sport SRL · Todo para Deportes</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// Para cambiar una cuenta, edita solo esta lista.
+const CUENTAS = [
+  { banco:'Banreservas',   corto:'BR',  color:'#0a4fb5', tipo:'Cuenta Corriente', numero:'0802048234',  titular:"D Rufo Sport SRL" },
+  { banco:'Banco Popular', corto:'BP',  color:'#003a80', tipo:'Cuenta Corriente', numero:'820153799',   titular:"D Rufo Sport SRL" },
+  { banco:'BHD León',      corto:'BHD', color:'#13a538', tipo:'Cuenta de Ahorro', numero:'17756800013', titular:'Carlos J Mariñez' },
+];
+
+const ICON_COPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+const ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+const caja = document.getElementById('cuentas');
+CUENTAS.forEach((c, i) => {
+  const el = document.createElement('article');
+  el.className = 'acc';
+  el.style.setProperty('--c', c.color);
+  el.innerHTML = `
+    <div class="head">
+      <div class="badge">${c.corto}</div>
+      <div><div class="bank">${c.banco}</div><div class="type">${c.tipo}</div></div>
+    </div>
+    <div class="num">${c.numero}</div>
+    <div class="holder">${c.titular}</div>
+    <button class="copy" data-i="${i}">${ICON_COPY} Copiar número</button>
+    <div class="small">
+      <button data-t="${i}">Copiar titular</button>
+      <button data-f="${i}">Copiar todo</button>
+    </div>`;
+  caja.appendChild(el);
+});
+
+function texto(c){ return `${c.banco}\n${c.tipo}\n${c.numero}\n${c.titular}`; }
+
+async function copiar(t){
+  try { await navigator.clipboard.writeText(t); return true; }
+  catch(e){
+    // Respaldo para teléfonos viejos o navegadores dentro de apps
+    const ta = document.createElement('textarea');
+    ta.value = t; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, t.length);
+    let ok = false; try { ok = document.execCommand('copy'); } catch(_){}
+    ta.remove(); return ok;
+  }
+}
+
+let tt;
+function aviso(m){
+  const t = document.getElementById('toast');
+  t.textContent = m; t.classList.add('show');
+  clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+caja.addEventListener('click', async e => {
+  const b = e.target.closest('button'); if(!b) return;
+  if(b.dataset.i !== undefined){
+    const c = CUENTAS[b.dataset.i];
+    if(await copiar(c.numero)){
+      b.classList.add('ok'); b.innerHTML = ICON_OK + ' ¡Copiado!';
+      if(navigator.vibrate) navigator.vibrate(30);
+      aviso(`✅ ${c.banco}: ${c.numero} copiado`);
+      setTimeout(() => { b.classList.remove('ok'); b.innerHTML = ICON_COPY + ' Copiar número'; }, 2000);
+    } else aviso('Mantén presionado el número para copiarlo');
+  } else if(b.dataset.t !== undefined){
+    const c = CUENTAS[b.dataset.t];
+    aviso(await copiar(c.titular) ? `✅ Titular copiado: ${c.titular}` : 'No se pudo copiar');
+  } else if(b.dataset.f !== undefined){
+    const c = CUENTAS[b.dataset.f];
+    aviso(await copiar(texto(c)) ? `✅ Datos de ${c.banco} copiados` : 'No se pudo copiar');
+  }
+});
+
+document.getElementById('copiarTodo').addEventListener('click', async () => {
+  const t = "D'Rufo Sport — Cuentas\n\n" + CUENTAS.map(texto).join('\n\n');
+  aviso(await copiar(t) ? '✅ Todas las cuentas copiadas' : 'No se pudo copiar');
+});
+
+document.getElementById('wa').href = 'https://wa.me/18297888096?text=' +
+  encodeURIComponent("Hola D'Rufo Sport 👋 Les envío el comprobante de mi transferencia.");
+</script>
+</body>
+</html>
