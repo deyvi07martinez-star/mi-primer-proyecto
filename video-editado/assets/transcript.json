@@ -1,0 +1,542 @@
+[
+  {
+    "text": "estamos",
+    "start": 0.03,
+    "end": 0.55,
+    "id": "w0"
+  },
+  {
+    "text": "recibiendo",
+    "start": 0.55,
+    "end": 1.33,
+    "id": "w1"
+  },
+  {
+    "text": "mercancías",
+    "start": 1.33,
+    "end": 2.1,
+    "id": "w2"
+  },
+  {
+    "text": "mi",
+    "start": 2.1,
+    "end": 2.25,
+    "id": "w3"
+  },
+  {
+    "text": "gente",
+    "start": 2.25,
+    "end": 2.68,
+    "id": "w4"
+  },
+  {
+    "text": "aquí",
+    "start": 2.68,
+    "end": 2.91,
+    "id": "w5"
+  },
+  {
+    "text": "nos",
+    "start": 2.91,
+    "end": 3.09,
+    "id": "w6"
+  },
+  {
+    "text": "llegan",
+    "start": 3.09,
+    "end": 3.32,
+    "id": "w7"
+  },
+  {
+    "text": "parte",
+    "start": 3.45,
+    "end": 3.72,
+    "id": "w8"
+  },
+  {
+    "text": "de",
+    "start": 3.72,
+    "end": 3.84,
+    "id": "w9"
+  },
+  {
+    "text": "la",
+    "start": 3.84,
+    "end": 4,
+    "id": "w10"
+  },
+  {
+    "text": "brea",
+    "start": 4,
+    "end": 4.36,
+    "id": "w11"
+  },
+  {
+    "text": "en",
+    "start": 4.36,
+    "end": 4.4,
+    "id": "w12"
+  },
+  {
+    "text": "spray",
+    "start": 4.4,
+    "end": 4.88,
+    "id": "w13"
+  },
+  {
+    "text": "esto",
+    "start": 4.91,
+    "end": 5.1,
+    "id": "w14"
+  },
+  {
+    "text": "es",
+    "start": 5.1,
+    "end": 5.21,
+    "id": "w15"
+  },
+  {
+    "text": "lo",
+    "start": 5.21,
+    "end": 5.32,
+    "id": "w16"
+  },
+  {
+    "text": "que",
+    "start": 5.32,
+    "end": 5.49,
+    "id": "w17"
+  },
+  {
+    "text": "estaban",
+    "start": 5.49,
+    "end": 5.89,
+    "id": "w18"
+  },
+  {
+    "text": "esperando",
+    "start": 5.89,
+    "end": 6.4,
+    "id": "w19"
+  },
+  {
+    "text": "mucha",
+    "start": 6.4,
+    "end": 6.68,
+    "id": "w20"
+  },
+  {
+    "text": "gente",
+    "start": 6.68,
+    "end": 7,
+    "id": "w21"
+  },
+  {
+    "text": "sabían",
+    "start": 7,
+    "end": 7.28,
+    "id": "w22"
+  },
+  {
+    "text": "que",
+    "start": 7.28,
+    "end": 7.42,
+    "id": "w23"
+  },
+  {
+    "text": "se",
+    "start": 7.42,
+    "end": 7.51,
+    "id": "w24"
+  },
+  {
+    "text": "habían",
+    "start": 7.51,
+    "end": 7.8,
+    "id": "w25"
+  },
+  {
+    "text": "agotado",
+    "start": 7.8,
+    "end": 8.19,
+    "id": "w26"
+  },
+  {
+    "text": "llegan",
+    "start": 8.31,
+    "end": 8.79,
+    "id": "w27"
+  },
+  {
+    "text": "de",
+    "start": 8.81,
+    "end": 8.97,
+    "id": "w28"
+  },
+  {
+    "text": "nuevo",
+    "start": 9.03,
+    "end": 9.41,
+    "id": "w29"
+  },
+  {
+    "text": "vamos",
+    "start": 9.41,
+    "end": 9.85,
+    "id": "w30"
+  },
+  {
+    "text": "a",
+    "start": 9.85,
+    "end": 9.93,
+    "id": "w31"
+  },
+  {
+    "text": "esto",
+    "start": 9.93,
+    "end": 10.26,
+    "id": "w32"
+  },
+  {
+    "text": "y",
+    "start": 10.34,
+    "end": 10.38,
+    "id": "w33"
+  },
+  {
+    "text": "aquí",
+    "start": 10.38,
+    "end": 10.63,
+    "id": "w34"
+  },
+  {
+    "text": "también",
+    "start": 10.63,
+    "end": 11.04,
+    "id": "w35"
+  },
+  {
+    "text": "nos",
+    "start": 11.08,
+    "end": 11.24,
+    "id": "w36"
+  },
+  {
+    "text": "llegaron",
+    "start": 11.24,
+    "end": 11.76,
+    "id": "w37"
+  },
+  {
+    "text": "hecha",
+    "start": 11.76,
+    "end": 11.92,
+    "id": "w38"
+  },
+  {
+    "text": "para",
+    "start": 11.99,
+    "end": 12.11,
+    "id": "w39"
+  },
+  {
+    "text": "acá",
+    "start": 12.11,
+    "end": 12.24,
+    "id": "w40"
+  },
+  {
+    "text": "parte",
+    "start": 12.27,
+    "end": 12.82,
+    "id": "w41"
+  },
+  {
+    "text": "de",
+    "start": 12.82,
+    "end": 13.05,
+    "id": "w42"
+  },
+  {
+    "text": "los",
+    "start": 13.05,
+    "end": 13.4,
+    "id": "w43"
+  },
+  {
+    "text": "grip",
+    "start": 13.4,
+    "end": 13.86,
+    "id": "w44"
+  },
+  {
+    "text": "el",
+    "start": 13.86,
+    "end": 14.06,
+    "id": "w45"
+  },
+  {
+    "text": "hueso",
+    "start": 14.09,
+    "end": 14.65,
+    "id": "w46"
+  },
+  {
+    "text": "esto",
+    "start": 14.65,
+    "end": 15.11,
+    "id": "w47"
+  },
+  {
+    "text": "si",
+    "start": 15.11,
+    "end": 15.34,
+    "id": "w48"
+  },
+  {
+    "text": "huele",
+    "start": 15.34,
+    "end": 15.88,
+    "id": "w49"
+  },
+  {
+    "text": "rico",
+    "start": 15.95,
+    "end": 16.44,
+    "id": "w50"
+  },
+  {
+    "text": "parte",
+    "start": 16.44,
+    "end": 16.79,
+    "id": "w51"
+  },
+  {
+    "text": "de",
+    "start": 16.94,
+    "end": 16.95,
+    "id": "w52"
+  },
+  {
+    "text": "los",
+    "start": 16.96,
+    "end": 17.18,
+    "id": "w53"
+  },
+  {
+    "text": "grip",
+    "start": 17.18,
+    "end": 17.48,
+    "id": "w54"
+  },
+  {
+    "text": "Lizard",
+    "start": 17.48,
+    "end": 17.96,
+    "id": "w55"
+  },
+  {
+    "text": "Skin",
+    "start": 17.96,
+    "end": 18.28,
+    "id": "w56"
+  },
+  {
+    "text": "mira",
+    "start": 18.31,
+    "end": 18.5,
+    "id": "w57"
+  },
+  {
+    "text": "aquí",
+    "start": 18.5,
+    "end": 18.72,
+    "id": "w58"
+  },
+  {
+    "text": "todos",
+    "start": 18.72,
+    "end": 18.97,
+    "id": "w59"
+  },
+  {
+    "text": "los",
+    "start": 19.03,
+    "end": 19.16,
+    "id": "w60"
+  },
+  {
+    "text": "colores",
+    "start": 19.16,
+    "end": 19.51,
+    "id": "w61"
+  },
+  {
+    "text": "que",
+    "start": 19.56,
+    "end": 19.7,
+    "id": "w62"
+  },
+  {
+    "text": "llegan",
+    "start": 19.7,
+    "end": 20.08,
+    "id": "w63"
+  },
+  {
+    "text": "así",
+    "start": 20.08,
+    "end": 20.26,
+    "id": "w64"
+  },
+  {
+    "text": "que",
+    "start": 20.34,
+    "end": 20.52,
+    "id": "w65"
+  },
+  {
+    "text": "traigan",
+    "start": 20.52,
+    "end": 21.04,
+    "id": "w66"
+  },
+  {
+    "text": "su",
+    "start": 21.07,
+    "end": 21.19,
+    "id": "w67"
+  },
+  {
+    "text": "bate",
+    "start": 21.19,
+    "end": 21.52,
+    "id": "w68"
+  },
+  {
+    "text": "para",
+    "start": 21.52,
+    "end": 21.8,
+    "id": "w69"
+  },
+  {
+    "text": "cambiarle",
+    "start": 21.8,
+    "end": 22.24,
+    "id": "w70"
+  },
+  {
+    "text": "los",
+    "start": 22.24,
+    "end": 22.36,
+    "id": "w71"
+  },
+  {
+    "text": "grip",
+    "start": 22.39,
+    "end": 22.62,
+    "id": "w72"
+  },
+  {
+    "text": "ponéselo",
+    "start": 22.62,
+    "end": 23.13,
+    "id": "w73"
+  },
+  {
+    "text": "nuevo",
+    "start": 23.13,
+    "end": 23.46,
+    "id": "w74"
+  },
+  {
+    "text": "y",
+    "start": 23.46,
+    "end": 23.52,
+    "id": "w75"
+  },
+  {
+    "text": "tenemos",
+    "start": 23.52,
+    "end": 23.98,
+    "id": "w76"
+  },
+  {
+    "text": "brea",
+    "start": 23.98,
+    "end": 24.24,
+    "id": "w77"
+  },
+  {
+    "text": "en",
+    "start": 24.24,
+    "end": 24.34,
+    "id": "w78"
+  },
+  {
+    "text": "spray",
+    "start": 24.42,
+    "end": 24.76,
+    "id": "w79"
+  },
+  {
+    "text": "disponible",
+    "start": 24.76,
+    "end": 25.41,
+    "id": "w80"
+  },
+  {
+    "text": "de",
+    "start": 25.41,
+    "end": 25.54,
+    "id": "w81"
+  },
+  {
+    "text": "la",
+    "start": 25.54,
+    "end": 25.67,
+    "id": "w82"
+  },
+  {
+    "text": "marca",
+    "start": 25.67,
+    "end": 26,
+    "id": "w83"
+  },
+  {
+    "text": "Horstal",
+    "start": 26,
+    "end": 26.6,
+    "id": "w84"
+  },
+  {
+    "text": "con",
+    "start": 26.6,
+    "end": 27.2,
+    "id": "w85"
+  },
+  {
+    "text": "aromas.",
+    "start": 27.24,
+    "end": 30.64,
+    "id": "w86"
+  },
+  {
+    "text": "Vamos",
+    "start": 30.64,
+    "end": 30.645,
+    "id": "w87"
+  },
+  {
+    "text": "a",
+    "start": 30.645,
+    "end": 30.65,
+    "id": "w88"
+  },
+  {
+    "text": "ello.",
+    "start": 30.65,
+    "end": 30.68,
+    "id": "w89"
+  }
+]

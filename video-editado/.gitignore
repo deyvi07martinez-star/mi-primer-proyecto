@@ -1,0 +1,8 @@
+# Medios pesados y archivos generados: no se suben al repositorio
+assets/*.mp4
+assets/*.mov
+assets/*.webm
+renders/
+*.mp4
+.hyperframes/
+node_modules/
