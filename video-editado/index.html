@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-resolution="portrait">
+<html lang="es" data-resolution="portrait">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1080, height=1920" />
@@ -16,15 +16,80 @@
         width: 1080px;
         height: 1920px;
         overflow: hidden;
-        background: #000;
+        background: #0b1d3a;
       }
-      body {
-        font-family: "Inter", sans-serif;
+      :root {
+        --navy: #0b1d3a;
+        --deep: #1e3a6e;
+        --sky: #7fb8f0;
+        --ink: #fff9ee;
+        --yellow: #ffe08a;
+        --red: #f2545b;
+        --green: #3dd68c;
       }
-      code,
-      pre,
-      .monospace {
-        font-family: "JetBrains Mono", monospace;
+      /* Escenario azul marino detrás de la cámara: se ve cuando la toma se encoge */
+      #stage {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 90% 55% at 50% 38%, #1e3a6e 0%, #102a52 45%, #0b1d3a 80%),
+          #0b1d3a;
+        overflow: hidden;
+      }
+      #stage-floor {
+        position: absolute;
+        left: -540px;
+        right: -540px;
+        top: 1180px;
+        height: 1400px;
+        background-image:
+          linear-gradient(rgba(127, 184, 240, 0.22) 2px, transparent 2px),
+          linear-gradient(90deg, rgba(127, 184, 240, 0.22) 2px, transparent 2px);
+        background-size: 120px 120px;
+        transform-origin: 50% 0%;
+        -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 70%);
+        mask-image: linear-gradient(to bottom, #000 0%, transparent 70%);
+      }
+      #stage-glow {
+        position: absolute;
+        left: 140px;
+        top: 260px;
+        width: 800px;
+        height: 800px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 224, 138, 0.16) 0%, transparent 65%);
+      }
+      #cam-space {
+        position: absolute;
+        inset: 0;
+        perspective: 1800px;
+        perspective-origin: 50% 45%;
+      }
+      #cam {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        transform-origin: 50% 50%;
+        box-shadow:
+          0 60px 120px rgba(3, 10, 24, 0.75),
+          0 18px 40px rgba(3, 10, 24, 0.55);
+      }
+      #cam video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      /* Brillo de borde y reflejo de vidrio para la ventana */
+      #cam-rim {
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        box-shadow: inset 0 0 0 6px rgba(127, 184, 240, 0.55);
+        background: linear-gradient(155deg, rgba(255, 255, 255, 0.16) 0%, transparent 28%);
+        pointer-events: none;
+        opacity: 0;
       }
     </style>
   </head>
@@ -37,29 +102,79 @@
       data-width="1080"
       data-height="1920"
     >
-      <video
-        id="a-roll"
-        class="clip"
-        src="4576c519-VID-20261024-WA00011.mp4"
-        playsinline
+      <div id="stage">
+        <div id="stage-glow"></div>
+        <div id="stage-floor" data-layout-allow-overflow></div>
+      </div>
+
+      <div id="cam-space">
+        <div id="cam">
+          <video
+            id="a-roll"
+            class="clip"
+            src="assets/presenter.mp4"
+            playsinline
+            data-start="0"
+            data-duration="29.37"
+            data-track-index="0"
+            data-has-audio="true"
+          ></video>
+          <div id="cam-rim"></div>
+        </div>
+      </div>
+
+      <div
+        id="pasos"
+        data-composition-id="pasos"
+        data-composition-src="compositions/pasos.html"
+        data-start="20.1"
+        data-duration="4.5"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 5"
+      ></div>
+
+      <div
+        id="subtitulos"
+        data-composition-id="subtitulos"
+        data-composition-src="compositions/subtitulos.html"
         data-start="0"
         data-duration="29.37"
-        data-track-index="0"
-        style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover" data-has-audio="true"></video>
-      
-
-      <!--
-        Add your clips here. Example:
-        <div id="title" class="clip" data-start="0" data-duration="5" data-track-index="1"
-             style="font-size: 64px; color: #fff; padding: 40px">
-          Hello World
-        </div>
-      -->
+        data-track-index="2"
+        data-track-kind="captions"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 10"
+      ></div>
     </div>
 
     <script>
       const tl = gsap.timeline({ paused: true });
-      // Example: tl.from("#title", { opacity: 0, y: -50, duration: 1 }, 0);
+
+      // Estado inicial: cámara completa
+      tl.set("#cam", { x: 0, y: 0, z: 0, scale: 1, rotationY: 0, rotationX: 0, borderRadius: 0 }, 0);
+      tl.set("#stage-floor", { rotationX: 62, y: 0 }, 0);
+
+      // Fondo: deriva lenta del piso para que el escenario nunca quede congelado
+      tl.fromTo("#stage-floor", { backgroundPositionY: "0px" }, { backgroundPositionY: "360px", duration: 29.37, ease: "none" }, 0);
+
+      // ── Escena "pasos" (20,1–24,6) ─────────────────────────────
+      // Modo C: la toma se encoge a una ventana a la derecha, girada hacia las tarjetas
+      tl.to("#cam", { x: 342, y: -90, scale: 0.315, rotationY: -14, borderRadius: 114, duration: 0.6, ease: "power2.inOut" }, 20.1);
+      tl.to("#cam-rim", { opacity: 1, duration: 0.4, ease: "power2.out" }, 20.25);
+      // micro-movimiento dentro del modo
+      tl.to("#cam", { y: -106, rotationY: -10, duration: 1.2, ease: "sine.inOut" }, 20.7);
+
+      // Modo D: la ventana crece al centro justo en el corte a la toma del cambio de grip (22,3)
+      tl.to("#cam", { x: 0, y: -205, scale: 0.47, rotationY: 7, rotationX: 4, borderRadius: 78, duration: 0.55, ease: "power3.inOut" }, 21.95);
+      tl.to("#cam", { rotationY: 2, rotationX: 2, scale: 0.48, duration: 1.6, ease: "sine.inOut" }, 22.6);
+
+      // Salida hacia la siguiente escena
+      tl.to("#cam", { x: 0, y: 0, scale: 1, rotationY: 0, rotationX: 0, borderRadius: 0, duration: 0.4, ease: "power3.in" }, 24.2);
+      tl.to("#cam-rim", { opacity: 0, duration: 0.2 }, 24.4);
+
       window.__timelines["main"] = tl;
     </script>
   </body>

@@ -1,0 +1,200 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Fraunces";
+      font-weight: 900;
+      src: url("assets/fonts/fraunces-latin-900-normal.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Fraunces";
+      font-weight: 700;
+      src: url("assets/fonts/fraunces-latin-700-normal.woff2") format("woff2");
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    #pasos-space {
+      position: absolute;
+      inset: 0;
+      perspective: 1400px;
+      perspective-origin: 30% 40%;
+    }
+    .paso {
+      position: absolute;
+      left: 48px;
+      width: 600px;
+      height: 180px;
+      transform-style: preserve-3d;
+    }
+    #paso-1 { top: 420px; }
+    #paso-2 { top: 640px; }
+    #paso-3 { top: 860px; }
+    /* Cara de la tarjeta: capas de degradado, borde de luz y sombras apiladas */
+    .paso-cara {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: 0 36px;
+      border-radius: 36px;
+      background: linear-gradient(160deg, #2a4c86 0%, #1e3a6e 45%, #142c57 100%);
+      box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.22),
+        inset 0 0 0 2px rgba(127, 184, 240, 0.28),
+        0 40px 70px rgba(3, 10, 24, 0.7),
+        0 12px 24px rgba(3, 10, 24, 0.5);
+    }
+    .paso-luz {
+      position: absolute;
+      inset: 0;
+      border-radius: 36px;
+      opacity: 0;
+    }
+    .paso-1-luz,
+    .paso-2-luz {
+      box-shadow:
+        inset 0 0 0 4px #ffe08a,
+        0 0 60px rgba(255, 224, 138, 0.45);
+    }
+    .paso-3-luz {
+      box-shadow:
+        inset 0 0 0 4px #3dd68c,
+        0 0 70px rgba(61, 214, 140, 0.55);
+    }
+    .paso-num {
+      flex: none;
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Fraunces", serif;
+      font-weight: 900;
+      font-size: 60px;
+      color: #0b1d3a;
+      background: radial-gradient(circle at 35% 30%, #fff3c4 0%, #ffe08a 45%, #e9b949 100%);
+      box-shadow:
+        0 10px 22px rgba(3, 10, 24, 0.55),
+        inset 0 -6px 10px rgba(160, 110, 20, 0.35);
+    }
+    #paso-3 .paso-num {
+      background: radial-gradient(circle at 35% 30%, #c8f7de 0%, #3dd68c 50%, #23a866 100%);
+    }
+    .paso-texto {
+      font-family: "Fraunces", serif;
+      font-weight: 700;
+      font-size: 66px;
+      color: #fff9ee;
+      letter-spacing: -0.5px;
+      text-shadow: 0 4px 14px rgba(3, 10, 24, 0.5);
+    }
+    .paso-icono {
+      margin-left: auto;
+      width: 72px;
+      height: 72px;
+      color: #7fb8f0;
+    }
+    .paso-icono svg {
+      width: 100%;
+      height: 100%;
+    }
+    #paso-3 .paso-icono {
+      color: #3dd68c;
+    }
+  </style>
+
+  <div id="root" data-composition-id="pasos" data-width="1080" data-height="1920">
+    <div id="pasos-space">
+      <div id="paso-1" class="paso">
+        <div class="paso-cara">
+          <div class="paso-num">1</div>
+          <div class="paso-texto">Llega</div>
+          <div class="paso-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.830 2h8.34a2 2 0 0 1 1.42.59L22 7" /><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4" /><path d="M2 7h20" /><path d="M22 7v3a2 2 0 0 1-2 2a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.590-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7" /></svg>
+          </div>
+        </div>
+        <div class="paso-luz paso-1-luz"></div>
+      </div>
+
+      <div id="paso-2" class="paso">
+        <div class="paso-cara">
+          <div class="paso-num">2</div>
+          <div class="paso-texto">Cambio</div>
+          <div class="paso-icono" id="paso-2-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /><path d="M21 3v5h-5" /><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /><path d="M8 16H3v5" /></svg>
+          </div>
+        </div>
+        <div class="paso-luz paso-2-luz"></div>
+      </div>
+
+      <div id="paso-3" class="paso">
+        <div class="paso-cara">
+          <div class="paso-num">3</div>
+          <div class="paso-texto">Listo</div>
+          <div class="paso-icono" id="paso-3-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" /><path d="m9 12 2 2 4-4" /></svg>
+          </div>
+        </div>
+        <div class="paso-luz paso-3-luz"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    // Entrada: las tarjetas llegan desde la profundidad, giradas hacia la ventana de la derecha
+    ["#paso-1", "#paso-2", "#paso-3"].forEach((sel, i) => {
+      tl.fromTo(
+        sel,
+        { opacity: 0, x: -140, z: -420, rotationY: 48, rotationX: 6, filter: "blur(10px)" },
+        { opacity: 1, x: 0, z: 0, rotationY: 16, rotationX: 2, filter: "blur(0px)", duration: 0.75, ease: "expo.out" },
+        0.25 + i * 0.12,
+      );
+    });
+    tl.set("#paso-3", { opacity: 1 }, 1.2);
+    tl.to("#paso-3 .paso-cara", { opacity: 0.55, duration: 0.3 }, 0.9);
+
+    // Paso 1 se enciende con "bate" (21,07 → local 0,97)
+    tl.fromTo("#paso-1 .paso-luz", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 0.97);
+    tl.to("#paso-1", { z: 60, duration: 0.35, ease: "back.out(1.6)" }, 1.0);
+
+    // Paso 2 se enciende con "cambiarle" (21,80 → local 1,70); el icono gira
+    tl.to("#paso-1", { z: 0, duration: 0.3, ease: "power2.inOut" }, 1.7);
+    tl.to("#paso-1 .paso-luz", { opacity: 0.35, duration: 0.3 }, 1.7);
+    tl.fromTo("#paso-2 .paso-luz", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 1.7);
+    tl.to("#paso-2", { z: 60, duration: 0.35, ease: "back.out(1.6)" }, 1.7);
+    tl.fromTo("#paso-2-icono", { rotation: 0 }, { rotation: 360, duration: 1.2, ease: "power2.inOut" }, 1.7);
+
+    // Modo D (local 1,95–2,5): las tarjetas se vuelven una fila de fichas arriba, sobre la ventana
+    const fila = [
+      { sel: "#paso-1", x: -132, y: -260 },
+      { sel: "#paso-2", x: 192, y: -480 },
+      { sel: "#paso-3", x: 516, y: -700 },
+    ];
+    fila.forEach((f, i) => {
+      tl.to(f.sel, { x: f.x, y: f.y, z: 0, scale: 0.5, rotationY: 0, rotationX: 14, duration: 0.6, ease: "power3.inOut" }, 1.8 + i * 0.05);
+    });
+    tl.to("#paso-2 .paso-luz", { opacity: 0.35, duration: 0.3 }, 2.4);
+    tl.to("#paso-3 .paso-cara", { opacity: 1, duration: 0.3 }, 2.3);
+
+    // Paso 3 se enciende en verde con "nuevo" (23,13 → local 3,03)
+    tl.fromTo("#paso-3 .paso-luz", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 2.95);
+    tl.fromTo("#paso-3-icono", { scale: 0.4, rotation: -30 }, { scale: 1, rotation: 0, duration: 0.6, ease: "back.out(2.2)", immediateRender: false }, 2.95);
+    tl.to("#paso-3", { scale: 0.56, duration: 0.4, ease: "back.out(1.8)" }, 2.95);
+
+    // Micro-movimiento de la fila mientras se sostiene
+    tl.to("#pasos-space", { y: -10, duration: 1.2, ease: "sine.inOut" }, 2.6);
+
+    // Salida (local 4,1–4,45): la fila sube y se desenfoca
+    ["#paso-1", "#paso-2", "#paso-3"].forEach((sel, i) => {
+      tl.to(sel, { y: "-=220", opacity: 0, filter: "blur(8px)", duration: 0.32, ease: "power3.in" }, 4.08 + i * 0.04);
+    });
+
+    window.__timelines["pasos"] = tl;
+  </script>
+</template>
