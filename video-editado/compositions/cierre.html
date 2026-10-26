@@ -1,0 +1,184 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Fraunces";
+      font-weight: 900;
+      src: url("assets/fonts/fraunces-latin-900-normal.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "DM Sans";
+      font-weight: 700;
+      src: url("assets/fonts/dm-sans-latin-700-normal.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "DM Sans";
+      font-weight: 500;
+      src: url("assets/fonts/dm-sans-latin-500-normal.woff2") format("woff2");
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    /* La píldora verde crece hasta llenar el cuadro y se vuelve la tarjeta final */
+    #cierre-mundo {
+      position: absolute;
+      inset: 0;
+      clip-path: inset(1430px 330px 370px 330px round 60px);
+      opacity: 0;
+    }
+    /* La sombra va en un contenedor aparte porque clip-path recorta las sombras propias */
+    #cierre-sombra {
+      position: absolute;
+      inset: 0;
+      filter: drop-shadow(0 40px 50px rgba(3, 10, 24, 0.7)) drop-shadow(0 0 40px rgba(61, 214, 140, 0.35));
+    }
+    #cierre-borde {
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.35), inset 0 -30px 60px rgba(3, 10, 24, 0.25);
+    }
+    #cierre-fondo {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 45% at 50% 38%, #1e3a6e 0%, #102a52 50%, #0b1d3a 85%),
+        #0b1d3a;
+    }
+    #cierre-verde {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #5ee3a3 0%, #3dd68c 50%, #23a866 100%);
+    }
+    #cierre-pildora-texto {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 1430px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "DM Sans", sans-serif;
+      font-weight: 700;
+      font-size: 50px;
+      color: #0b1d3a;
+    }
+    #cierre-contenido {
+      position: absolute;
+      inset: 0;
+      perspective: 1200px;
+    }
+    #cierre-burbuja {
+      position: absolute;
+      left: 400px;
+      top: 330px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1d3a;
+      background: radial-gradient(circle at 35% 30%, #fff6d6 0%, #ffe08a 50%, #e9b949 100%);
+      box-shadow:
+        inset 0 -14px 24px rgba(160, 110, 20, 0.35),
+        0 50px 90px rgba(3, 10, 24, 0.75),
+        0 0 120px rgba(255, 224, 138, 0.35);
+    }
+    #cierre-burbuja svg {
+      width: 150px;
+      height: 150px;
+    }
+    #cierre-titulo {
+      position: absolute;
+      left: 60px;
+      right: 60px;
+      top: 700px;
+      text-align: center;
+      font-family: "Fraunces", serif;
+      font-weight: 900;
+      font-size: 128px;
+      line-height: 1.02;
+      color: #fff9ee;
+      text-shadow:
+        0 6px 0 #1e3a6e,
+        0 30px 60px rgba(3, 10, 24, 0.7);
+    }
+    #cierre-titulo .clave {
+      color: #ffe08a;
+    }
+    #cierre-fichas {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 1050px;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+    }
+    .ficha {
+      padding: 22px 36px;
+      border-radius: 999px;
+      font-family: "DM Sans", sans-serif;
+      font-weight: 500;
+      font-size: 44px;
+      color: #fff9ee;
+      background: linear-gradient(160deg, #2a4c86 0%, #1e3a6e 60%, #142c57 100%);
+      box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.2),
+        inset 0 0 0 3px rgba(127, 184, 240, 0.45),
+        0 24px 44px rgba(3, 10, 24, 0.65);
+    }
+  </style>
+
+  <div id="root" data-composition-id="cierre" data-width="1080" data-height="1920">
+    <div id="cierre-sombra" data-layout-allow-overflow>
+    <div id="cierre-mundo">
+      <div id="cierre-fondo"></div>
+      <div id="cierre-verde"></div>
+      <div id="cierre-pildora-texto">pide el tuyo</div>
+      <div id="cierre-borde"></div>
+    </div>
+    </div>
+    <div id="cierre-contenido">
+      <div id="cierre-burbuja">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" /></svg>
+      </div>
+      <div id="cierre-titulo">Escríbenos<br />por <span class="clave">DM</span></div>
+      <div id="cierre-fichas">
+        <div class="ficha" id="ficha-1">brea en spray</div>
+        <div class="ficha" id="ficha-2">grips</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    // 28,6 s: aparece la píldora sobre tu toma
+    tl.fromTo("#cierre-mundo", { opacity: 0, scale: 0.6, transformOrigin: "50% 77%" }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, 0.6);
+
+    // 28,95 s: la píldora crece hasta ser el mundo, antes de que termine tu clip (29,37)
+    tl.fromTo(
+      "#cierre-mundo",
+      { clipPath: "inset(1430px 330px 370px 330px round 60px)" },
+      { clipPath: "inset(0px 0px 0px 0px round 0px)", duration: 0.4, ease: "power3.inOut" },
+      0.95,
+    );
+    tl.to("#cierre-pildora-texto", { opacity: 0, duration: 0.15 }, 0.95);
+    tl.to(["#cierre-verde", "#cierre-borde"], { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 1.15);
+
+    // Contenido de la tarjeta final
+    tl.fromTo("#cierre-burbuja", { opacity: 0, scale: 0.3, z: -400, rotationY: -60 }, { opacity: 1, scale: 1, z: 0, rotationY: 0, duration: 0.8, ease: "expo.out" }, 1.3);
+    tl.fromTo("#cierre-titulo", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power2.out" }, 1.45);
+    tl.fromTo("#ficha-1", { opacity: 0, y: 40, rotationX: -70 }, { opacity: 1, y: 0, rotationX: 0, duration: 0.5, ease: "expo.out" }, 1.7);
+    tl.fromTo("#ficha-2", { opacity: 0, y: 40, rotationX: -70 }, { opacity: 1, y: 0, rotationX: 0, duration: 0.5, ease: "expo.out" }, 1.78);
+
+    // Lo que se mueve mientras se lee: la burbuja gira despacio en 3D y el fondo deriva
+    tl.to("#cierre-burbuja", { rotationY: 22, rotationX: -8, y: -12, duration: 1.8, ease: "sine.inOut" }, 2.1);
+    tl.fromTo("#cierre-fondo", { scale: 1 }, { scale: 1.08, duration: 3.0, ease: "none" }, 1.0);
+
+    window.__timelines["cierre"] = tl;
+  </script>
+</template>

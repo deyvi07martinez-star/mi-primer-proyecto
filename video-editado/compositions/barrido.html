@@ -1,0 +1,57 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    /* Estelas de luz que cruzan el cuadro y tapan la costura del barrido */
+    .estela {
+      position: absolute;
+      left: -900px;
+      width: 900px;
+      border-radius: 999px;
+      opacity: 0;
+    }
+    .amarilla {
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 224, 138, 0.0) 10%, rgba(255, 224, 138, 0.9) 70%, #fff6d6 100%);
+      box-shadow: 0 0 40px rgba(255, 224, 138, 0.6);
+    }
+    .azul {
+      background: linear-gradient(90deg, transparent 0%, rgba(127, 184, 240, 0.0) 10%, rgba(127, 184, 240, 0.85) 70%, #e3f1ff 100%);
+      box-shadow: 0 0 36px rgba(127, 184, 240, 0.55);
+    }
+  </style>
+
+  <div id="root" data-composition-id="barrido" data-width="1080" data-height="1920" data-layout-allow-overflow>
+    <div class="estela amarilla" id="es-1" style="top: 260px; height: 22px"></div>
+    <div class="estela azul" id="es-2" style="top: 470px; height: 12px"></div>
+    <div class="estela amarilla" id="es-3" style="top: 820px; height: 34px"></div>
+    <div class="estela azul" id="es-4" style="top: 1090px; height: 16px"></div>
+    <div class="estela amarilla" id="es-5" style="top: 1420px; height: 26px"></div>
+    <div class="estela azul" id="es-6" style="top: 360px; height: 10px"></div>
+    <div class="estela amarilla" id="es-7" style="top: 980px; height: 18px"></div>
+    <div class="estela azul" id="es-8" style="top: 1250px; height: 12px"></div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    // Primer barrido (9,4 s): la vuelta a cámara completa
+    const primero = ["#es-1", "#es-2", "#es-3", "#es-4", "#es-5"];
+    primero.forEach((sel, i) => {
+      tl.fromTo(sel, { x: 0, opacity: 0 }, { x: 2100, opacity: 1, duration: 0.34, ease: "power2.inOut" }, i * 0.03);
+      tl.to(sel, { opacity: 0, duration: 0.08 }, i * 0.03 + 0.28);
+    });
+
+    // Segundo barrido (11,62 s): cubre el corte a la toma en mano de 11,7
+    const segundo = ["#es-6", "#es-7", "#es-8"];
+    segundo.forEach((sel, i) => {
+      tl.fromTo(sel, { x: 2100, opacity: 0, scaleX: -1 }, { x: 0, opacity: 0.9, duration: 0.3, ease: "power2.inOut" }, 2.22 + i * 0.03);
+      tl.to(sel, { opacity: 0, duration: 0.08 }, 2.22 + i * 0.03 + 0.24);
+    });
+
+    window.__timelines["barrido"] = tl;
+  </script>
+</template>

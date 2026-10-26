@@ -1,0 +1,105 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    #spray-space {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 200px;
+      height: 620px;
+      perspective: 1200px;
+      perspective-origin: 50% 40%;
+    }
+    /* Lupa: acercamiento real a tu spray (fotograma de 16,3 s) dentro de un lente con profundidad */
+    #lupa {
+      position: absolute;
+      left: 290px;
+      top: 50px;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      transform-style: preserve-3d;
+      box-shadow:
+        0 0 0 12px #1e3a6e,
+        0 0 0 16px rgba(127, 184, 240, 0.8),
+        0 50px 90px rgba(3, 10, 24, 0.8),
+        0 0 80px rgba(255, 224, 138, 0.25);
+    }
+    #lupa-recorte {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    #lupa-recorte img {
+      position: absolute;
+      left: -70px;
+      top: -70px;
+      width: 640px;
+      height: 640px;
+    }
+    #lupa-vidrio {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 30%),
+        radial-gradient(circle at 50% 50%, transparent 60%, rgba(11, 29, 58, 0.45) 100%);
+    }
+    .burbuja {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      box-shadow:
+        inset -6px -8px 14px rgba(3, 10, 24, 0.25),
+        0 14px 24px rgba(3, 10, 24, 0.45);
+    }
+    .b-am { background: radial-gradient(circle at 32% 28%, #fffbe9 0%, #ffe08a 45%, #e9b949 100%); }
+    .b-az { background: radial-gradient(circle at 32% 28%, #eef7ff 0%, #7fb8f0 45%, #4f8fcf 100%); }
+    .b-ve { background: radial-gradient(circle at 32% 28%, #dffbe9 0%, #3dd68c 45%, #23a866 100%); }
+    .b-ro { background: radial-gradient(circle at 32% 28%, #ffe3e4 0%, #f2545b 45%, #c93a41 100%); }
+  </style>
+
+  <div id="root" data-composition-id="spray" data-width="1080" data-height="1920">
+    <div id="spray-space">
+      <div id="lupa">
+        <div id="lupa-recorte"><img id="lupa-img" src="assets/spray-lupa.jpg" alt="Tu spray de brea, de cerca" /></div>
+        <div id="lupa-vidrio"></div>
+      </div>
+      <div class="burbuja b-am" id="bu-1" style="left: 170px; top: 430px; width: 96px; height: 96px"></div>
+      <div class="burbuja b-az" id="bu-2" style="left: 820px; top: 380px; width: 80px; height: 80px"></div>
+      <div class="burbuja b-ve" id="bu-3" style="left: 120px; top: 230px; width: 62px; height: 62px"></div>
+      <div class="burbuja b-ro" id="bu-4" style="left: 860px; top: 190px; width: 70px; height: 70px"></div>
+      <div class="burbuja b-am" id="bu-5" style="left: 240px; top: 110px; width: 48px; height: 48px"></div>
+      <div class="burbuja b-ve" id="bu-6" style="left: 790px; top: 520px; width: 54px; height: 54px"></div>
+      <div class="burbuja b-az" id="bu-7" style="left: 60px; top: 380px; width: 40px; height: 40px"></div>
+      <div class="burbuja b-ro" id="bu-8" style="left: 930px; top: 300px; width: 44px; height: 44px"></div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    // La lupa entra girando desde atrás
+    tl.fromTo("#lupa", { opacity: 0, scale: 0.3, rotation: -25, z: -400, rotationY: 40 }, { opacity: 1, scale: 1, rotation: 0, z: 0, rotationY: -10, duration: 0.8, ease: "expo.out" }, 0.15);
+    // Se mueve despacio dentro (la imagen se acerca) y la lupa gira en 3D
+    tl.fromTo("#lupa-img", { scale: 1 }, { scale: 1.14, duration: 2.9, ease: "sine.inOut" }, 0.2);
+    tl.to("#lupa", { rotationY: 10, rotationX: -6, duration: 2.1, ease: "sine.inOut" }, 0.95);
+
+    // "con aromas" (26,6 → local 2,0): burbujas de colores que suben alrededor
+    ["#bu-1", "#bu-2", "#bu-3", "#bu-4", "#bu-5", "#bu-6", "#bu-7", "#bu-8"].forEach((sel, i) => {
+      const t = 1.9 + i * 0.08;
+      tl.fromTo(sel, { opacity: 0, scale: 0.2, y: 40 }, { opacity: 1, scale: 1, y: 0, duration: 0.45, ease: "back.out(2.2)" }, t);
+      tl.to(sel, { y: -110 - i * 8, duration: 1.0, ease: "sine.out" }, t + 0.45 > 3.05 ? 3.05 : t + 0.45);
+    });
+
+    // Salida
+    tl.to("#spray-space", { opacity: 0, y: -80, duration: 0.25, ease: "power3.in" }, 3.12);
+
+    window.__timelines["spray"] = tl;
+  </script>
+</template>

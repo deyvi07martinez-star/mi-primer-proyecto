@@ -1,0 +1,116 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    #logo-space {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 230px;
+      height: 560px;
+      perspective: 1200px;
+      perspective-origin: 50% 30%;
+    }
+    #logo-halo {
+      position: absolute;
+      left: 140px;
+      top: 60px;
+      width: 800px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(127, 184, 240, 0.35) 0%, transparent 65%);
+    }
+    #logo-grupo {
+      position: absolute;
+      left: 110px;
+      top: 120px;
+      width: 860px;
+      transform-style: preserve-3d;
+    }
+    /* Tarjeta blanca: el logo oficial viene sobre fondo blanco, así que la tarjeta lo continúa */
+    #logo-tarjeta {
+      position: relative;
+      height: 200px;
+      border-radius: 32px;
+      overflow: hidden;
+      background: linear-gradient(170deg, #ffffff 0%, #f4f7fb 70%, #e4ebf4 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        inset 0 -6px 0 rgba(30, 58, 110, 0.12),
+        inset 0 0 0 3px rgba(127, 184, 240, 0.6),
+        0 50px 90px rgba(3, 10, 24, 0.75),
+        0 14px 26px rgba(3, 10, 24, 0.5);
+    }
+    #logo-tarjeta img {
+      width: 760px;
+      height: auto;
+    }
+    /* Reflejo en el "piso" */
+    #logo-reflejo {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 214px;
+      height: 200px;
+      border-radius: 32px;
+      background: linear-gradient(170deg, #ffffff 0%, #e4ebf4 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.22;
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 60%);
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 60%);
+    }
+    #logo-reflejo-img {
+      width: 760px;
+      height: 99px;
+      background: url("assets/lizard-skins-logo.png") center / 760px auto no-repeat;
+      transform: scaleY(-1);
+    }
+    #logo-brillo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 180px;
+      height: 200px;
+      border-radius: 32px;
+      background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.85) 50%, transparent 100%);
+      opacity: 0;
+    }
+  </style>
+
+  <div id="root" data-composition-id="logo" data-width="1080" data-height="1920">
+    <div id="logo-space">
+      <div id="logo-halo"></div>
+      <div id="logo-grupo">
+        <div id="logo-tarjeta">
+          <img id="logo-img" src="assets/lizard-skins-logo.png" alt="Lizard Skins" />
+          <div id="logo-brillo"></div>
+        </div>
+        <div id="logo-reflejo"><div id="logo-reflejo-img"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.fromTo("#logo-grupo", { opacity: 0, z: -600, rotationY: 55, rotationX: 20 }, { opacity: 1, z: 0, rotationY: -10, rotationX: 12, duration: 0.8, ease: "expo.out" }, 0.15);
+    tl.fromTo("#logo-halo", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" }, 0.25);
+    // Giro lento mientras se sostiene
+    tl.to("#logo-grupo", { rotationY: 8, rotationX: 8, duration: 0.8, ease: "sine.inOut" }, 0.95);
+    // Destello que recorre la tarjeta
+    tl.fromTo("#logo-brillo", { x: -200, opacity: 0 }, { x: 900, opacity: 1, duration: 0.6, ease: "power2.inOut" }, 0.75);
+    tl.to("#logo-brillo", { opacity: 0, duration: 0.1 }, 1.36);
+
+    // Salida
+    tl.to(["#logo-grupo", "#logo-halo"], { opacity: 0, y: -70, duration: 0.25, ease: "power3.in" }, 1.65);
+
+    window.__timelines["logo"] = tl;
+  </script>
+</template>

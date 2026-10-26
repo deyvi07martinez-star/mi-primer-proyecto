@@ -1,0 +1,72 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    #aro-space {
+      position: absolute;
+      inset: 0;
+      perspective: 1500px;
+      perspective-origin: 50% 35%;
+    }
+    /* Aros de luz que orbitan la ventana de la vitrina */
+    .aro {
+      position: absolute;
+      border-radius: 50%;
+      transform-style: preserve-3d;
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #000 calc(100% - 13px));
+      mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #000 calc(100% - 13px));
+    }
+    #aro-1 {
+      left: 70px;
+      top: 330px;
+      width: 940px;
+      height: 940px;
+      background: conic-gradient(from 0deg, rgba(255, 224, 138, 0) 0deg, #ffe08a 70deg, #fff6d6 95deg, rgba(255, 224, 138, 0) 170deg, rgba(255, 224, 138, 0.35) 230deg, rgba(255, 224, 138, 0) 300deg);
+    }
+    #aro-2 {
+      left: 170px;
+      top: 430px;
+      width: 740px;
+      height: 740px;
+      background: conic-gradient(from 180deg, rgba(127, 184, 240, 0) 0deg, #7fb8f0 60deg, #e3f1ff 85deg, rgba(127, 184, 240, 0) 160deg);
+    }
+    #aro-brillo {
+      position: absolute;
+      left: 240px;
+      top: 520px;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 224, 138, 0.22) 0%, transparent 60%);
+    }
+  </style>
+
+  <div id="root" data-composition-id="aro" data-width="1080" data-height="1920">
+    <div id="aro-space">
+      <div id="aro-brillo"></div>
+      <div class="aro" id="aro-1"></div>
+      <div class="aro" id="aro-2"></div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    // Los aros se abren alrededor de la ventana, inclinados en perspectiva
+    tl.fromTo("#aro-1", { opacity: 0, scale: 0.55, rotationX: 72, rotationY: -8 }, { opacity: 1, scale: 1, rotationX: 70, rotationY: -8, duration: 0.7, ease: "expo.out" }, 0.45);
+    tl.fromTo("#aro-2", { opacity: 0, scale: 0.5, rotationX: 66, rotationY: 10 }, { opacity: 0.9, scale: 1, rotationX: 64, rotationY: 10, duration: 0.7, ease: "expo.out" }, 0.55);
+    tl.fromTo("#aro-brillo", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0.5);
+
+    // Giro constante: es el movimiento que se nota
+    tl.fromTo("#aro-1", { rotation: 0 }, { rotation: 220, duration: 2.0, ease: "none" }, 0.4);
+    tl.fromTo("#aro-2", { rotation: 0 }, { rotation: -260, duration: 2.0, ease: "none" }, 0.4);
+
+    // Salida
+    tl.to(["#aro-1", "#aro-2", "#aro-brillo"], { opacity: 0, duration: 0.2, ease: "power2.in" }, 2.15);
+
+    window.__timelines["aro"] = tl;
+  </script>
+</template>

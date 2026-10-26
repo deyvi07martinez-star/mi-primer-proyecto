@@ -1,0 +1,84 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "DM Sans";
+      font-weight: 700;
+      src: url("assets/fonts/dm-sans-latin-700-normal.woff2") format("woff2");
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    #prueba-space {
+      position: absolute;
+      inset: 0;
+      perspective: 1200px;
+      perspective-origin: 30% 60%;
+    }
+    /* Etiqueta en la esquina de la ventana: dice qué estamos viendo, sin repetir el subtítulo */
+    #prueba-chip {
+      position: absolute;
+      left: 170px;
+      top: 1050px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 22px 34px 22px 24px;
+      border-radius: 999px;
+      background: linear-gradient(160deg, #2a4c86 0%, #1e3a6e 60%, #142c57 100%);
+      box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.22),
+        inset 0 0 0 3px rgba(255, 224, 138, 0.75),
+        0 30px 60px rgba(3, 10, 24, 0.7),
+        0 10px 20px rgba(3, 10, 24, 0.5);
+      transform-origin: 0% 100%;
+    }
+    #prueba-icono {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1d3a;
+      background: radial-gradient(circle at 35% 30%, #fff3c4 0%, #ffe08a 50%, #e9b949 100%);
+    }
+    #prueba-icono svg {
+      width: 38px;
+      height: 38px;
+    }
+    #prueba-chip span {
+      font-family: "DM Sans", sans-serif;
+      font-weight: 700;
+      font-size: 46px;
+      color: #fff9ee;
+      letter-spacing: -0.5px;
+    }
+  </style>
+
+  <div id="root" data-composition-id="prueba" data-width="1080" data-height="1920">
+    <div id="prueba-space">
+      <div id="prueba-chip">
+        <div id="prueba-icono">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h.01" /><path d="M7 5h.01" /><path d="M11 7h.01" /><path d="M3 7h.01" /><path d="M7 9h.01" /><path d="M3 11h.01" /><rect width="4" height="4" x="15" y="5" /><path d="m19 9 2 2v10c0 .6-.4 1-1 1h-6c-.6 0-1-.4-1-1V11l2-2" /><path d="m13 14 8-2" /><path d="m13 19 8-2" /></svg>
+        </div>
+        <span>así se usa</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    // Entra volteándose desde la ventana (4,2 s)
+    tl.fromTo("#prueba-chip", { opacity: 0, rotationX: -85, z: -200, y: 40 }, { opacity: 1, rotationX: 8, z: 0, y: 0, duration: 0.7, ease: "expo.out" }, 0.8);
+    tl.fromTo("#prueba-icono", { rotation: -25, scale: 0.6 }, { rotation: 0, scale: 1, duration: 0.6, ease: "back.out(2)" }, 0.9);
+    // Sigue la deriva de la ventana
+    tl.to("#prueba-chip", { rotationY: 10, x: 12, duration: 2.0, ease: "sine.inOut" }, 1.5);
+    // Salida
+    tl.to("#prueba-chip", { opacity: 0, y: 60, rotationX: -40, duration: 0.25, ease: "power3.in" }, 3.4);
+
+    window.__timelines["prueba"] = tl;
+  </script>
+</template>

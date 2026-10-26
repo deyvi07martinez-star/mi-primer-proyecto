@@ -1,0 +1,156 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Fraunces";
+      font-weight: 900;
+      src: url("assets/fonts/fraunces-latin-900-normal.woff2") format("woff2");
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    /* Caja 3D sobre la cabeza, entre la barra del teléfono (168 px) y tu frente (~420 px) */
+    #caja-space {
+      opacity: 0;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 176px;
+      height: 240px;
+      perspective: 900px;
+      perspective-origin: 50% 0%;
+    }
+    #caja-luz {
+      position: absolute;
+      left: 390px;
+      top: -40px;
+      width: 300px;
+      height: 200px;
+      background: radial-gradient(ellipse 50% 70% at 50% 100%, rgba(255, 224, 138, 0.85) 0%, rgba(255, 224, 138, 0.25) 45%, transparent 75%);
+      transform-origin: 50% 100%;
+      opacity: 0;
+    }
+    #caja {
+      position: absolute;
+      left: 440px;
+      top: 20px;
+      width: 200px;
+      height: 200px;
+      transform-style: preserve-3d;
+    }
+    .cara {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 200px;
+      height: 200px;
+      border-radius: 12px;
+      background: linear-gradient(165deg, #2f5596 0%, #1e3a6e 55%, #132a54 100%);
+      box-shadow:
+        inset 0 0 0 3px rgba(127, 184, 240, 0.45),
+        inset 0 2px 0 rgba(255, 255, 255, 0.25);
+    }
+    #cara-frente {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #cara-frente span {
+      font-family: "Fraunces", serif;
+      font-weight: 900;
+      font-size: 54px;
+      color: #ffe08a;
+      letter-spacing: 1px;
+      text-shadow: 0 3px 8px rgba(3, 10, 24, 0.6);
+    }
+    #cara-izq,
+    #cara-der {
+      background: linear-gradient(165deg, #1e3a6e 0%, #0f2449 100%);
+    }
+    #cara-abajo {
+      background: #0b1d3a;
+      box-shadow: 0 0 60px 30px rgba(3, 10, 24, 0.55);
+    }
+    #tapa-mov {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 200px;
+      height: 200px;
+      transform-style: preserve-3d;
+    }
+    #tapa {
+      background: linear-gradient(165deg, #3b66ad 0%, #24477f 100%);
+    }
+    .chispa {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff6d6 0%, #ffe08a 45%, rgba(255, 224, 138, 0) 75%);
+      opacity: 0;
+    }
+  </style>
+
+  <div id="root" data-composition-id="caja" data-width="1080" data-height="1920">
+    <div id="caja-space">
+      <div id="caja-luz"></div>
+      <div id="caja">
+        <div id="cara-abajo" class="cara"></div>
+        <div id="cara-atras" class="cara"></div>
+        <div id="cara-izq" class="cara"></div>
+        <div id="cara-der" class="cara"></div>
+        <div id="cara-frente" class="cara"><span>NUEVO</span></div>
+        <div id="tapa-mov"><div id="tapa" class="cara"></div></div>
+      </div>
+      <div class="chispa" id="ch-1" style="left: 520px; top: 120px"></div>
+      <div class="chispa" id="ch-2" style="left: 548px; top: 116px"></div>
+      <div class="chispa" id="ch-3" style="left: 500px; top: 124px"></div>
+      <div class="chispa" id="ch-4" style="left: 572px; top: 122px"></div>
+      <div class="chispa" id="ch-5" style="left: 534px; top: 128px"></div>
+      <div class="chispa" id="ch-6" style="left: 560px; top: 118px"></div>
+    </div>
+  </div>
+
+  <script>
+    // Geometría fija del cubo (no se anima: solo la tapa y el conjunto)
+    gsap.set("#cara-frente", { transform: "translateZ(100px)" });
+    gsap.set("#cara-atras", { transform: "rotateY(180deg) translateZ(100px)" });
+    gsap.set("#cara-izq", { transform: "rotateY(-90deg) translateZ(100px)" });
+    gsap.set("#cara-der", { transform: "rotateY(90deg) translateZ(100px)" });
+    gsap.set("#cara-abajo", { transform: "rotateX(-90deg) translateZ(100px)" });
+    gsap.set("#tapa", { transform: "rotateX(90deg) translateZ(100px)" });
+
+    const tl = gsap.timeline({ paused: true });
+
+    // La caja aparece justo después del fotograma de portada y gira despacio
+    tl.fromTo("#caja-space", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, 0.1);
+    tl.fromTo("#caja", { rotationX: -20, rotationY: 14, scale: 0.92, y: 0 }, { rotationX: -16, rotationY: 34, scale: 1, duration: 3.1, ease: "sine.inOut" }, 0);
+
+    // Se abre: la tapa salta y se inclina hacia atrás (0,55 s)
+    tl.fromTo("#tapa-mov", { y: 0, z: 0, rotationX: 0 }, { y: -70, z: -40, rotationX: -38, duration: 0.55, ease: "back.out(2)" }, 0.55);
+    tl.fromTo("#caja-luz", { opacity: 0, scaleY: 0.2 }, { opacity: 1, scaleY: 1, duration: 0.45, ease: "expo.out" }, 0.6);
+    tl.to("#caja-luz", { opacity: 0.55, duration: 1.6, ease: "sine.inOut" }, 1.1);
+
+    // Chispas que suben desde la caja (posiciones fijas, sin azar)
+    const subidas = [
+      { id: "#ch-1", x: -90, y: -150 },
+      { id: "#ch-2", x: 40, y: -175 },
+      { id: "#ch-3", x: -150, y: -95 },
+      { id: "#ch-4", x: 130, y: -120 },
+      { id: "#ch-5", x: -20, y: -190 },
+      { id: "#ch-6", x: 95, y: -60 },
+    ];
+    subidas.forEach((c, i) => {
+      const t = 0.65 + i * 0.07;
+      tl.fromTo(c.id, { opacity: 0, x: 0, y: 0, scale: 0.4 }, { opacity: 1, x: c.x * 0.6, y: c.y * 0.6, scale: 1.2, duration: 0.35, ease: "power3.out" }, t);
+      tl.to(c.id, { opacity: 0, x: c.x, y: c.y, scale: 0.6, duration: 0.6, ease: "power2.in" }, t + 0.35);
+    });
+
+    // Salida: la caja se hunde y se va
+    tl.to("#caja-space", { y: -60, opacity: 0, scale: 0.85, duration: 0.3, ease: "power3.in" }, 3.05);
+
+    window.__timelines["caja"] = tl;
+  </script>
+</template>
